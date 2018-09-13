@@ -7,6 +7,7 @@ class Player{
 	float time_left; 
 	int board_size ;
 	Board board;
+	int state ;
 
 	Player(player_id, board_size, time_limit){
 		this.board_size = board_size;
@@ -16,26 +17,7 @@ class Player{
 		this.board 		= temp_board;
 	}
 
-	void placeRing(){
-
-	}
-
-	void selectRing(){
-
-	}
-
-	void moveRing(){
-
-	}
-	void removeRowStart(){
-
-	}
-	void removeRowEnd(){
-
-	}
-	void removeRing(){
-
-	}
+	
 	void play_move_seq(){
 
 	}
@@ -62,6 +44,51 @@ class Player{
 	            cin>>move; 
 	        }
 	    }
+	}
+
+	bool placeRing(Cart tup){
+		if (board.mapping[tup.x][tup.y] == "E" && this.state == 1){
+			return true;
+		}
+		return false;
+	}
+
+	bool selectRing(Cart tup){
+		
+	}
+
+	bool moveRing(Cart tup){
+
+	}
+	bool removeRowStart(Cart tup){
+
+	}
+	bool removeRowEnd(Cart tup){
+
+	}
+	bool removeRing(Cart tup){
+
+	}
+
+	bool IsValid(Cart tup, string type){
+		if (type == "P"){
+			return this.placeRing(tup);
+		}
+		else if (type == "S"){
+			return this.selectRing(tup);
+		}
+		else if (type == "M"){
+			return this.moveRing(tup);
+		}
+		else if (type == "X"){
+			return this.removeRing(tup);
+		}
+		else if (type == "RS"){
+			return this.removeRowStart(tup);
+		}
+		else if (type == "RE"){
+			return this.removeRowEnd(tup);
+		}
 	}
 
 }

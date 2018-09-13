@@ -2,6 +2,29 @@
 using namespace std; 
 
 
+class Hex{
+	public:
+	int ring;
+	int pos;
+	
+	Hex(int r, int p){
+		ring = r;
+		pos = p;
+	}
+}
+
+class Cart{
+	public:
+	int x;
+	int y;
+	Cart (){
+
+	}
+	Cart (int a,int b){
+		x = a;
+		y = b;
+	}
+}
 
 class Board{
 	//position to what is contained in it -- pos = tuple of x, y where min y starts at bottom most node
@@ -168,6 +191,40 @@ class Board{
 		}
 	}
 
+	void execute_move_opp(Cart tup, string type){
+		//player = 0 means self
+		//Assumes move is valid before being called
+		//Types -- P, S, RE, RS, X, M
+		//Board Psoitions "E" / "R" -- ring/ "RO" -- ring opp/"M"-- marker/"MO"/"I
+		int x = tup.x;
+		int y = tup.y;
+		if (type == "P"){
+			this.mapping[x][y] = "RO";
+			this.RingPosOpp.push_back(tup);
+		}
+		else if (type == "S"){
+			last_selected = tup;
+			this.mapping[x][y] = "MO";
+			RingPosOpp.erase(std::remove(RingPosOpp.begin(), RingPosOpp.end(), tup), RingPosOpp.end());
+		}
+		else if (type == "M"){
+			this.flip(this.last_selected, tup);
+			this.RingPosOpp.push_back(tup);
+			this.last_selected = Cart temp();
+		}
+		else if (type == "X"){
+			this.ringsOpp --;
+			this.RingPosOpp.erase(std::remove(RingPosOpp.begin(), RingPosOpp.end(), tup), RingPosOpp.end());
+		}
+		else if (type == "RS"){
+			this.last_selected = tup;
+		}
+		else if (type == "RE"){
+			this.removeMarkers(this.last_selected, tup);
+			this.last_selected = Cart temp();
+		}
+	}
+
 	void execute_move(Hex tup_hex, string type){
 		Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
 		return execute_move_opp(tup, type)
@@ -192,32 +249,6 @@ class Board{
 		return output;
 
 	}
-
-	//final output -- M r p -- where M = move type, r = Ring no., p = position in ring starting from 0 
-
-
-}
-
-class Hex{
-	public:
-	int ring;
-	int pos;
 	
-	Hex(int r, int p){
-		ring = r;
-		pos = p;
-	}
 }
 
-class Cart{
-	public:
-	int x;
-	int y;
-	Cart (){
-
-	}
-	Cart (int a,int b){
-		x = a;
-		y = b;
-	}
-}
