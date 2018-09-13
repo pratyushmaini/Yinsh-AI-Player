@@ -1,16 +1,19 @@
+#include<bits/stdc++.h> 
+using namespace std; 
 
 
 class Player{
 	int player ; //0 or 1
 	float time_left; 
-	string[] RingPos ;
 	int board_size ;
 	Board board;
 
 	Player(player_id, board_size, time_limit){
 		this.board_size = board_size;
-		this.player_id = player_id;
-		this.time_left = time_limit;
+		this.player_id 	= player_id;
+		this.time_left 	= time_limit;
+		Board temp_board();
+		this.board 		= temp_board;
 	}
 
 	void placeRing(){
@@ -31,6 +34,9 @@ class Player{
 
 	}
 	void removeRing(){
+
+	}
+	void play_move_seq(){
 
 	}
 	void play(){
