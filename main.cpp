@@ -1,4 +1,9 @@
 #include <iostream>
+#include <unistd.h>
+#include "player.h"
+
+unsigned int microseconds = 2000;
+
 
 using namespace std;
 
@@ -9,21 +14,29 @@ int main(int argc, char** argv) {
     string move;
     // Get input from server about game specifications
     cin >> player_id >> board_size >> time_limit;
+    Player myBot(player_id, board_size, time_limit);
+    myBot.play();
 
-    if(player_id == 2) {
-        // Get other player's move
-        cin>>move; 
+    // if(player_id == 2) {
+    //     // Get other player's move
+    //     cin>>move; 
         
-        while(true) {
-            cout<<"P 1 0"<<endl;
-            cin>>move;
-        }
-    }   
-    else if(player_id == 1) {
-        while(true) {
-            cout<<"P 0 0"<<endl;
-            cin>>move; 
-        }
-    }
+    //     while(true) {
+    //         cout<<"P 1 0"<<endl;
+    //         cin>>move;
+    //         cerr << move << endl;
+    //         usleep(microseconds);
+
+
+    //     }
+    // }   
+    // else if(player_id == 1) {
+    //     while(true) {
+    //         cout<<"P 0 0"<<endl;
+    //         cin>>move; 
+    //         cerr << move << endl;
+    //         usleep(microseconds);
+    //     }
+    // }
     return 0;
 }
