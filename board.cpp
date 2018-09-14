@@ -32,32 +32,32 @@ void Board::flip(Cart start, Cart end){
 	int delta_y = (y1-y2) ;
 	if (delta_x == 0 && delta_y > 0 ){
 		for (int i = y2 + 1; i<y1; i++){
-			mapping[x1][i] = reverse(mapping[x1][i]);
+			mapping[i][x1] = reverse(mapping[i][x1]);
 		}
 	}
 	else if (delta_x == 0 && delta_y < 0){
 		for (int i = y1 + 1; i<y2; i++){
-			mapping[x1][i] = reverse(mapping[x1][i]);
+			mapping[i][x1] = reverse(mapping[i][x1]);
 		}
 	}
 	else if (delta_y == 0 && delta_x > 0 ){
 		for (int i = x2 + 1; i<x1; i++){
-			mapping[i][y1] = reverse(mapping[i][y1]);
+			mapping[y1][i] = reverse(mapping[y1][i]);
 		}
 	}
 	else if (delta_y == 0 && delta_x < 0 ){
 		for (int i = x1 + 1; i<x2; i++){
-			mapping[i][y1] = reverse(mapping[i][y1]);
+			mapping[y1][i] = reverse(mapping[y1][i]);
 		}
 	}
 	else if (delta_y > 0  && delta_x > 0 ){
 		for (int i = 1; i<delta_x; i++){
-			mapping[x2 + i][y2 + i] = reverse(mapping[x2 + i][y2 + i]);
+			mapping[y2 + i][x2+i] = reverse(mapping[y2 + i][x2+i]);
 		}
 	}
 	else if (delta_y < 0  && delta_x< 0 ){
 		for (int i = 1; i< -1*delta_x; i++){
-			mapping[x1 + i][y1 + i] = reverse(mapping[x1 + i][y1 + i]);
+			mapping[y1 + i][x1+i] = reverse(mapping[y1 + i][x1+i]);
 		}
 	}
 	else{
@@ -74,32 +74,32 @@ void Board::removeMarkers(Cart start, Cart end){
 	int delta_y = (y1-y2) ;
 	if (delta_x == 0 && delta_y == 4){
 		for (int i = y2; i<=y1; i++){
-			mapping[x1][i] = "E";
+			mapping[i][x1] = "E";
 		}
 	}
 	else if (delta_x == 0 && delta_y == -4){
 		for (int i = y1; i<=y2; i++){
-			mapping[x1][i] = "E";
+			mapping[i][x1] = "E";
 		}
 	}
 	else if (delta_y == 0 && delta_x == 4){
 		for (int i = x2; i<=x1; i++){
-			mapping[i][y1] = "E";
+			mapping[y1][i] = "E";
 		}
 	}
 	else if (delta_y == 0 && delta_x == -4){
 		for (int i = x1; i<=x2; i++){
-			mapping[i][y1] = "E";
+			mapping[y1][i] = "E";
 		}
 	}
 	else if (delta_y == 4 && delta_x == 4){
 		for (int i = 0; i<=4; i++){
-			mapping[x2 + i][y2 + i] = "E";
+			mapping[y2 + i][x2+i] = "E";
 		}
 	}
 	else if (delta_y == -4 && delta_x == -4){
 		for (int i = 0; i<=4; i++){
-			mapping[x1 + i][y1 + i] = "E";
+			mapping[y1 + i][x1+i] = "E";
 		}
 	}
 	else{
@@ -115,12 +115,12 @@ void Board::execute_move(Cart tup, string type){
 	int x = tup.x;
 	int y = tup.y;
 	if (type == "P"){
-		mapping[x][y] = "R";
+		mapping[y][x] = "R";
 		RingPos.push_back(tup);
 	}
 	else if (type == "S"){
 		last_selected = tup;
-		mapping[x][y] = "M";
+		mapping[y][x] = "M";
 		// RingPos.erase(std::remove(RingPos.begin(), RingPos.end(), tup), RingPos.end());
 	}
 	else if (type == "M"){
@@ -151,12 +151,12 @@ void Board::execute_move_opp(Cart tup, string type){
 	int x = tup.x;
 	int y = tup.y;
 	if (type == "P"){
-		mapping[x][y] = "RO";
+		mapping[y][x] = "RO";
 		RingPosOpp.push_back(tup);
 	}
 	else if (type == "S"){
 		last_selected = tup;
-		mapping[x][y] = "MO";
+		mapping[y][x] = "MO";
 		// RingPosOpp.erase(std::remove(RingPosOpp.begin(), RingPosOpp.end(), tup), RingPosOpp.end());
 	}
 	else if (type == "M"){
@@ -183,21 +183,80 @@ void Board::execute_move(Hex tup_hex, string type){
 	Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
 	execute_move_opp(tup, type);
 }
+Hex solve_sec(int x, int y){
+	int r,p;
+	if (x>=0){
+		
+		if (y>=x){
+			r = y;
+			p = x;
+		}
+		else if (y>= 0 && y<x){
+			r = x;
+			p = 2*r - y ;
+		}
+		else if (y<0 && y<x){
+			r = x - y;
+			p = 3*r - x; 
+		}
+
+	}
+	return Hex(r,p);
+}
 
 Hex Board::convertToHex(int x, int y){
-	int r = y;
+	x = x-5;
+	y = y-5;
 	int p = 0;
+	if (x>=0){
+		Hex output = solve_sec(x,y);
+		return output;
+	}
+//else
+		x = -x;
+		y = -y;
+		Hex temp = solve_sec(x,y);
+		Hex output(temp.ring, 3*temp.ring + temp.pos);
+		return output;
+	//15
+		
+	
 
-	//Write Code here to convert
-	Hex output(r,p);
+}
+Cart solve(int r, int p){
+	int y = r;
+	int x = 0;
+	if (p<r){
+		x = p;
+	}
+	else if (p<2*r){
+		x = r;
+		y = 2*r - p;
+	}
+	else if (p<3*r){
+		x = 3*r - p;
+		y = 2*r - p;
+	}
+	Cart output(x,y);
 	return output;
 
 }
-
 Cart Board::convertToCart(int r, int p){
-	int x = 0;
-	int y = r;
+	int x,y;
 
+	if (p>=3*r){
+		int p_prime = p - 3*r;
+		Cart temp = solve (r, p_prime);
+		x = -temp.x;
+		y = -temp.y;
+	}
+	else{
+		Cart temp = solve (r, p);
+		x = temp.x;
+		y = temp.y;
+	}
+
+	x+=5; y+=5;
 	//Write Code here to convert
 	Cart output(x,y);
 	return output;
@@ -206,9 +265,19 @@ Cart Board::convertToCart(int r, int p){
 
 
 void Board::printConfig(){
-	for (int i=0; i<mapping.size(); i++){
-		for (int j = mapping[i].size() - 1; j >=0; j--){
+	for (int i = mapping.size() - 1; i >=0; i--){
+		for (int j = 0; j < mapping[i].size() ; j++){
 			cout << mapping[i][j]<<", ";
+			Cart temp_cart(j,i);
+			Cart temp2 = convertToCart(convertToHex(j,i).ring, convertToHex(j,i).pos);
+			if (j==temp2.x && i == temp2.y){
+
+			}
+			else{
+				cout <<"ERROR" << endl;
+				cout << "x, y initial:" << j<< ", "<<i<<endl;
+				cout << "x, y final:" << temp2.x<< ", "<<temp2.y<<endl;
+			}
 		}
 		cout << " "<<endl;
 	}

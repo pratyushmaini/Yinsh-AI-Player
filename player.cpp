@@ -69,9 +69,9 @@ void Player::play(){
     else if(player == 1) {
         while(true) {
         	cout <<"Play"<<endl;
-            string s,x,y ;
+            string s,r,p ;
             // getline(cin,s);
-            cin>>s>>x>>y;
+            cin>>s>>r>>p;
             cerr << s << endl;
             // std::string s = "split on    whitespace   ";
 			// std::string s = "split on    whitespace   ";
@@ -79,7 +79,7 @@ void Player::play(){
 			// std::istringstream iss(s);
 			// for(std::string s; iss >> s; )
 			//     result.push_back(s);
-			Hex tup(stoi(x),stoi(y));
+			Hex tup(stoi(r),stoi(p));
 			// Cart tup = 
             board.execute_move(tup, s);
             // cout<<s<<endl;

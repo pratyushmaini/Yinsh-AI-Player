@@ -45,12 +45,12 @@ public:
 	int ringsOpp;
 
 	Board(){
-		for (int i=0; i< 10; i++){
+		for (int i=0; i< 11; i++){
 			vector<string> v;
-			int max_rows_i = max_rows[i];
-			int min_rows_i = min_rows[i];
+			// int max_rows_i = max_rows[i];
+			// int min_rows_i = min_rows[i];
 			for (int j=0; j<11; j++){
-				if (j<= max_rows_i && j>= min_rows_i){
+				if (i<= max_rows[j] && i>= min_rows[j]){
 					v.push_back("E");
 				}
 				else{
