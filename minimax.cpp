@@ -1,479 +1,67 @@
 //State of the game ://
+#include "minimax.h"
+#include <vector>
+using namespace std;
+#include<bits/stdc++.h> 
 
 
-utility(state, MoveVal prev_move){
-	
+
+float utility(Board board, MoveVal prev_move){
+	return prev_move.utility;
 }
 
-MoveVal DecisionMaker(Board board, int ply){
-    mv = MaxVal(board, INT_MIN, INT_MAX, ply)
+MoveVal DecisionMaker(Board board, int ply, int my_state){
+    MoveVal mv = MaxVal(board, INT_MIN, INT_MAX, ply, my_state, NULL);//************************************8***
     return mv;
 }
 //MaxVal should return the action P 0 1 etc, the value
 
-MoveVal MinVal(Board board, float alpha, float beta, int ply){
-    if (terminal(state) || ply == 0)
-        return utility(state);
-    for (s in children(state)){
-        child = MaxVal(s,alpha,beta, ply - 1);
-        beta = min(beta,child);
+Children children(Board board, int my_state){
+
+}
+
+MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, MoveVal prev_move){
+    Children child = children(board, my_state);
+    if (child.neighbours.size() == 0 || ply == 0){
+        return utility(board, prev_move);
+    }
+    MoveVal Max_move(INT_MIN);
+    for (int i = 0; i < child.neighbours.size(); i++){
+        board.execute_move_sequence(child.neighbours[i].cart_xy, child.neighbours[i].movetype );        
+        MoveVal my_child = MinVal(board,alpha,beta, ply - 1, child.next_state, child.neighbours[i]);//How to find new state??????????????????
+        alpha = std::max(alpha,my_child.utility);
+        board.undo_move_sequence(child.neighbours[i].cart_xy, child.neighbours[i].movetype);
+        if (alpha>=beta) {
+            return my_child;
+        }        
+        if (Max_move.utility <= my_child.utility){
+            // *Max_move = *my_child; //*************************************************************************8
+        }
+    }
+    return Max_move; //?????????????????????
+} 
+
+MoveVal MinVal(Board board, float alpha, float beta, int ply, int my_state, MoveVal prev_move){
+    Children child = children(board, my_state);
+    if (child.neighbours.size() == 0 || ply == 0){
+        return utility(board, prev_move);
+    }
+    MoveVal Min_move(INT_MAX);
+    for (int i = 0; i < child.neighbours.size(); i++){        
+        board.execute_move_sequence(child.neighbours[i].cart_xy, child.neighbours[i].movetype );
+        MoveVal my_child = MaxVal(board,alpha,beta, ply - 1, child.next_state, child.neighbours[i]);//How to find new state??????????????????
+        beta = std::min(beta,my_child.utility);
+        board.undo_move_sequence(child.neighbours[i].cart_xy, child.neighbours[i].movetype);
         if (alpha>=beta){
-            return child;
+            return my_child;
+        }
+        if (Min_move.utility >= my_child.utility){
+            // *Min_move = *my_child;//**************************************************************************8
         } 
             
     }
-return best child (min); 
-} 
-
-MoveVal MaxVal(state, alpha, beta, ply){
-    if (terminal(state) || ply == 0)
-        return utility(state);
-    for (s in children(state)){
-        child = MinVal(s,alpha,beta, ply - 1);
-        alpha = max(alpha,child);
-        if (alpha>=beta) 
-            return child;
-    }
-    return best child (max); 
+return Min_move; 
 } 
 
 
 
-class Pair
-{
-public:
-    Cart c;int score;
-    Pair(Cart ct, int s)
-    {
-        c=ct;
-        score=s;
-    }
-}
-class Tuple
-{
-public:
-    Cart c1;Cart c2;
-    Tuple(Cart r1, Cart r2)
-    {
-        c1=r1;
-        c2=r2;
-    }
-}
-class Node
-{
-    public:
-        Board board;
-        vector<Node> children;
-        string move; 
-        Node(Board bd,vector<Node> chldrn)
-        {
-            board=bd;
-            children=chldrn;
-        }
-        bool terminal(Node n)
-        {
-            if(n.children.empty()) return true;
-            return false;
-        }
-        int utility(Node n)
-        {   
-        }
-}
-class Move
-{
-    int MinVal(Node state,int a,int b)
-    {
-        int alpha=a;
-        int beta=b;
-        if (terminal(state)) 
-            return utility(state);
-        for (int i=0;i<state.children.size();i++)
-        {
-            Node s=chidren.at(i);
-            int child = MaxVal(s,alpha,beta);
-            beta=std::min(beta,child);
-            if (alpha>=beta) return child;
-        }
-        return beta; 
-    } 
-    int MaxVal(Node state,int alpha,int beta)
-    {
-        if (terminal(state))
-            return utility(state);
-        for (int i=0;i<state.children.size();i++)
-        {
-            Node s=chidren.at(i);
-            int child = MinVal(s,alpha,beta);
-            alpha = std::max(alpha,child);
-            if (alpha>=beta) return child;
-        }
-        return alpha;
-    }
-    string MiniMax(Node state)
-    {
-        v = MaxVal(state,INT_MIN, INT_MAX);
-        return action in Successors(state) with value v;
-    }
-    Pair vuneighbours(Node state,Cart c,Cart fin_pos,int max_score)
-    {
-        int x=c.x;
-        int y=c.y+1;
-        int t=0;
-        Pair p;
-        p.score=max_score;
-        p.c=fin_pos;
-        while(!(state.board.mapping[x][y]=="R" ||state.board.mapping[x][y]=="RO" ||state.board.mapping[x][y]=="I"))
-        {
-            if(state.board.mapping[x][y]=="E" && t==0)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);//-------------------Make this function-------------------------------------------------------
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                y++;
-            }
-            else if(state.board.mapping[x][y]=="M" || state.board.mapping[x][y]=="MO")
-            {
-                t=1;
-                y++;
-            }
-            else if(state.board.mapping[x][y]=="E" && t==1)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                break;  
-            }
-        }
-        return p;
-    }
-    Pair vdneighbours(Node state,Cart c,Cart fin_pos,int max_score)
-    {
-        int x=c.x;
-        int y=c.y-1;
-        int t=0;
-        Pair p;
-        p.score=max_score;
-        p.c=fin_pos,;
-        while(!(state.board.mapping[x][y]=="R" ||state.board.mapping[x][y]=="RO" ||state.board.mapping[x][y]=="I"))
-        {
-            if(state.board.mapping[x][y]=="E" && t==0)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);//-------------------Make this function-------------------------------------------------------
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                y--;
-            }
-            else if(state.board.mapping[x][y]=="M" || state.board.mapping[x][y]=="MO")
-            {
-                t=1;
-                y--;
-            }
-            else if(state.board.mapping[x][y]=="E" && t==1)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                break;  
-            }
-        }
-        return p;
-    }
-    Pair hrneighbours(Node state,Cart c,Cart fin_pos,int max_score)
-    {
-        int x=c.x+1;
-        int y=c.y;
-        int t=0;
-        Pair p;
-        p.score=max_score;
-        p.c=fin_pos,;
-        while(!(state.board.mapping[x][y]=="R" ||state.board.mapping[x][y]=="RO" ||state.board.mapping[x][y]=="I"))
-        {
-            if(state.board.mapping[x][y]=="E" && t==0)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);//-------------------Make this function-------------------------------------------------------
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                x++;
-            }
-            else if(state.board.mapping[x][y]=="M" || state.board.mapping[x][y]=="MO")
-            {
-                t=1;
-                x++;
-            }
-            else if(state.board.mapping[x][y]=="E" && t==1)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                break;  
-            }
-        }
-        return p;
-    }
-    Pair hlneighbours(Node state,Cart c,Cart fin_pos,int max_score)
-    {
-        int x=c.x-1;
-        int y=c.y;
-        int t=0;
-        Pair p;
-        p.score=max_score;
-        p.c=fin_pos,;
-        while(!(state.board.mapping[x][y]=="R" ||state.board.mapping[x][y]=="RO" ||state.board.mapping[x][y]=="I"))
-        {
-            if(state.board.mapping[x][y]=="E" && t==0)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);//-------------------Make this function-------------------------------------------------------
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                x--;
-            }
-            else if(state.board.mapping[x][y]=="M" || state.board.mapping[x][y]=="MO")
-            {
-                t=1;
-                x--;
-            }
-            else if(state.board.mapping[x][y]=="E" && t==1)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                break;  
-            }
-        }
-        return p;
-    }
-    Pair duneighbours(Node state,Cart c,Cart fin_pos,int max_score)
-    {
-        int x=c.x+1;
-        int y=c.y+1;
-        int t=0;
-        Pair p;
-        p.score=max_score;
-        p.c=fin_pos,;
-        while(!(state.board.mapping[x][y]=="R" ||state.board.mapping[x][y]=="RO" ||state.board.mapping[x][y]=="I"))
-        {
-            if(state.board.mapping[x][y]=="E" && t==0)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);//-------------------Make this function-------------------------------------------------------
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                x++;y++;
-            }
-            else if(state.board.mapping[x][y]=="M" || state.board.mapping[x][y]=="MO")
-            {
-                t=1;
-                x++;y++;
-            }
-            else if(state.board.mapping[x][y]=="E" && t==1)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                break;  
-            }
-        }
-        return p;
-    }
-    Pair ddneighbours(Node state,Cart c,Cart fin_pos,int max_score)
-    {
-        int x=c.x-1;
-        int y=c.y-1;
-        int t=0;
-        Pair p;
-        p.score=max_score;
-        p.c=fin_pos,;
-        while(!(state.board.mapping[x][y]=="R" ||state.board.mapping[x][y]=="RO" ||state.board.mapping[x][y]=="I"))
-        {
-            if(state.board.mapping[x][y]=="E" && t==0)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);//-------------------Make this function-------------------------------------------------------
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                x--;y--;
-            }
-            else if(state.board.mapping[x][y]=="M" || state.board.mapping[x][y]=="MO")
-            {
-                t=1;
-                x--;y--;
-            }
-            else if(state.board.mapping[x][y]=="E" && t==1)
-            {
-                Cart r;
-                r.x=x;r.y=y;
-                vector<vector<string>> temp=state.board.mapping;
-                temp[c.x][c.y]="M";
-                temp[x][y]="R";
-                int score=calculate_utility(temp);
-                if(score>max)
-                {
-                    p.c=r;
-                    p.score=score;
-                }
-                break;  
-            }
-        }
-        return p;
-    }
-    Tuple moveRing(Node state)
-    {
-        vector<Cart> rings= state.board.RingPos;
-        Cart final_pos;
-        final_pos.x=-1;
-        final_pos.y=-1;
-        int score=INT_MIN;
-        Cart init_pos; 
-        Pair p;
-        p.c=final_pos;
-        p.score=score+1;
-        for (auto i = rings.begin(); i != rings.end(); ++i) 
-        {
-            if(p.score>score) {init_pos=i;score=p.score;}
-            p=vuneighbours(state,i,p.c,p.score);
-            p=vdneighbours(state,i,p.c,p.score);
-            p=hrneighbours(state,i,p.c,p.score);
-            p=hlneighbours(state,i,p.c,p.score);
-            p=duneighbours(state,i,p.c,p.score);
-            p=ddneighbours(state,i,p.c,p.score);
-        }
-        if(p.score>score) init_pos=i;
-        Tuple t;
-        t.c1=init_pos;
-        t.c2=p.c;
-        return t; 
-    }
-    // bool check_row(Node state, Cart init_pos, Cart final_pos )
-    // {
-    //     vector<>
-    // }
-    string makeMove(Node state, int playerstate)
-    {
-        string s="";
-        if(playerstate==1)
-        {
-            s=s+"P";
-            Cart c=placeRing(state); 
-        }
-        if(playerstate==2)
-        {
-            Tuple t=moveRing(state);
-            Cart init_pos=t.c1;
-            Cart final_pos=t.c2;
-            s=s+"S"+" "+init_pos.x+" "+init_pos.y+" ";
-            s=s+"M"+" "+final_pos.x+" "+final_pos.y+" ";
-            if(check_row(state, init_pos,final_pos)) playerstate=3;
-        }
-        if(playerstate==3)
-        {
-        }
-    }
-}
-//Bad and Good Cases for Alpha-Beta Pruning
-/*Terminal? is replaced by Cutoff?
-2. Utility is replaced by Eval
-Does it work in practice?
-b
-m = 106
-, b=35  m=4
-4-ply lookahead is a hopeless chess player!
-– 4-ply ≈ human novice
-– 8-ply ≈ typical PC, human master
-– 12-ply ≈ Deep Blue, Kasparov
-*/
-//Eval(s) = w1
-/*
-f1
-(s) + w2
-f2
-(s) + … + wn
-fn
-(s)
-
- */

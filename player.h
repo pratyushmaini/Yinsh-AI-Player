@@ -2,12 +2,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-// #include "game.h"
 using namespace std;
 #include<bits/stdc++.h> 
-using namespace std; 
-// #include "player.h"
-#include "board.h"
+#include "minimax.h"
 
 class Player{
 public:
@@ -15,7 +12,7 @@ public:
 	float time_left; 
 	int board_size ;
 	Board board;
-	int state ;
+	int my_state ;
 
 	Player(int player_id, int board_size, float time_limit){
 		board_size = board_size;

@@ -1,13 +1,13 @@
 #include<bits/stdc++.h> 
 using namespace std; 
 #include "player.h"
-#include "minimax.h"
+
 
 void Player::play_move_seq(){
 }
 
 bool Player::placeRing(Cart tup){
-	if (board.mapping[tup.x][tup.y] == "E" && state == 1){
+	if (board.mapping[tup.x][tup.y] == "E" && my_state == 1){
 		return true;
 	}
 	return false;
@@ -72,20 +72,18 @@ void Player::play(){
             // getline(cin,s);
             cin>>s>>r>>p;
             cerr << s << endl;
-            // std::string s = "split on    whitespace   ";
-			// std::string s = "split on    whitespace   ";
-			// std::vector<std::string> result;
-			// std::istringstream iss(s);
-			// for(std::string s; iss >> s; )
-			//     result.push_back(s);
-			Hex tup(stoi(r),stoi(p));
-			// Cart tup = 
-			MoveVal next_move = DecisionMaker(board, 4);
 
-            board.execute_move_sequence(next_move.movetype, next_move.cart_xy);
+			Hex tup(stoi(r),stoi(p));
+/////////////////////////////////OPPPOBNET MOVE WRITE BELOW///////////////////////////////
+			// board.execute_move_sequence(opp_move.movetype, opp_move.cart_xy);//Correct opponrnt's move
+			// Cart tup = 
+			MoveVal next_move = DecisionMaker(board, 4, my_state);
+
+            board.execute_move_sequence(next_move.cart_xy, next_move.movetype);
             // cout<<s<<endl;
             // cin>>move; 
             board.printConfig();
+            cout << "OUTPUT PRINT HERE IN HEX FORM" <<endl; 
         }
     }
 	

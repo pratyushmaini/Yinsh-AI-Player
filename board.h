@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-// #include "game.h"
 using namespace std;
 #include<bits/stdc++.h> 
 
