@@ -16,6 +16,9 @@ class Hex{
 		ring = r;
 		pos = p;
 	}
+	bool operator==(Hex lhs, Hex rhs){
+    return lhs.ring() == rhs.ring() && lhs.pos() == rhs.pos();
+    }
 };
 
 class Cart{
@@ -29,6 +32,9 @@ class Cart{
 		x = a;
 		y = b;
 	}
+	bool operator==(Cart lhs, Cart rhs){
+    return lhs.x() == rhs.x() && lhs.y() == rhs.y();
+    }
 };
 
 class Board{
@@ -45,7 +51,7 @@ public:
 	int ringsOpp;
 	std::vector<Board> children;
 	string last_move; 
-
+	
 	Board(){
 		for (int i=0; i< 11; i++){
 			vector<string> v;
@@ -75,7 +81,7 @@ public:
 	void printConfig();
 	void execute_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
 	void execute_move_sequence(vector<Cart> tup_hexvec, vector<string> type_vec);
-
+	void addMarkers(Cart start, Cart end, bool self);
 	void undo_move(Cart tup, string type);
 	void undo_move_opp(Cart tup, string type);
 	void undo_move(Hex tup_hex, string type);

@@ -21,7 +21,7 @@ class Node {
 }
 
 utility(state, prev_move){
-
+	
 }
 
 DecisionMaker(state){
