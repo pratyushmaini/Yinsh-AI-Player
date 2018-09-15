@@ -1,9 +1,9 @@
 #include<bits/stdc++.h> 
 using namespace std; 
 #include "player.h"
+#include "minimax.h"
 
 void Player::play_move_seq(){
-
 }
 
 bool Player::placeRing(Cart tup){
@@ -14,12 +14,11 @@ bool Player::placeRing(Cart tup){
 }
 
 bool Player::selectRing(Cart tup){
-	
 }
 
 bool Player::moveRing(Cart tup){
-
 }
+
 bool Player::removeRowStart(Cart tup){
 
 }
@@ -81,7 +80,9 @@ void Player::play(){
 			//     result.push_back(s);
 			Hex tup(stoi(r),stoi(p));
 			// Cart tup = 
-            board.execute_move(tup, s);
+			MoveVal next_move = DecisionMaker(board, 4);
+
+            board.execute_move_sequence(next_move.movetype, next_move.cart_xy);
             // cout<<s<<endl;
             // cin>>move; 
             board.printConfig();

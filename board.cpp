@@ -245,8 +245,45 @@ void Board::execute_move_sequence(vector<Cart> tup_cart, vector<string> type_vec
 }
 
 void Board::undo_move(Cart tup, string type){
-
+	//player = 0 means self
+	//Assumes move is valid before being called
+	//Types -- P, S, RE, RS, X, M
+	//Board Psoitions "E" / "R" -- ring/ "RO" -- ring opp/"M"-- marker/"MO"/"I
+	int x = tup.x;
+	int y = tup.y;
+	if (type == "P"){
+		mapping[y][x] = "E";
+		RingPos.pop_back();
+	}
+	else if (type == "S"){
+		flip(last_selected, tup);
+		mapping[y][x] = "R";
+		RingPos.push_back(tup);
+		Cart last_selected();
+	}
+	else if (type == "M"){
+		
+		last_selected = tup;
+		mapping[y][x] = "E";
+		RingPos.erase(std::remove(RingPos.begin(), RingPos.end(), tup), RingPos.end());
+		
+		// last_selected = temp();
+	}
+	else if (type == "X"){
+		ringsMy ++;
+		RingPos.push_back(tup);
+	}
+	else if (type == "RS"){
+		addMarkers(last_selected, tup, true);//false - self
+		Cart last_selected();
+	}
+	else if (type == "RE"){
+		last_selected = tup;
+		// last_selected = temp(); 
+	}
 }
+
+
 
 void Board::undo_move_opp(Cart tup, string type){
 	//player = 0 means self
@@ -278,7 +315,7 @@ void Board::undo_move_opp(Cart tup, string type){
 		RingPosOpp.push_back(tup);
 	}
 	else if (type == "RS"){
-		addMarkers(last_selected, tup);
+		addMarkers(last_selected, tup, false);//false - self
 		Cart last_selected();
 	}
 	else if (type == "RE"){
@@ -317,7 +354,7 @@ Hex solve_sec(int x, int y){
 		else if (y<0 && y<x){
 			r = x - y;
 			p = 3*r - x; 
-	Board::	}
+		}
 
 	}
 	return Hex(r,p);

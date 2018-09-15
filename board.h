@@ -5,7 +5,6 @@
 // #include "game.h"
 using namespace std;
 #include<bits/stdc++.h> 
-using namespace std; 
 
 class Hex{
 	public:
@@ -16,8 +15,8 @@ class Hex{
 		ring = r;
 		pos = p;
 	}
-	bool operator==(Hex lhs, Hex rhs){
-    return lhs.ring() == rhs.ring() && lhs.pos() == rhs.pos();
+	bool operator==(Hex other){
+    return ring == other.ring && pos == other.pos;
     }
 };
 
@@ -32,8 +31,8 @@ class Cart{
 		x = a;
 		y = b;
 	}
-	bool operator==(Cart lhs, Cart rhs){
-    return lhs.x() == rhs.x() && lhs.y() == rhs.y();
+	bool operator==(Cart other){
+    return x == other.x && y == other.y;
     }
 };
 
@@ -73,6 +72,7 @@ public:
 	string reverse(string s);
 	void flip(Cart start, Cart end);
 	void removeMarkers(Cart start, Cart end);
+	void addMarkers(Cart start, Cart end);
 	void execute_move(Cart tup, string type);
 	void execute_move_opp(Cart tup, string type);
 	void execute_move(Hex tup_hex, string type);
@@ -85,7 +85,6 @@ public:
 	void undo_move(Cart tup, string type);
 	void undo_move_opp(Cart tup, string type);
 	void undo_move(Hex tup_hex, string type);
-	void printConfig();
 	void undo_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
 	void undo_move_sequence(vector<Cart> tup_hexvec, vector<string> type_vec);
 

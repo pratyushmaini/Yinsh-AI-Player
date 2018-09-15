@@ -1,55 +1,41 @@
-//State of the game :
-//
-class MoveVal{
-    string movetype;
-    Cart cart_xy;
-    float utility;
+//State of the game ://
 
-    MoveVal(){
 
-    }
-    MoveVal(string m, Cart c, float u){
-        movetype = m;
-        cart_xy = c;
-        utility = u;
-    }
-}
-class Node {
-    MoveVal move_val;
-    Board board;
-
-}
-
-utility(state, prev_move){
+utility(state, MoveVal prev_move){
 	
 }
 
-DecisionMaker(state){
-    v -> MaxVal(state)
-    return action that gives v;
+MoveVal DecisionMaker(Board board, int ply){
+    mv = MaxVal(board, INT_MIN, INT_MAX, ply)
+    return mv;
 }
 //MaxVal should return the action P 0 1 etc, the value
 
-MinVal(state, alpha, beta, ply){
+MoveVal MinVal(Board board, float alpha, float beta, int ply){
     if (terminal(state) || ply == 0)
         return utility(state);
     for (s in children(state)){
         child = MaxVal(s,alpha,beta, ply - 1);
         beta = min(beta,child);
-    if (alpha>=beta) return child;
+        if (alpha>=beta){
+            return child;
+        } 
+            
     }
-    return best child (min); } 
+return best child (min); 
+} 
 
-MaxVal(state, alpha, beta, ply){
+MoveVal MaxVal(state, alpha, beta, ply){
     if (terminal(state) || ply == 0)
         return utility(state);
     for (s in children(state)){
         child = MinVal(s,alpha,beta, ply - 1);
         alpha = max(alpha,child);
-    if (alpha>=beta) 
-        return child;
+        if (alpha>=beta) 
+            return child;
     }
-    return best child (max); } 
+    return best child (max); 
+} 
 
 
 
