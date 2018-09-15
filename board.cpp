@@ -183,6 +183,19 @@ void Board::execute_move(Hex tup_hex, string type){
 	Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
 	execute_move_opp(tup, type);
 }
+
+void Board::execute_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec){
+	for (int i=0; i<tup_hexvec.size(); i++){
+		execute_move(tup_hexvec[i],type_vec[i]);
+	}
+}
+
+void Board::execute_move_sequence(vector<Cart> tup_hexcart, vector<string> type_vec){
+	for (int i=0; i<tup_hexcart.size(); i++){
+		execute_move(tup_hexcart[i],type_vec[i]);
+	}
+}
+
 Hex solve_sec(int x, int y){
 	int r,p;
 	if (x>=0){

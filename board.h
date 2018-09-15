@@ -43,6 +43,8 @@ public:
 	Cart last_selected;
 	int ringsMy;
 	int ringsOpp;
+	std::vector<Board> children;
+	string last_move; 
 
 	Board(){
 		for (int i=0; i< 11; i++){
@@ -71,5 +73,15 @@ public:
 	Hex convertToHex(int x, int y);
 	Cart convertToCart(int r, int p);
 	void printConfig();
+	void execute_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
+	void execute_move_sequence(vector<Cart> tup_hexvec, vector<string> type_vec);
+
+	void undo_move(Cart tup, string type);
+	void undo_move_opp(Cart tup, string type);
+	void undo_move(Hex tup_hex, string type);
+	void printConfig();
+	void undo_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
+	void undo_move_sequence(vector<Cart> tup_hexvec, vector<string> type_vec);
+
 };
 
