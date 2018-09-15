@@ -16,9 +16,7 @@ MoveVal DecisionMaker(Board board, int ply, int my_state){
 }
 //MaxVal should return the action P 0 1 etc, the value
 
-Children children(Board board, int my_state){
 
-}
 
 MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, MoveVal prev_move){
     Children child = children(board, my_state);

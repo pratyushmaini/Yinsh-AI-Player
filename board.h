@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 using namespace std;
-#include<bits/stdc++.h> 
+#include <bits/stdc++.h> 
 
 class Hex{
 	public:
@@ -79,7 +79,7 @@ public:
 	Cart convertToCart(int r, int p);
 	void printConfig();
 	void execute_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
-	void execute_move_sequence(vector<Cart> tup_hexvec, vector<string> type_vec);
+	void execute_move_sequence(vector<Cart> tup_vec, vector<string> type_vec);
 	void addMarkers(Cart start, Cart end, bool self);
 	void undo_move(Cart tup, string type);
 	void undo_move_opp(Cart tup, string type);

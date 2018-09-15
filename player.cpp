@@ -74,7 +74,7 @@ void Player::play(){
             cerr << s << endl;
 
 			Hex tup(stoi(r),stoi(p));
-/////////////////////////////////OPPPOBNET MOVE WRITE BELOW///////////////////////////////
+/////////////////////////////////OPPPOBNET MOVE WRITE BELOW///////////////////////////////*************************
 			// board.execute_move_sequence(opp_move.movetype, opp_move.cart_xy);//Correct opponrnt's move
 			// Cart tup = 
 			MoveVal next_move = DecisionMaker(board, 4, my_state);
