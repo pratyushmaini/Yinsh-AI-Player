@@ -1,10 +1,5 @@
-#include <string>
-#include <iostream>
-#include <fstream>
-#include <vector>
-using namespace std;
-#include<bits/stdc++.h> 
-#include "minimax.h"
+
+#include "board.h"
 
 class Player{
 public:

@@ -1,54 +1,5 @@
-#include<bits/stdc++.h> 
-using namespace std; 
+
 #include "player.h"
-
-
-// void Player::play_move_seq(){
-// }
-
-// bool Player::placeRing(Cart tup){
-// 	if (board.mapping[tup.x][tup.y] == "E" && board.my_state == 1){
-// 		return true;
-// 	}
-// 	return false;
-// }
-
-// bool Player::selectRing(Cart tup){
-// }
-
-// bool Player::moveRing(Cart tup){
-// }
-
-// bool Player::removeRowStart(Cart tup){
-
-// }
-// bool Player::removeRowEnd(Cart tup){
-
-// }
-// bool Player::removeRing(Cart tup){
-
-// }
-
-// bool Player::IsValid(Cart tup, string type){
-// 	if (type == "P"){
-// 		return placeRing(tup);
-// 	}
-// 	else if (type == "S"){
-// 		return selectRing(tup);
-// 	}
-// 	else if (type == "M"){
-// 		return moveRing(tup);
-// 	}
-// 	else if (type == "X"){
-// 		return removeRing(tup);
-// 	}
-// 	else if (type == "RS"){
-// 		return removeRowStart(tup);
-// 	}
-// 	else if (type == "RE"){
-// 		return removeRowEnd(tup);
-// 	}
-// }
 
 void Player::play(){
 	board.printConfig();
@@ -70,14 +21,26 @@ void Player::play(){
         	cout <<"Play"<<endl;
             string s,r,p ;
             // getline(cin,s);
+            int ply = 1;
             if (board.my_state == 1 && board.RingPos.size() == 5){
             	board.my_state = 2;
+            	ply = 1;
             }
             if (board.opp_state == 1 && board.RingPosOpp.size() == 5){
             	board.opp_state = 2;
+            	ply = 1;
             }
-            MoveVal next_move = DecisionMaker(board, 1, board.my_state);//****************************
+            MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
+            cout << "Checking Decision " << endl;
+            vector<Hex> my_hex_vec;
+            for (int r = 0; r< next_move.cart_xy.size(); r++){
+                Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);	  
+                my_hex_vec.push_back(my_hex);      	
+                cout << next_move.movetype[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
+            }
+            cout << endl;	
+
             
             cin>>s>>r>>p;
             cerr << s << endl;

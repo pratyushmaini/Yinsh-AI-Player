@@ -1,9 +1,5 @@
-#include <iostream>
-#include <unistd.h>
 #include "player.h"
-#include <vector>
-using namespace std;
-#include<bits/stdc++.h> 
+
 
 unsigned int microseconds = 2000;
 

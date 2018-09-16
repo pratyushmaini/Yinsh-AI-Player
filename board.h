@@ -6,6 +6,7 @@ using namespace std;
 #include <bits/stdc++.h> 
 
 
+
 class Hex{
 	public:
 	int ring;
@@ -68,6 +69,25 @@ class Children{
 
   }
 };
+
+class Tup3 
+{
+public:
+    // int num;
+    vector<string> moves; 
+    vector<Cart> carts;
+    Tup3(vector<string> m, vector<Cart> c)
+    {
+        // num=n;
+        moves=m;
+        carts=c;
+    }
+    Tup3(){
+
+    }
+};
+
+
 class Board{
 	//position to what is contained in it -- pos = tuple of x, y where min y starts at bottom most node
 	//"E" / "R"/ "RO" /"M"/"MO"/"I
@@ -142,16 +162,27 @@ public:
 	void find_children(int playerstate, bool my_turn);
 	vector<MoveVal> placeRing(bool my_turn);
 	vector<MoveVal> moveRing( bool my_turn);
-	vector<MoveVal> find_neighbours(Cart c, int dir, bool my_turn);
+	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
 	float find_utility(vector<Cart> ct, vector<string> m, float prev_utility);
 
 
-	float utility_check_row_vertical( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
-    float utility_check_row_horizontal( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
-    float utility_check_row_diagonal( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
-    float utility_check_row_all_points( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
-    float utility_check_row(vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+	Tup3 check_row_vertical(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+	Tup3 check_row_horizontal(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+	Tup3 check_row_diagonal(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+	Tup3 check_row_all_points(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+	vector<Tup3> check_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+
+
+	float utility_check_row_vertical(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row_horizontal(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row_diagonal(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row_all_points(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
 };
 
 
+
+MoveVal DecisionMaker(Board board, int ply, int state);
+MoveVal MaxVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
+MoveVal MinVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
 
