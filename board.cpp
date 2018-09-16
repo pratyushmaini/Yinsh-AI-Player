@@ -452,19 +452,9 @@ Cart Board::convertToCart(int r, int p){
 void Board::printConfig(){
 	for (int i = mapping.size() - 1; i >=0; i--){
 		for (int j = 0; j < mapping[i].size() ; j++){
-			cout << mapping[i][j]<<", ";
-			Cart temp_cart(j,i);
-			Cart temp2 = convertToCart(convertToHex(j,i).ring, convertToHex(j,i).pos);
-			if (j==temp2.x && i == temp2.y){
-
-			}
-			else{
-				cout <<"ERROR" << endl;
-				cout << "x, y initial:" << j<< ", "<<i<<endl;
-				cout << "x, y final:" << temp2.x<< ", "<<temp2.y<<endl;
-			}
+			cerr << mapping[i][j]<<", ";
 		}
-		cout << " "<<endl;
+		cerr << " "<<endl;
 	}
 }
 

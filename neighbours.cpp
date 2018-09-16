@@ -542,16 +542,16 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
 */
     //------------------------------------Checkin rows made by opponent----------------------------------------------------
 
-    cout << "BEGINNING WHILE" << endl;
+    cerr << "BEGINNING WHILE" << endl;
 
     MoveVal mvl;
     while(!(mapping[y][x]=="R" || mapping[y][x]=="RO" ||mapping[y][x]=="I"))
     {
-        cout << "NEW " << endl;
+        cerr << "NEW " << endl;
          
         if(mapping[y][x]=="E" && t==0)
         {
-            cout << "IF" << endl;
+            cerr << "IF" << endl;
             vector<string> m;
             vector<Cart> ct;
 
@@ -565,19 +565,19 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
             prev_utility = 0;/////*****************************************************************************************
 
             execute_move_sequence(ct,m,my_turn);
-            cout << "Initial Move Executed" << endl;
+            cerr << "Initial Move Executed" << endl;
             Tup3 non_intersecting_rows = check_row_all_points(c.x,c.y,x,y);
-            cout << "non_intersecting_rows" << endl;
+            cerr << "non_intersecting_rows" << endl;
             m.insert(m.end(),non_intersecting_rows.moves.begin(),non_intersecting_rows.moves.end());
             ct.insert(ct.end(),non_intersecting_rows.carts.begin(),non_intersecting_rows.carts.end());
             execute_move_sequence(non_intersecting_rows.carts, non_intersecting_rows.moves, my_turn);            
             
 
             vector<Tup3> t_vec = check_row(c.x,c.y,x,y);
-            cout << "Before if" << endl;
+            cerr << "Before if" << endl;
             if(t_vec.size() > 0)
             {
-                cout << "Size > 0" << endl;
+                cerr << "Size > 0" << endl;
                 for(int j=0;j<t_vec.size();j++)
                 {
                     m.insert(m.end(),t_vec[j].moves.begin(),t_vec[j].moves.end());
@@ -587,12 +587,12 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
 
              		execute_move_sequence(t_vec[j].carts, t_vec[j].moves, my_turn);
                     mvl.utility=find_utility(ct, m, prev_utility);//------------------------------------Make this-----------------------------------------
-                    cout << "UTILITYYY" << endl;
+                    cerr << "UTILITYYY" << endl;
                     ch.neighbours.push_back(mvl);
-                    cout << "BEFORE POPPING" << endl;
+                    cerr << "BEFORE POPPING" << endl;
                     m.pop_back();m.pop_back();m.pop_back();
                     ct.pop_back();ct.pop_back();ct.pop_back();
-                    cout << "AFTER POPPING" << endl;
+                    cerr << "AFTER POPPING" << endl;
                     undo_move_sequence(t_vec[j].carts, t_vec[j].moves, my_turn);
 
                 }
@@ -600,14 +600,14 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
             
             else
             {
-                cout << "size = 0" << endl;
+                cerr << "size = 0" << endl;
 	            mvl.movetype = m;
 	            mvl.cart_xy = ct;
 	            mvl.utility=find_utility(ct, m, prev_utility);//------------------------------------Make this-----------------------------------------
 	            ch.neighbours.push_back(mvl);
 	        }
 	        undo_move_sequence(ct,m, my_turn);
-            cout << "UNDOO" << endl;
+            cerr << "UNDOO" << endl;
             if(dir==1)
 			{
 			    y++;
@@ -632,12 +632,12 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
 			{
 			    x--; y--;
 			}
-            cout << "UNDOO" << endl;
+            cerr << "UNDOO" << endl;
 
         }
         else if(mapping[y][x]=="M" || mapping[y][x]=="MO")
         {
-            cout << "ELSE IF" << endl;
+            cerr << "ELSE IF" << endl;
             t=1;
             if(dir==1)
 			{
@@ -666,7 +666,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
         }
         else if(mapping[y][x]=="E" && t==1)
         {
-            cout << "Break wala else if" << endl;
+            cerr << "Break wala else if" << endl;
             vector<string> m;
             vector<Cart> ct;
             Cart r;
@@ -719,7 +719,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
             break;
         }
     }
-    cout << "Returning neighbours" << endl;
+    cerr << "Returning neighbours" << endl;
     return ch.neighbours;
 }
 
@@ -734,7 +734,7 @@ vector<MoveVal> Board::moveRing(bool my_turn)
         {
             vector<MoveVal> p1= find_neighbours(RingPos[i],j, my_turn);
             padosi.insert(padosi.end(),p1.begin(),p1.end());
-            cout << i << ", " << j << endl;
+            cerr << i << ", " << j << endl;
         }
     }
     return padosi; 
@@ -742,7 +742,7 @@ vector<MoveVal> Board::moveRing(bool my_turn)
 
 
 vector<MoveVal> Board::placeRing(bool my_turn){
-   cout << "Place Ring Called" <<endl;
+   cerr << "Place Ring Called" <<endl;
   /**/ 
    float prev_utility;
    vector<MoveVal> all_possible_moves;
@@ -818,9 +818,9 @@ void Board::find_children(int playerstate, bool my_turn)
     }
     if(playerstate==2)
     {   
-        cout << "MOVE RING CALLED" << endl;
+        cerr << "MOVE RING CALLED" << endl;
         vector<MoveVal> p=moveRing(my_turn);
-        cout << "Vector of Move Val Returned" << endl;
+        cerr << "Vector of Move Val Returned" << endl;
         children.neighbours = p;
         children.next_state = 2;
 
