@@ -155,7 +155,7 @@ void Board::addMarkers(Cart start, Cart end, bool self){
 	}
 }
 
-void Board::execute_move(Cart tup, string type){
+void Board::execute_move_my(Cart tup, string type){
 	//player = 0 means self
 	//Assumes move is valid before being called
 	//Types -- P, S, RE, RS, X, M
@@ -227,24 +227,43 @@ void Board::execute_move_opp(Cart tup, string type){
 	}
 }
 
-void Board::execute_move(Hex tup_hex, string type){
+void Board::execute_move_opp(Hex tup_hex, string type){
 	Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
 	execute_move_opp(tup, type);
 }
 
-void Board::execute_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec){
+void Board::execute_move_my(Hex tup_hex, string type){
+	Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
+	execute_move_my(tup, type);
+}
+
+void Board::execute_move_sequence_my(vector<Hex> tup_hexvec, vector<string> type_vec){
 	for (int i=0; i<tup_hexvec.size(); i++){
-		execute_move(tup_hexvec[i],type_vec[i]);
+		execute_move_my(tup_hexvec[i],type_vec[i]);
 	}
 }
 
-void Board::execute_move_sequence(vector<Cart> tup_cart, vector<string> type_vec){
+void Board::execute_move_sequence_my(vector<Cart> tup_cart, vector<string> type_vec){
 	for (int i=0; i<tup_cart.size(); i++){
-		execute_move(tup_cart[i],type_vec[i]);
+		execute_move_my(tup_cart[i],type_vec[i]);
 	}
 }
 
-void Board::undo_move(Cart tup, string type){
+void Board::execute_move_sequence_opp(vector<Hex> tup_hexvec, vector<string> type_vec){
+	for (int i=0; i<tup_hexvec.size(); i++){
+		execute_move_opp(tup_hexvec[i],type_vec[i]);
+	}
+}
+
+void Board::execute_move_sequence_opp(vector<Cart> tup_cart, vector<string> type_vec){
+	for (int i=0; i<tup_cart.size(); i++){
+		execute_move_opp(tup_cart[i],type_vec[i]);
+	}
+}
+
+
+
+void Board::undo_move_my(Cart tup, string type){
 	//player = 0 means self
 	//Assumes move is valid before being called
 	//Types -- P, S, RE, RS, X, M
@@ -323,19 +342,35 @@ void Board::undo_move_opp(Cart tup, string type){
 		// last_selected = temp(); 
 	}
 }
-void Board::undo_move(Hex tup_hex, string type){
+void Board::undo_move_my(Hex tup_hex, string type){
+	Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
+	undo_move_my(tup, type);
+}
+
+void Board::undo_move_opp(Hex tup_hex, string type){
 	Cart tup = convertToCart(tup_hex.ring, tup_hex.pos );
 	undo_move_opp(tup, type);
 }
 
-void Board::undo_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec){
+void Board::undo_move_sequence_my(vector<Hex> tup_hexvec, vector<string> type_vec){
 	for (int i= tup_hexvec.size() - 1; i>=0; i--){
-		undo_move(tup_hexvec[i],type_vec[i]);
+		undo_move_my(tup_hexvec[i],type_vec[i]);
 	}
 }
-void Board::undo_move_sequence(vector<Cart> tup_cart, vector<string> type_vec){
+void Board::undo_move_sequence_my(vector<Cart> tup_cart, vector<string> type_vec){
 	for (int i= tup_cart.size() - 1; i>=0; i--){
-		undo_move(tup_cart[i],type_vec[i]);
+		undo_move_my(tup_cart[i],type_vec[i]);
+	}
+}
+
+void Board::undo_move_sequence_opp(vector<Hex> tup_hexvec, vector<string> type_vec){
+	for (int i= tup_hexvec.size() - 1; i>=0; i--){
+		undo_move_opp(tup_hexvec[i],type_vec[i]);
+	}
+}
+void Board::undo_move_sequence_opp(vector<Cart> tup_cart, vector<string> type_vec){
+	for (int i= tup_cart.size() - 1; i>=0; i--){
+		undo_move_opp(tup_cart[i],type_vec[i]);
 	}
 }
 
@@ -433,4 +468,17 @@ void Board::printConfig(){
 		}
 		cout << " "<<endl;
 	}
+}
+
+void Board::execute_move_sequence(vector<Cart> tup_vec, vector<string> type_vec, bool my_turn){
+	if (my_turn)
+		execute_move_sequence_my(tup_vec,type_vec);
+	else 
+		execute_move_sequence_opp(tup_vec,type_vec);
+}
+void Board::undo_move_sequence(vector<Cart> tup_vec, vector<string> type_vec, bool my_turn){
+	if (my_turn)
+		undo_move_sequence_my(tup_vec,type_vec);
+	else 
+		undo_move_sequence_opp(tup_vec,type_vec);
 }

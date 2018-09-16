@@ -47,8 +47,11 @@ public:
 	Cart last_selected;
 	int ringsMy;
 	int ringsOpp;
-	std::vector<Board> children;
-	string last_move; 
+	string last_move;
+	bool my_state = false;
+	bool opp_state = false;
+	float utility_board;
+
 	
 	Board(){
 		for (int i=0; i< 11; i++){
@@ -71,21 +74,35 @@ public:
 	string reverse(string s);
 	void flip(Cart start, Cart end);
 	void removeMarkers(Cart start, Cart end);
-	void addMarkers(Cart start, Cart end);
-	void execute_move(Cart tup, string type);
+
+
+	void execute_move_my(Cart tup, string type);
 	void execute_move_opp(Cart tup, string type);
-	void execute_move(Hex tup_hex, string type);
+	void execute_move_my(Hex tup_hex, string type);
+	void execute_move_opp(Hex tup_hex, string type);
+	
+	void execute_move_sequence(vector<Cart> tup_vec, vector<string> type_vec, bool my_turn);
+	void execute_move_sequence_my(vector<Hex> tup_hexvec, vector<string> type_vec);
+	void execute_move_sequence_my(vector<Cart> tup_vec, vector<string> type_vec);
+	void execute_move_sequence_opp(vector<Hex> tup_hexvec, vector<string> type_vec);
+	void execute_move_sequence_opp(vector<Cart> tup_vec, vector<string> type_vec);
+
+	void addMarkers(Cart start, Cart end, bool self);
+
+	void undo_move_my(Cart tup, string type);
+	void undo_move_opp(Cart tup, string type);
+	void undo_move_my(Hex tup_hex, string type);
+	void undo_move_opp(Hex tup_hex, string type);
+
+	void undo_move_sequence(vector<Cart> tup_vec, vector<string> type_vec, bool my_turn);
+	void undo_move_sequence_my(vector<Hex> tup_hexvec, vector<string> type_vec);
+	void undo_move_sequence_my(vector<Cart> tup_vec, vector<string> type_vec);
+	void undo_move_sequence_opp(vector<Hex> tup_hexvec, vector<string> type_vec);
+	void undo_move_sequence_opp(vector<Cart> tup_vec, vector<string> type_vec);
+
 	Hex convertToHex(int x, int y);
 	Cart convertToCart(int r, int p);
 	void printConfig();
-	void execute_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
-	void execute_move_sequence(vector<Cart> tup_vec, vector<string> type_vec);
-	void addMarkers(Cart start, Cart end, bool self);
-	void undo_move(Cart tup, string type);
-	void undo_move_opp(Cart tup, string type);
-	void undo_move(Hex tup_hex, string type);
-	void undo_move_sequence(vector<Hex> tup_hexvec, vector<string> type_vec);
-	void undo_move_sequence(vector<Cart> tup_hexvec, vector<string> type_vec);
 
 };
 

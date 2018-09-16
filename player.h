@@ -12,7 +12,7 @@ public:
 	float time_left; 
 	int board_size ;
 	Board board;
-	int my_state ;
+	
 
 	Player(int player_id, int board_size, float time_limit){
 		board_size = board_size;
@@ -24,13 +24,13 @@ public:
 		cout << "Board Initialised" <<endl;
 		// board 		= temp_board;
 	}
-	void play_move_seq();
+	// void play_move_seq();
 	void play();
-	bool placeRing(Cart tup);
-	bool selectRing(Cart tup);
-	bool moveRing(Cart tup);
-	bool removeRowStart(Cart tup);
-	bool removeRowEnd(Cart tup);
-	bool removeRing(Cart tup);
-	bool IsValid(Cart tup, string type);
+	// bool placeRing(Cart tup);
+	// bool selectRing(Cart tup);
+	// bool moveRing(Cart tup);
+	// bool removeRowStart(Cart tup);
+	// bool removeRowEnd(Cart tup);
+	// bool removeRing(Cart tup);
+	// bool IsValid(Cart tup, string type);
 };

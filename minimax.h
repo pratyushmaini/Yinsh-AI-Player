@@ -56,5 +56,5 @@ public:
 MoveVal DecisionMaker(Board board, int ply, int state);
 MoveVal MaxVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
 MoveVal MinVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
-float find_utility();
-Children children(Board board, int my_state);
+float find_utility(Board board, MoveVal prev_move);
+Children children(Board board, int my_state, bool my_turn);
