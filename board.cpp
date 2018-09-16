@@ -482,3 +482,4 @@ void Board::undo_move_sequence(vector<Cart> tup_vec, vector<string> type_vec, bo
 	else 
 		undo_move_sequence_opp(tup_vec,type_vec);
 }
+

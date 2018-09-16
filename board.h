@@ -5,6 +5,7 @@
 using namespace std;
 #include <bits/stdc++.h> 
 
+
 class Hex{
 	public:
 	int ring;
@@ -35,6 +36,38 @@ class Cart{
     }
 };
 
+class MoveVal{
+public:
+  vector<string> movetype;
+  vector<Cart> cart_xy;
+  float utility;
+
+  MoveVal(){
+
+  }
+  MoveVal(vector<string> m, vector<Cart> c, float u){
+      movetype = m;
+      cart_xy = c;
+      utility = u;
+  }
+  MoveVal(float u){
+      utility = u;
+  }
+};
+
+class Children{
+  public:
+  vector<MoveVal> neighbours;
+  int next_state;
+
+  Children(vector<MoveVal> v, int state){
+    neighbours = v;
+    next_state = state;
+  }
+  Children(){
+
+  }
+};
 class Board{
 	//position to what is contained in it -- pos = tuple of x, y where min y starts at bottom most node
 	//"E" / "R"/ "RO" /"M"/"MO"/"I
@@ -51,6 +84,7 @@ public:
 	bool my_state = false;
 	bool opp_state = false;
 	float utility_board;
+	Children children;
 
 	
 	Board(){
@@ -104,5 +138,14 @@ public:
 	Cart convertToCart(int r, int p);
 	void printConfig();
 
+
+	void find_children(int playerstate, bool my_turn);
+	vector<MoveVal> placeRing(bool my_turn);
+	vector<MoveVal> moveRing( bool my_turn);
+	vector<MoveVal> find_neighbours(Cart c, int dir, bool my_turn);
+	float find_utility(vector<Cart> ct, vector<string> m, float prev_utility);
+
 };
+
+
 
