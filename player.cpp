@@ -76,7 +76,7 @@ void Player::play(){
             if (board.opp_state == 1 && board.RingPosOpp.size() == 5){
             	board.opp_state = 2;
             }
-            MoveVal next_move = DecisionMaker(board, 4, board.my_state);//****************************
+            MoveVal next_move = DecisionMaker(board, 1, board.my_state);//****************************
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
             
             cin>>s>>r>>p;

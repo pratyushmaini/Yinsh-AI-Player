@@ -22,6 +22,6 @@ public:
 };
 
 MoveVal DecisionMaker(Board board, int ply, int state);
-MoveVal MaxVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
-MoveVal MinVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
+MoveVal* MaxVal(Board board, float alpha, float beta, int ply, int state, MoveVal* prev_move);
+MoveVal* MinVal(Board board, float alpha, float beta, int ply, int state, MoveVal* prev_move);
 

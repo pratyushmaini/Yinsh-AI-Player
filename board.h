@@ -145,6 +145,12 @@ public:
 	vector<MoveVal> find_neighbours(Cart c, int dir, bool my_turn);
 	float find_utility(vector<Cart> ct, vector<string> m, float prev_utility);
 
+
+	float utility_check_row_vertical( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row_horizontal( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row_diagonal( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row_all_points( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+    float utility_check_row(vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
 };
 
 

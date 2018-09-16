@@ -3,11 +3,218 @@
 using namespace std;
 #include<bits/stdc++.h> 
 
+float Board::utility_check_row_vertical( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
+{
+    int x1=init_pos_x;int y1=init_pos_y;
+    int x2=final_pos_x;int y2=final_pos_y;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    float utility;
+    for(int i=0;i<=10;i++)
+    {
+        if(map[i][x1]=="M") 
+        {
+            v++;
+        }
+        else
+        {
+            if(v==1)
+            utility+=1;
+            else
+            utility+=v*2;    
+            v=0;
+        }
+    }
+    return utility;
+}
+float Board::utility_check_row_horizontal( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
+{
+    int x1=init_pos_x;int y1=init_pos_y;
+    int x2=final_pos_x;int y2=final_pos_y;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    float utility;
+    for(int i=0;i<=10;i++)
+    {
+        if(map[y1][i]=="M") 
+        {
+            h++;
+        }
+        else
+        {
+            if(h==1)
+            utility+=1;
+            else
+            utility+=h*2;    
+            h=0;
+        }
+    }
+    return utility;
+}
+float Board::utility_check_row_diagonal( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
+{
+    int x1=init_pos_x;int y1=init_pos_y;
+    int x2=final_pos_x;int y2=final_pos_y;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    float utility;
+    for(int i=0;i<10-std::abs(x1-y1);i++)
+        {
+            if(x1>=y1)
+            {
+                if(map[i][x1-y1+i]=="M") 
+                {
+                    h++;
+                }
+                else
+                {
+                    if(h==1)
+                    utility+=1;
+                    else
+                    utility+=h*2;    
+                    h=0;
+                }
+            }
+            else
+            {
+                if(map[y1-x1+i][i]=="M") 
+                {
+                    v++;
+                }
+                else
+                {
+                    if(v==1)
+                    utility+=1;
+                    else
+                    utility+=v*2;    
+                    v=0;
+                }
+            }
+        }
+    return utility;
+}
+float Board::utility_check_row_all_points( vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
+{
+    int x1=init_pos_x;int y1=init_pos_y;
+    int x2=final_pos_x;int y2=final_pos_y;
+    float utility;
+    if(x1==x2)
+    {
+        utility+=utility_check_row_horizontal(map,x1,y1,x2,y2);
+        utility+=utility_check_row_diagonal(map,x1,y1,x2,y2);
+    }
+    else if(y1==y2)
+    {
+        utility+=utility_check_row_vertical(map,x1,y1,x2,y2);
+        utility+=utility_check_row_diagonal(map,x1,y1,x2,y2);
+        
+    }
+    else
+    {
+        utility+=utility_check_row_vertical(map,x1,y1,x2,y2);
+        utility+=utility_check_row_horizontal(map,x1,y1,x2,y2);
+    }
+    return utility;    
+}
+float Board::utility_check_row(vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
+{
+    float utility;
+    int x1=init_pos_x;int y1=init_pos_y;
+    int x2=final_pos_x;int y2=final_pos_y;
+    map[x1][y1]="M";
+    map[x2][y2]="R";
+    vector<Tup3> output;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    for(int i=0;i<=10;i++)
+    {
+        if(map[y1][i]=="M") 
+        {
+            h++;
+        }
+        else
+        {
+            if(h==1)
+            utility+=1;
+            else
+            utility+=h*2;    
+            h=0;
+        }
+        if(map[i][x1]=="M") 
+        {
+            v++;       
+        }
+        else
+        {
+            if(v==1)
+            utility+=1;
+            else
+            utility+=v*2;    
+            v=0;
+        }
+    }
+    for(int i=0;i<10-std::abs(x1-y1);i++)
+    {
+        if(x1>=y1)
+        {
+            if(map[i][x1-y1+i]=="M") 
+            {
+                h++;
+            }
+            else
+            {
+                if(h==1)
+                utility+=1;
+                else
+                utility+=h*2;    
+                h=0;
+            }
+        }
+        else
+        {
+            if(map[y1-x1+i][i]=="M") 
+            {
+                v++;
+            }
+            else
+            {
+                if(v==1)
+                utility+=1;
+                else
+                utility+=v*2;    
+                v=0;
+            }
+        }
+    }
+    return utility;
+}
+
+
+
+
 float Board::find_utility(vector<Cart> ct, vector<string> m, float prev_utility){
 	float util;
+    if(m.size()==1)
+    {
+        if(ringsMy<=4)
+        {
+            util=prev_utility+(5-std::abs(ct[0].x-5))+(5-std::abs(ct[0].y-5));
+        }
+        else
+        {
+            util=prev_utility+(std::abs(ct[0].x-5))+(std::abs(ct[0].y-5));    
+        }
+    }
+    else if(m.size()>=2)
+    {
+        util+=utility_check_row(mapping,ct[0].x,ct[0].y,ct[1].x,ct[1].y);
+        util+=utility_check_row_all_points(mapping,ct[0].x,ct[0].y,ct[1].x,ct[1].y);    
+    }
+
+
 
 	return util;
 }
+
+
+
+
 
 Tup3 check_row_vertical(vector<Cart> rings, vector<vector<string>> map, int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
 {
@@ -490,7 +697,7 @@ vector<MoveVal> Board::moveRing(bool my_turn)
 vector<MoveVal> Board::placeRing(bool my_turn){
 //////////////////////////////////////***********************************************
    cout << "Place Ring Called" <<endl;
-   MoveVal move;
+   
    float prev_utility;
    vector<MoveVal> all_possible_moves;
    if(RingPos.size()<=4)
@@ -501,6 +708,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
            {
                if(mapping[y][x]=="E")
                {
+               	   MoveVal move;
                    Cart c;
                    c.x=x;
                    c.y=y;
@@ -520,6 +728,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        {
            if(mapping[y+6][10]=="E")
            {
+           	   MoveVal move;
                Cart c;
                c.x=10;
                c.y=y+6;
@@ -531,7 +740,8 @@ vector<MoveVal> Board::placeRing(bool my_turn){
                all_possible_moves.push_back(move);
            }
            if(mapping[y+1][0]=="E")
-           {
+           {   
+           	MoveVal move;
                Cart c;
                c.x=0;
                c.y=y+1;
