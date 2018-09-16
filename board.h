@@ -81,8 +81,8 @@ public:
 	int ringsMy;
 	int ringsOpp;
 	string last_move;
-	bool my_state = false;
-	bool opp_state = false;
+	int my_state = 1;
+	int opp_state = 1;
 	float utility_board;
 	Children children;
 

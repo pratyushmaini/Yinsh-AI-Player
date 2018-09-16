@@ -70,11 +70,11 @@ void Player::play(){
         	cout <<"Play"<<endl;
             string s,r,p ;
             // getline(cin,s);
-            if (!board.my_state && board.RingPos.size() == 5){
-            	board.my_state = true;
+            if (board.my_state == 1 && board.RingPos.size() == 5){
+            	board.my_state = 2;
             }
-            if (!board.opp_state && board.RingPosOpp.size() == 5){
-            	board.opp_state = true;
+            if (board.opp_state == 1 && board.RingPosOpp.size() == 5){
+            	board.opp_state = 2;
             }
             MoveVal next_move = DecisionMaker(board, 4, board.my_state);//****************************
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
