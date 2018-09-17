@@ -104,7 +104,7 @@ public:
 	int markersMy; //Number of my markers on the board
 	int markersOpp;
 	string last_move;
-	int my_state = 1;
+	int my_state ;
 	int opp_state = 1;
 	Children children;
 	Tup3 prev_Opp_move;
@@ -128,7 +128,8 @@ public:
 		ringsMy = 0;
 		ringsOpp = 0;
 		markersMy = 0;
-		markersOpp = 0;		
+		markersOpp = 0;	
+		my_state = 1;	
 	}
 	string reverse(string s);
 	void flip(Cart start, Cart end);

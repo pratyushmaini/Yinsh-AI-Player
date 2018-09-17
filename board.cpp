@@ -18,12 +18,19 @@ string Board::reverse(string s){
 		markersOpp -- ;
 		return "M";
 	}
-	else{
+	else if (s.compare("I") == 0){
 		cerr << "THROW EXCEPTION3"<<endl;
+	}
+	else if (s.compare("RO") == 0 || s.compare("R") == 0){
+		cerr << "THROW EXCEPTION4" << endl;
+	}
+	else{
+		cerr << "THROW EXCEPTION5 "<< s<< endl;
 	}
 }
 
 void Board::flip(Cart start, Cart end){
+	//Start and End are assumed to be S x y M x2 y2 types
 	int x1 = start.x;
 	int y1 = start.y;
 	int x2 = end.x;
@@ -175,6 +182,7 @@ void Board::execute_move_my(Cart tup, string type){
 	//Board Psoitions "E" / "R" -- ring/ "RO" -- ring opp/"M"-- marker/"MO"/"I
 	int x = tup.x;
 	int y = tup.y;
+	Cart t;
 	if (type == "P"){
 		mapping[y][x] = "R";
 		RingPos.push_back(tup);
@@ -189,7 +197,7 @@ void Board::execute_move_my(Cart tup, string type){
 		flip(last_selected, tup);
 		RingPos.push_back(tup);
 		mapping[y][x] = "R";
-		Cart last_selected();
+		last_selected = t;
 		// last_selected = temp();
 	}
 	else if (type == "X"){
@@ -203,7 +211,7 @@ void Board::execute_move_my(Cart tup, string type){
 	else if (type == "RE"){
 		removeMarkers(last_selected, tup);
 		markersMy -= 5;
-		Cart last_selected();
+		last_selected = t;
 		// last_selected = temp();
 	}
 }
@@ -215,6 +223,7 @@ void Board::execute_move_opp(Cart tup, string type){
 	//Board Psoitions "E" / "R" -- ring/ "RO" -- ring opp/"M"-- marker/"MO"/"I
 	int x = tup.x;
 	int y = tup.y;
+	Cart t;
 	if (type == "P"){
 		mapping[y][x] = "RO";
 		RingPosOpp.push_back(tup);
@@ -229,7 +238,7 @@ void Board::execute_move_opp(Cart tup, string type){
 		flip(last_selected, tup);
 		RingPosOpp.push_back(tup);
 		mapping[y][x] = "RO";
-		Cart last_selected();
+		last_selected = t;
 		// last_selected = temp();
 	}
 	else if (type == "X"){
@@ -242,8 +251,8 @@ void Board::execute_move_opp(Cart tup, string type){
 	}
 	else if (type == "RE"){
 		removeMarkers(last_selected, tup);
-		markersMy -= 5;
-		Cart last_selected();
+		markersOpp -= 5;
+		last_selected = t;
 		// last_selected = temp(); 
 	}
 }
@@ -282,8 +291,6 @@ void Board::execute_move_sequence_opp(vector<Cart> tup_cart, vector<string> type
 	}
 }
 
-
-
 void Board::undo_move_my(Cart tup, string type){
 	//player = 0 means self
 	//Assumes move is valid before being called
@@ -291,6 +298,7 @@ void Board::undo_move_my(Cart tup, string type){
 	//Board Psoitions "E" / "R" -- ring/ "RO" -- ring opp/"M"-- marker/"MO"/"I
 	int x = tup.x;
 	int y = tup.y;
+	Cart t;
 	if (type == "P"){
 		mapping[y][x] = "E";
 		RingPos.pop_back();
@@ -300,7 +308,7 @@ void Board::undo_move_my(Cart tup, string type){
 		mapping[y][x] = "R";
 		markersMy --;
 		RingPos.push_back(tup);
-		Cart last_selected();
+		last_selected = t;
 	}
 	else if (type == "M"){
 		
@@ -317,7 +325,7 @@ void Board::undo_move_my(Cart tup, string type){
 	}
 	else if (type == "RS"){
 		addMarkers(last_selected, tup, true);//false - self
-		Cart last_selected();
+		last_selected = t;
 	}
 	else if (type == "RE"){
 		last_selected = tup;
@@ -334,6 +342,7 @@ void Board::undo_move_opp(Cart tup, string type){
 	//Board Psoitions "E" / "R" -- ring/ "RO" -- ring opp/"M"-- marker/"MO"/"I
 	int x = tup.x;
 	int y = tup.y;
+	Cart t;
 	if (type == "P"){
 		mapping[y][x] = "E";
 		RingPosOpp.pop_back();
@@ -360,7 +369,7 @@ void Board::undo_move_opp(Cart tup, string type){
 	}
 	else if (type == "RS"){
 		addMarkers(last_selected, tup, false);//false - self
-		Cart last_selected();
+		last_selected = t;
 	}
 	else if (type == "RE"){
 		last_selected = tup;
@@ -428,13 +437,11 @@ Hex Board::convertToHex(int x, int y){
 		Hex output = solve_sec(x,y);
 		return output;
 	}
-//else
-		x = -x;
-		y = -y;
-		Hex temp = solve_sec(x,y);
-		Hex output(temp.ring, 3*temp.ring + temp.pos);
-		return output;
-	//15
+	x = -x;
+	y = -y;
+	Hex temp = solve_sec(x,y);
+	Hex output(temp.ring, 3*temp.ring + temp.pos);
+	return output;
 }
 Cart solve(int r, int p){
 	int y = r;
@@ -479,10 +486,11 @@ Cart Board::convertToCart(int r, int p){
 void Board::printConfig(){
 	for (int i = mapping.size() - 1; i >=0; i--){
 		for (int j = 0; j < mapping[i].size() ; j++){
-			// cerr << mapping[i][j]<<", ";
+			cerr << mapping[i][j]<<", ";
 		}
-		// cerr << " "<<endl;
+		cerr << " "<<endl;
 	}
+	cerr << " "<<endl;
 }
 
 void Board::execute_move_sequence(vector<Cart> tup_vec, vector<string> type_vec, bool my_turn){

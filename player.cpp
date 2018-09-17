@@ -5,13 +5,21 @@
 
 void Player::play(){
 	// board.printConfig();
-	int ply = 1;
+	// int ply = 2;
 	if(player == 2) {
+		int countermv = 0;
     	while(true) {
-    		int setply = 2;
+    		if (countermv <= 5) countermv ++;
+    		if (countermv > 5) {
+    			board.my_state = 2;
+    		}
+    		else {
+    			board.my_state = 1;
+    		}
+    		// board.printConfig();
+    		int ply = 2;
             string a, s,r,p ; 
             getline(cin, a);
-            // cerr << a << endl;
 			vector<string> results;
 			boost::split(results, a, [](char c){return c == ' ';});
             
@@ -47,14 +55,6 @@ void Player::play(){
 			prefix = board.CheckRowsMadeByOpp(opp_c_in, opp_c_fin, true);
 			}
 
-            // board.printConfig();
-
-            // int ply = 1;
-            if (board.my_state == 1 && board.RingPos.size() == 5){
-            	board.my_state = 2;
-            	ply = setply;
-            }
-
             MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
             
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
@@ -74,20 +74,25 @@ void Player::play(){
             }
             cout << endl;	
 
-            // board.printConfig();
+            board.printConfig();
   
         }
     }   
     else if(player == 1) {
     	Tup3 prefix,t;
         Cart opp_c_in, opp_c_fin;
+        int countermv = 0;
         while(true) {
-        	int setply = 3;
+        	if (countermv <= 5) countermv ++;
+    		if (countermv > 5) {
+    			board.my_state = 2;
+    		}
+    		else {
+    			board.my_state = 1;
+    		}
+        	board.printConfig();
+        	int ply = 4;
             string a, s,r,p ;
-            if (board.my_state == 1 && board.RingPos.size() == 5){
-            	board.my_state = 2;
-            	ply = setply;
-            }
 
             MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);

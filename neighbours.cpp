@@ -980,61 +980,89 @@ vector<MoveVal> Board::moveRing(bool my_turn)
 
 
 vector<MoveVal> Board::placeRing(bool my_turn){
-   // cerr << "Place Ring Called" <<endl;
-  /**/ 
-   vector<MoveVal> all_possible_moves;
-   // cerr << " RINGS POS SIZE **************************** " << RingPos.size() << endl;
-   int rings_temp = RingPos.size();
-   if(rings_temp==0 || rings_temp==1 || rings_temp==3|| rings_temp==4)
-   {
-       for(int x=4;x<=6;x++)
+  // cerr << "Place Ring Called" <<endl;
+ /**/
+  vector<MoveVal> all_possible_moves;
+  // cerr << " RINGS POS SIZE **************************** " << RingPos.size() << endl;
+  int rings_temp = RingPos.size();
+  if(rings_temp==0)
+  {
+       MoveVal move;
+       if(mapping[5][5]=="E")
        {
-           for(int y=4;y<=6;y++)
-           {   
-               MoveVal move;
-               if(mapping[y][x]=="E")
-               {
-                   Cart c;
-                   c.x=x;
-                   c.y=y;
-                   move.movetype.push_back("P");
-                   move.cart_xy.push_back(c);
-                   execute_move_sequence(move.cart_xy, move.movetype, my_turn);
-                   all_possible_moves.push_back(move);
-               }
-           }
+           Cart c;
+           c.x=5;
+           c.y=5;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
        }
-   }
-   else
-   {
-       for(int y=0;y<=3;y++)
+       else
        {
+           Cart c;
+           c.x=5;
+           c.y=6;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+       }
+  }
 
-           if(mapping[y+6][10]=="E")
-           {
-               MoveVal move; 
-               Cart c;
-               c.x=10;
-               c.y=y+6;
-               move.movetype.push_back("P");
-               move.cart_xy.push_back(c);
-               execute_move_sequence(move.cart_xy, move.movetype, my_turn);
-               all_possible_moves.push_back(move);
-           }
-           if(mapping[y+1][0]=="E")
-           {   
-               MoveVal move; 
-               Cart c;
-               c.x=0;
-               c.y=y+1;
-               move.movetype.push_back("P");
-               move.cart_xy.push_back(c);
-               execute_move_sequence(move.cart_xy, move.movetype, my_turn);
-               all_possible_moves.push_back(move);
-           }
-       }
-   }
-   return all_possible_moves;
+  else if( rings_temp==1 || rings_temp==2 || rings_temp==3)
+  {
+       int x= 5-RingPos.size();
+          for(int y=3;y<=8;y++)
+          {
+              MoveVal move;
+              if(mapping[y][x]=="E")
+              {
+                  Cart c;
+                  c.x=x;
+                  c.y=y;
+                  move.movetype.push_back("P");
+                  move.cart_xy.push_back(c);
+                  // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+                  all_possible_moves.push_back(move);
+                  break;
+              }
+          }
+
+  }
+
+  else
+  {
+      for(int y=0;y<=3;y++)
+      {
+
+          if(mapping[y+6][10]=="E")
+          {
+              MoveVal move;
+              Cart c;
+              c.x=10;
+              c.y=y+6;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              break;
+          }
+          if(mapping[y+1][0]=="E")
+          {
+              MoveVal move;
+              Cart c;
+              c.x=0;
+              c.y=y+1;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              break;
+          }
+      }
+  }
+  return all_possible_moves;
 }
 
      //------------------------------------Checkin rows made by opponent----------------------------------------------------            
@@ -1069,23 +1097,30 @@ Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
 
 void Board::find_children(int playerstate, bool my_turn)
 {
-    if(playerstate==1)
-    {
-        vector<MoveVal> move=placeRing(my_turn);
-        // if(RingPos.size()==5) playerstate=2;//------------------------------------------check syntax------------------------------
-        children.neighbours = move;
-        children.next_state = 1;
+    // if(playerstate==1)
+    // {
+    //     vector<MoveVal> move=placeRing(my_turn);
+    //     // if(RingPos.size()==5) playerstate=2;//------------------------------------------check syntax------------------------------
+    //     children.neighbours = move;
+    //     children.next_state = 1;
+    //     if (RingPosOpp.size() == 5 && my_turn){
+    //         children.next_state = 2;
+    //     }
+    //     if (RingPos.size() == 5 && !my_turn){
+    //         children.next_state = 2;
+    //     }
 
-    }
-    if(playerstate==2)
-    {   
+
+    // }
+    // if(playerstate==2)
+    // {   
         // cerr << "MOVE RING CALLED" << endl;
-        vector<MoveVal> p=moveRing(my_turn);
+        vector<MoveVal> p = moveRing(my_turn);
         // cerr << "Vector of Move Val Returned" << endl;
         children.neighbours = p;
         children.next_state = 2;
 
-    }
+    // }
     // if(playerstate==3)
     // {
     // }
