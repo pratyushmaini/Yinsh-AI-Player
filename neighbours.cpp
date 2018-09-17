@@ -543,11 +543,13 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
     //------------------------------------Checkin rows made by opponent----------------------------------------------------
 
     cerr << "BEGINNING WHILE" << endl;
+    cerr << mapping[y][x] << " t " << t << endl;
 
     MoveVal mvl;
     while(!(mapping[y][x]=="R" || mapping[y][x]=="RO" ||mapping[y][x]=="I"))
     {
-        cerr << "NEW "<< mapping[y][x] << " t " << t << endl;
+        cerr << "NEW ";
+        cerr << mapping[y][x] << " t " << t << endl;
          
         if(mapping[y][x]=="E" && t==0)
         {
