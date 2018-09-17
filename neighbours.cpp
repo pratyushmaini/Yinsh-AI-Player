@@ -547,7 +547,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
     MoveVal mvl;
     while(!(mapping[y][x]=="R" || mapping[y][x]=="RO" ||mapping[y][x]=="I"))
     {
-        cerr << "NEW " << endl;
+        cerr << "NEW "<< mapping[y][x] << " t " << t << endl;
          
         if(mapping[y][x]=="E" && t==0)
         {
@@ -562,7 +562,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
             m.push_back("M");
             ct.push_back(c);
             ct.push_back(r);
-            prev_utility = 0;/////*****************************************************************************************
+            prev_utility = utility_board;/////*****************************************************************************************
 
             execute_move_sequence(ct,m,my_turn);
             cerr << "Initial Move Executed" << endl;
@@ -586,7 +586,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
                     mvl.cart_xy = ct;
 
              		execute_move_sequence(t_vec[j].carts, t_vec[j].moves, my_turn);
-                    mvl.utility=find_utility(ct, m, prev_utility);//------------------------------------Make this-----------------------------------------
+                    mvl.utility= find_utility(ct, m, prev_utility);//------------------------------------Make this-----------------------------------------
                     cerr << "UTILITYYY" << endl;
                     ch.neighbours.push_back(mvl);
                     cerr << "BEFORE POPPING" << endl;
@@ -675,7 +675,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
             m.push_back("M");
             ct.push_back(c);
             ct.push_back(r);
-            prev_utility = 0;
+            prev_utility = utility_board;
 
             execute_move_sequence(ct,m, my_turn);
             Tup3 non_intersecting_rows = check_row_all_points(c.x,c.y,x,y);
@@ -746,7 +746,9 @@ vector<MoveVal> Board::placeRing(bool my_turn){
   /**/ 
    float prev_utility;
    vector<MoveVal> all_possible_moves;
-   if(RingPos.size()<=4)
+   cerr << " RINGS POS SIZE **************************** " << RingPos.size() << endl;
+   int rings_temp = RingPos.size();
+   if(rings_temp==0 || rings_temp==1 || rings_temp==3|| rings_temp==4)
    {
        for(int x=4;x<=6;x++)
        {
@@ -811,9 +813,9 @@ void Board::find_children(int playerstate, bool my_turn)
     if(playerstate==1)
     {
         vector<MoveVal> move=placeRing(my_turn);
-        if(RingPos.size()==5) playerstate=2;//------------------------------------------check syntax------------------------------
+        // if(RingPos.size()==5) playerstate=2;//------------------------------------------check syntax------------------------------
         children.neighbours = move;
-        children.next_state = playerstate;
+        children.next_state = 1;
 
     }
     if(playerstate==2)
@@ -830,3 +832,4 @@ void Board::find_children(int playerstate, bool my_turn)
     // }
 }
 
+    

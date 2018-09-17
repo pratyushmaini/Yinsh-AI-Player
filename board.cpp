@@ -172,11 +172,13 @@ void Board::execute_move_my(Cart tup, string type){
 	else if (type == "M"){
 		flip(last_selected, tup);
 		RingPos.push_back(tup);
+		mapping[y][x] = "R";
 		Cart last_selected();
 		// last_selected = temp();
 	}
 	else if (type == "X"){
 		ringsMy --;
+		mapping[y][x] = "E";
 		RingPos.erase(std::remove(RingPos.begin(), RingPos.end(), tup), RingPos.end());
 	}
 	else if (type == "RS"){
@@ -208,11 +210,13 @@ void Board::execute_move_opp(Cart tup, string type){
 	else if (type == "M"){
 		flip(last_selected, tup);
 		RingPosOpp.push_back(tup);
+		mapping[y][x] = "RO";
 		Cart last_selected();
 		// last_selected = temp();
 	}
 	else if (type == "X"){
 		ringsOpp --;
+		mapping[y][x] = "E";
 		RingPosOpp.erase(std::remove(RingPosOpp.begin(), RingPosOpp.end(), tup), RingPosOpp.end());
 	}
 	else if (type == "RS"){
@@ -288,6 +292,7 @@ void Board::undo_move_my(Cart tup, string type){
 	}
 	else if (type == "X"){
 		ringsMy ++;
+		mapping[y][x] = "R";
 		RingPos.push_back(tup);
 	}
 	else if (type == "RS"){
@@ -329,6 +334,7 @@ void Board::undo_move_opp(Cart tup, string type){
 	}
 	else if (type == "X"){
 		ringsOpp ++;
+		mapping[y][x] = "RO";
 		RingPosOpp.push_back(tup);
 	}
 	else if (type == "RS"){

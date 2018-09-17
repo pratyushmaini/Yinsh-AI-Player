@@ -4,6 +4,7 @@
 #include <vector>
 using namespace std;
 #include <bits/stdc++.h> 
+#include <boost/algorithm/string.hpp>
 
 
 
@@ -105,6 +106,7 @@ public:
 	int opp_state = 1;
 	float utility_board;
 	Children children;
+	Tup3 prev_Opp_move;
 
 	
 	Board(){

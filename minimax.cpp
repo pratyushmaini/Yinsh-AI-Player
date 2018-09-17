@@ -28,7 +28,8 @@ MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, Move
     MoveVal my_child;
     for (int i = 0; i < board.children.neighbours.size(); i++){
         board.execute_move_sequence_my(board.children.neighbours[i].cart_xy, board.children.neighbours[i].movetype ); 
-        cerr << "Looping MaxVal ngb" << board.children.neighbours[i].movetype[0] << " " << board.children.neighbours[i].cart_xy[0].x << " " << board.children.neighbours[i].cart_xy[0].y    ;
+        cerr << "Looping MaxVal ngb" ;
+        cerr << board.children.neighbours[i].movetype[0] << " " << board.children.neighbours[i].cart_xy[0].x << " " << board.children.neighbours[i].cart_xy[0].y    ;
         // MoveVal* prev_ptr = &board.children.neighbours[i];
         my_child = MinVal(board,alpha,beta, ply - 1, board.children.next_state, board.children.neighbours[i]);//How to find new state??????????????????
         alpha = std::max(alpha,my_child.utility);
