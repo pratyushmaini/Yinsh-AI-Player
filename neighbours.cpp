@@ -1,186 +1,5 @@
 #include "board.h"    
 
-
-float Board::utility_check_row_vertical(  int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
-{
-    int x1=init_pos_x;int y1=init_pos_y;
-    int x2=final_pos_x;int y2=final_pos_y;
-    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
-    float utility;
-    for(int i=0;i<=10;i++)
-    {
-        if(mapping[i][x1]=="M") 
-        {
-            v++;
-        }
-        else
-        {
-            if(v==1)
-            utility+=1;
-            else
-            utility+=v*2;    
-            v=0;
-        }
-    }
-    return utility;
-}
-float Board::utility_check_row_horizontal(  int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
-{
-    int x1=init_pos_x;int y1=init_pos_y;
-    int x2=final_pos_x;int y2=final_pos_y;
-    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
-    float utility;
-    for(int i=0;i<=10;i++)
-    {
-        if(mapping[y1][i]=="M") 
-        {
-            h++;
-        }
-        else
-        {
-            if(h==1)
-            utility+=1;
-            else
-            utility+=h*2;    
-            h=0;
-        }
-    }
-    return utility;
-}
-float Board::utility_check_row_diagonal(  int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
-{
-    int x1=init_pos_x;int y1=init_pos_y;
-    int x2=final_pos_x;int y2=final_pos_y;
-    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
-    float utility;
-    for(int i=0;i<10-std::abs(x1-y1);i++)
-        {
-            if(x1>=y1)
-            {
-                if(mapping[i][x1-y1+i]=="M") 
-                {
-                    h++;
-                }
-                else
-                {
-                    if(h==1)
-                    utility+=1;
-                    else
-                    utility+=h*2;    
-                    h=0;
-                }
-            }
-            else
-            {
-                if(mapping[y1-x1+i][i]=="M") 
-                {
-                    v++;
-                }
-                else
-                {
-                    if(v==1)
-                    utility+=1;
-                    else
-                    utility+=v*2;    
-                    v=0;
-                }
-            }
-        }
-    return utility;
-}
-float Board::utility_check_row_all_points(  int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
-{
-    int x1=init_pos_x;int y1=init_pos_y;
-    int x2=final_pos_x;int y2=final_pos_y;
-    float utility;
-    if(x1==x2)
-    {
-        utility+=utility_check_row_horizontal(x1,y1,x2,y2);
-        utility+=utility_check_row_diagonal(x1,y1,x2,y2);
-    }
-    else if(y1==y2)
-    {
-        utility+=utility_check_row_vertical(x1,y1,x2,y2);
-        utility+=utility_check_row_diagonal(x1,y1,x2,y2);
-        
-    }
-    else
-    {
-        utility+=utility_check_row_vertical(x1,y1,x2,y2);
-        utility+=utility_check_row_horizontal(x1,y1,x2,y2);
-    }
-    return utility;    
-}
-float Board::utility_check_row( int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
-{
-    float utility;
-    int x1=init_pos_x;int y1=init_pos_y;
-    int x2=final_pos_x;int y2=final_pos_y;
-    vector<Tup3> output;
-    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
-    for(int i=0;i<=10;i++)
-    {
-        if(mapping[y1][i]=="M") 
-        {
-            h++;
-        }
-        else
-        {
-            if(h==1)
-            utility+=1;
-            else
-            utility+=h*2;    
-            h=0;
-        }
-        if(mapping[i][x1]=="M") 
-        {
-            v++;       
-        }
-        else
-        {
-            if(v==1)
-            utility+=1;
-            else
-            utility+=v*2;    
-            v=0;
-        }
-    }
-    for(int i=0;i<10-std::abs(x1-y1);i++)
-    {
-        if(x1>=y1)
-        {
-            if(mapping[i][x1-y1+i]=="M") 
-            {
-                h++;
-            }
-            else
-            {
-                if(h==1)
-                utility+=1;
-                else
-                utility+=h*2;    
-                h=0;
-            }
-        }
-        else
-        {
-            if(mapping[y1-x1+i][i]=="M") 
-            {
-                v++;
-            }
-            else
-            {
-                if(v==1)
-                utility+=1;
-                else
-                utility+=v*2;    
-                v=0;
-            }
-        }
-    }
-    return utility;
-}
-
 float Board::find_utility(){
     float utils= 0;
     utils += std::pow(10,ringsMy);
@@ -351,118 +170,6 @@ vector<Tup3> Board::check_row_all_points_each( int init_pos_x,int init_pos_y,int
     }
     return non_intersecting_rows;    
 }
-vector<Tup3> Board::check_row( int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y )
-{
-    int x1=init_pos_x;int y1=init_pos_y;
-    int x2=final_pos_x;int y2=final_pos_y;
-    vector<Tup3> output;
-    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
-    for(int i=0;i<=10;i++)
-    {
-        if(mapping[y1][i]=="M") 
-            {
-                h++;hip=1;
-                if(h==5)
-                {
-                    Cart c1;c1.x=x1;c1.y=i;Cart c2;c2.x=x1;c2.y=i-5;
-                    // for (auto i = rings.begin(); i != rings.end(); ++i)
-                    for (int i=0; i<RingPos.size(); i++)
-                    {
-                        Tup3 t;
-                        t.moves.push_back("RS");
-                        t.moves.push_back("RE");
-                        t.carts.push_back(c1);
-                        t.carts.push_back(c2);
-                        //map=removeRow(c1,c2);//------------------------------Make this--------------------------------------
-                        //Cart c=removeRing(map);//--------------------------------Make This--------------------------------------
-                        t.moves.push_back("X");
-                        t.carts.push_back(RingPos[i]);
-                        output.push_back(t);
-                    }
-                }
-            }
-        else{h=0;hip=0;}
-        if(mapping[i][x1]=="M") 
-            {
-                v++;vip=1;
-                if(v==5)
-                {
-                    Cart c1;c1.x=x1;c1.y=i;Cart c2;c2.x=x1;c2.y=i-5;
-                    // for (auto i = rings.begin(); i != rings.end(); ++i)
-                    for (int i=0; i<RingPos.size(); i++)
-                    {
-                        Tup3 t;
-                        t.moves.push_back("RS");
-                        t.moves.push_back("RE");
-                        t.carts.push_back(c1);
-                        t.carts.push_back(c2);
-                        //map=removeRow(c1,c2);//------------------------------Make this--------------------------------------
-                        //Cart c=removeRing(map);//--------------------------------Make This--------------------------------------
-                        t.moves.push_back("X");
-                        t.carts.push_back(RingPos[i]);
-                        output.push_back(t);
-                    }
-                }
-            }
-        else{v=0;vip=0;}
-    }
-    for(int i=0;i<10-std::abs(x1-y1);i++)
-    {
-        if(x1>=y1)
-        {
-            if(mapping[i][x1-y1+i]=="M") 
-            {
-                h++;hip=1;
-                if(h==5)
-                {
-                    Cart c1;c1.x=x1-y1+i;c1.y=i;Cart c2;c2.x=x1-y1+i-5;c2.y=i-5;
-                    // for (auto i = rings.begin(); i != rings.end(); ++i)
-                    for (int i=0; i<RingPos.size(); i++)
-                    {
-                        Tup3 t;
-                        t.moves.push_back("RS");
-                        t.moves.push_back("RE");
-                        t.carts.push_back(c1);
-                        t.carts.push_back(c2);
-                        //map=removeRow(c1,c2);//------------------------------Make this--------------------------------------
-                        //Cart c=removeRing(map);//--------------------------------Make This--------------------------------------
-                        t.moves.push_back("X");
-                        t.carts.push_back(RingPos[i]);
-                        output.push_back(t);
-                    }
-                }
-            }
-            else{h=0;hip=0;}
-        }
-        else
-        {
-            if(mapping[y1-x1+i][i]=="M") 
-            {
-                h++;hip=1;
-                if(h==5)
-                {
-                    Cart c1;c1.x=i;c1.y=y1-x1+i;Cart c2;c2.x=i-5;c2.y=y1-x1+i-5;
-                    // for (auto i = rings.begin(); i != rings.end(); ++i)
-                    for (int i=0; i<RingPos.size(); i++)
-                    {
-                        Tup3 t;
-                        t.moves.push_back("RS");
-                        t.moves.push_back("RE");
-                        t.carts.push_back(c1);
-                        t.carts.push_back(c2);
-                        //map=removeRow(c1,c2);//------------------------------Make this--------------------------------------
-                        //Cart c=removeRing(map);//--------------------------------Make This--------------------------------------
-                        t.moves.push_back("X");
-                        t.carts.push_back(RingPos[i]);
-                        output.push_back(t);
-                    }
-                }
-            }
-            else{h=0;hip=0;}
-        }
-    }
-    return output;
-}
 
 int Board::check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y, int ring_x, int ring_y, bool my_turn)
 {
@@ -561,8 +268,7 @@ vector<Tup3> Board::check_row_all_points( int init_pos_x,int init_pos_y,int fina
     return non_intersecting_rows;    
 }
 
-
-vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn)//c--> position of ring to be moved
+vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> position of ring to be moved
 {   
     int x,y;
     if(dir==1)
@@ -748,6 +454,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
                     mvl.cart_xy = ct;
                     ch.neighbours.push_back(mvl);
                 }
+
                 undo_move_sequence(ct_temp,m_temp, my_turn);
 
                 
@@ -946,7 +653,8 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
                     mvl.cart_xy = ct;
                     ch.neighbours.push_back(mvl);
                 }
-                undo_move_sequence(ct_temp,m_temp, my_turn);
+
+            undo_move_sequence(ct_temp,m_temp, my_turn);
             break;  
         }
         // cerr << x << ", " << y << endl;
@@ -970,8 +678,15 @@ vector<MoveVal> Board::moveRing(bool my_turn)
             // cerr << "Next Dir" << i << ", " << j << endl;
             // printConfig();
             // cerr <<"RingPos" << RingPos[i].x << ", " << RingPos[i].y << endl;
-            vector<MoveVal> p1= find_neighbours(RingPos[i],j, my_turn);
-            padosi.insert(padosi.end(),p1.begin(),p1.end());
+            if (my_turn){
+                vector<MoveVal> p1= find_neighbours(RingPos[i],j, my_turn);
+                padosi.insert(padosi.end(),p1.begin(),p1.end());
+            }
+                
+            else{
+                vector<MoveVal> p1= find_neighbours(RingPosOpp[i],j, my_turn);
+                padosi.insert(padosi.end(),p1.begin(),p1.end());
+            }
 
         }
     }
@@ -1095,30 +810,14 @@ Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
     return t;
 }
 
-void Board::find_children(int playerstate, bool my_turn)
+Children Board::find_children(int playerstate, bool my_turn)
 {
-    // if(playerstate==1)
-    // {
-    //     vector<MoveVal> move=placeRing(my_turn);
-    //     // if(RingPos.size()==5) playerstate=2;//------------------------------------------check syntax------------------------------
-    //     children.neighbours = move;
-    //     children.next_state = 1;
-    //     if (RingPosOpp.size() == 5 && my_turn){
-    //         children.next_state = 2;
-    //     }
-    //     if (RingPos.size() == 5 && !my_turn){
-    //         children.next_state = 2;
-    //     }
-
-
-    // }
-    // if(playerstate==2)
-    // {   
-        // cerr << "MOVE RING CALLED" << endl;
-        vector<MoveVal> p = moveRing(my_turn);
-        // cerr << "Vector of Move Val Returned" << endl;
-        children.neighbours = p;
-        children.next_state = 2;
+    Children my_children;
+    vector<MoveVal> p = moveRing(my_turn);
+    // cerr << "Vector of Move Val Returned" << endl;
+    my_children.neighbours = p;
+    my_children.next_state = 2;
+    return my_children;
 
     // }
     // if(playerstate==3)

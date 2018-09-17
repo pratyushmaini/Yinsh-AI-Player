@@ -4,10 +4,9 @@
 
 
 void Player::play(){
-	// board.printConfig();
-	// int ply = 2;
+
 	if(player == 2) {
-		int countermv = 0;
+		int countermv = 0; //Counts if 5 moves done?
     	while(true) {
     		if (countermv <= 5) countermv ++;
     		if (countermv > 5) {
@@ -16,8 +15,7 @@ void Player::play(){
     		else {
     			board.my_state = 1;
     		}
-    		// board.printConfig();
-    		int ply = 2;
+    		int ply = 4;
             string a, s,r,p ; 
             getline(cin, a);
 			vector<string> results;
@@ -65,7 +63,10 @@ void Player::play(){
                 if (checker == 3) break;
             }
             if (board.ringsMy < 3){
-				MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
+                // board.printConfig();
+				MoveVal next_move = board.DecisionMaker( ply, board.my_state);//****************************
+                // cerr << "AFTER DECISION" << endl;
+                // board.printConfig();
             	board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
             	vector<Hex> my_hex_vec;
 	            for (int r = 0; r< next_move.cart_xy.size(); r++){
@@ -73,10 +74,7 @@ void Player::play(){
 	                my_hex_vec.push_back(my_hex);      	
 	                cout << next_move.movetype[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
 	            }
-			}
-
-            
-            
+			} 
             cout << endl;	
 
             // board.printConfig();
@@ -96,7 +94,7 @@ void Player::play(){
     			board.my_state = 1;
     		}
         	// board.printConfig();
-        	int ply = 2;
+        	int ply = 4;
             string a, s,r,p ;
             int checker = 0;
             
@@ -112,7 +110,7 @@ void Player::play(){
             prefix = t;
 
             if (board.ringsMy <3){
-				MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
+				MoveVal next_move = board.DecisionMaker( ply, board.my_state);//****************************
             	board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
             	vector<Hex> my_hex_vec;
 	            for (int r = 0; r< next_move.cart_xy.size(); r++){

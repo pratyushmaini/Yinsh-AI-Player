@@ -106,7 +106,6 @@ public:
 	string last_move;
 	int my_state ;
 	int opp_state = 1;
-	Children children;
 	Tup3 prev_Opp_move;
 
 	
@@ -165,7 +164,7 @@ public:
 	void printConfig();
 
 
-	void find_children(int playerstate, bool my_turn);
+	Children find_children(int playerstate, bool my_turn);
 	vector<MoveVal> placeRing(bool my_turn);
 	vector<MoveVal> moveRing( bool my_turn);
 	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
@@ -188,11 +187,14 @@ public:
     float utility_check_row_diagonal(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
     float utility_check_row_all_points(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
     float utility_check_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
+
+
+    MoveVal DecisionMaker(int ply, int state);
+	MoveVal MaxVal(float alpha, float beta, int ply, int state, MoveVal prev_move);
+	MoveVal MinVal(float alpha, float beta, int ply, int state, MoveVal prev_move);
 };
 
 
 
-MoveVal DecisionMaker(Board board, int ply, int state);
-MoveVal MaxVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
-MoveVal MinVal(Board board, float alpha, float beta, int ply, int state, MoveVal prev_move);
+
 
