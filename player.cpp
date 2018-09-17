@@ -53,8 +53,7 @@ void Player::play(){
             cout << endl;	
 
             // board.printConfig();
-
-            
+  
         }
     }   
     else if(player == 1) {

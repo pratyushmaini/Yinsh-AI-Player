@@ -1,7 +1,5 @@
 #include "board.h"
 
-
-
 //position to what is contained in it -- pos = tuple of x, y where min y starts at bottom most node
 //"E" / "R"/ "RO" /"M"/"MO"/"I
 
@@ -11,9 +9,13 @@ string Board::reverse(string s){
 		return "E";
 	}
 	else if (s.compare("M") == 0){
+		markersMy --;
+		markersOpp ++;
 		return "MO";
 	}
 	else if (s.compare("MO") == 0){
+		markersMy ++;
+		markersOpp -- ;
 		return "M";
 	}
 	else{
@@ -112,6 +114,7 @@ void Board::addMarkers(Cart start, Cart end, bool self){
 	else{
 		marker = "MO";
 	}
+	int counter = 0;
 	int x1 = start.x;
 	int y1 = start.y;
 	int x2 = end.x;
@@ -121,21 +124,25 @@ void Board::addMarkers(Cart start, Cart end, bool self){
 	if (delta_x == 0 && delta_y == 4){
 		for (int i = y2; i<=y1; i++){
 			mapping[i][x1] = marker;
+			counter++;
 		}
 	}
 	else if (delta_x == 0 && delta_y == -4){
 		for (int i = y1; i<=y2; i++){
 			mapping[i][x1] = marker;
+			counter++;
 		}
 	}
 	else if (delta_y == 0 && delta_x == 4){
 		for (int i = x2; i<=x1; i++){
 			mapping[y1][i] = marker;
+			counter++;
 		}
 	}
 	else if (delta_y == 0 && delta_x == -4){
 		for (int i = x1; i<=x2; i++){
 			mapping[y1][i] = marker;
+			counter++;
 		}
 	}
 	else if (delta_y == 4 && delta_x == 4){
@@ -146,11 +153,19 @@ void Board::addMarkers(Cart start, Cart end, bool self){
 	else if (delta_y == -4 && delta_x == -4){
 		for (int i = 0; i<=4; i++){
 			mapping[y1 + i][x1+i] = marker;
+			counter++;
 		}
 	}
 	else{
 		cerr << "THROW EXCEPTION2" << endl;
 	}
+	if (self){
+		markersMy += counter;
+	}
+	else{
+		markersOpp += counter;
+	}
+
 }
 
 void Board::execute_move_my(Cart tup, string type){
@@ -167,6 +182,7 @@ void Board::execute_move_my(Cart tup, string type){
 	else if (type == "S"){
 		last_selected = tup;
 		mapping[y][x] = "M";
+		markersMy ++;
 		RingPos.erase(std::remove(RingPos.begin(), RingPos.end(), tup), RingPos.end());
 	}
 	else if (type == "M"){
@@ -177,7 +193,7 @@ void Board::execute_move_my(Cart tup, string type){
 		// last_selected = temp();
 	}
 	else if (type == "X"){
-		ringsMy --;
+		ringsMy ++;
 		mapping[y][x] = "E";
 		RingPos.erase(std::remove(RingPos.begin(), RingPos.end(), tup), RingPos.end());
 	}
@@ -186,6 +202,7 @@ void Board::execute_move_my(Cart tup, string type){
 	}
 	else if (type == "RE"){
 		removeMarkers(last_selected, tup);
+		markersMy -= 5;
 		Cart last_selected();
 		// last_selected = temp();
 	}
@@ -205,6 +222,7 @@ void Board::execute_move_opp(Cart tup, string type){
 	else if (type == "S"){
 		last_selected = tup;
 		mapping[y][x] = "MO";
+		markersOpp ++;
 		RingPosOpp.erase(std::remove(RingPosOpp.begin(), RingPosOpp.end(), tup), RingPosOpp.end());
 	}
 	else if (type == "M"){
@@ -215,7 +233,7 @@ void Board::execute_move_opp(Cart tup, string type){
 		// last_selected = temp();
 	}
 	else if (type == "X"){
-		ringsOpp --;
+		ringsOpp ++;
 		mapping[y][x] = "E";
 		RingPosOpp.erase(std::remove(RingPosOpp.begin(), RingPosOpp.end(), tup), RingPosOpp.end());
 	}
@@ -224,6 +242,7 @@ void Board::execute_move_opp(Cart tup, string type){
 	}
 	else if (type == "RE"){
 		removeMarkers(last_selected, tup);
+		markersMy -= 5;
 		Cart last_selected();
 		// last_selected = temp(); 
 	}
@@ -279,6 +298,7 @@ void Board::undo_move_my(Cart tup, string type){
 	else if (type == "S"){
 		flip(last_selected, tup);
 		mapping[y][x] = "R";
+		markersMy --;
 		RingPos.push_back(tup);
 		Cart last_selected();
 	}
@@ -291,7 +311,7 @@ void Board::undo_move_my(Cart tup, string type){
 		// last_selected = temp();
 	}
 	else if (type == "X"){
-		ringsMy ++;
+		ringsMy --;
 		mapping[y][x] = "R";
 		RingPos.push_back(tup);
 	}
@@ -321,6 +341,7 @@ void Board::undo_move_opp(Cart tup, string type){
 	else if (type == "S"){
 		flip(last_selected, tup);
 		mapping[y][x] = "RO";
+		markersOpp --;
 		RingPosOpp.push_back(tup);
 		Cart last_selected();
 	}
@@ -333,7 +354,7 @@ void Board::undo_move_opp(Cart tup, string type){
 		// last_selected = temp();
 	}
 	else if (type == "X"){
-		ringsOpp ++;
+		ringsOpp --;
 		mapping[y][x] = "RO";
 		RingPosOpp.push_back(tup);
 	}

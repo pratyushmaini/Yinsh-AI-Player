@@ -99,12 +99,13 @@ public:
 	int min_rows[11]={1,0,0,0,0,1,1,2,3,4,6};
 	int max_rows[11]={4,6,7,8,9,9,10,10,10,10,9};
 	Cart last_selected;
-	int ringsMy;
+	int ringsMy; //Number of rings on the side
 	int ringsOpp;
+	int markersMy; //Number of my markers on the board
+	int markersOpp;
 	string last_move;
 	int my_state = 1;
 	int opp_state = 1;
-	float utility_board;
 	Children children;
 	Tup3 prev_Opp_move;
 
@@ -124,8 +125,10 @@ public:
 			}
 			mapping.push_back(v);
 		}
-		ringsMy = 5;
-		ringsOpp = 5;		
+		ringsMy = 0;
+		ringsOpp = 0;
+		markersMy = 0;
+		markersOpp = 0;		
 	}
 	string reverse(string s);
 	void flip(Cart start, Cart end);
@@ -166,6 +169,7 @@ public:
 	vector<MoveVal> moveRing( bool my_turn);
 	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
 	float find_utility(vector<Cart> ct, vector<string> m, float prev_utility);
+	float find_utility();
 
 
 	Tup3 check_row_vertical(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
