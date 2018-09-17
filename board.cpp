@@ -479,9 +479,9 @@ Cart Board::convertToCart(int r, int p){
 void Board::printConfig(){
 	for (int i = mapping.size() - 1; i >=0; i--){
 		for (int j = 0; j < mapping[i].size() ; j++){
-			cerr << mapping[i][j]<<", ";
+			// cerr << mapping[i][j]<<", ";
 		}
-		cerr << " "<<endl;
+		// cerr << " "<<endl;
 	}
 }
 

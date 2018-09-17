@@ -9,7 +9,8 @@
 MoveVal DecisionMaker(Board board, int ply, int my_state){
     MoveVal temp(INT_MIN);
     MoveVal mv = MaxVal(board, INT_MIN, INT_MAX, ply, my_state, temp);
-    // cerr << "Checking Decision " << mv.movetype[0] << " " << mv.cart_xy[0].x << " "<< mv.cart_xy[0].y << endl;
+    // cerr << "Checking Decision " ;
+    // cerr << mv.movetype[0] << " " << mv.cart_xy[0].x << " "<< mv.cart_xy[0].y << endl;
     return mv;
 }
 
@@ -18,6 +19,7 @@ MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, Move
     bool my_turn = true;
     if (ply == 0){
         prev_move.utility = board.find_utility();
+        // cerr << "Ply 0 ret" << endl;
         return prev_move;
     }
     board.find_children( my_state, my_turn);
@@ -77,7 +79,8 @@ MoveVal MinVal(Board board, float alpha, float beta, int ply, int my_state, Move
     }
     // MoveVal* ptrMove = new MoveVal(INT_MAX);
     MoveVal my_child;
-    for (int i = 0; i < board.children.neighbours.size(); i++){        
+    for (int i = 0; i < board.children.neighbours.size(); i++){
+        // cerr << "i "        
         board.execute_move_sequence_opp(board.children.neighbours[i].cart_xy, board.children.neighbours[i].movetype );
         // MoveVal* prev_ptr = &board.children.neighbours[i];
         my_child = MaxVal(board,alpha,beta, ply - 1, board.children.next_state, board.children.neighbours[i]);//How to find new state??????????????????
