@@ -17,8 +17,7 @@ float Board::find_utility(){
 //         util+=utility_check_row_all_points(ct[0].x,ct[0].y,ct[1].x,ct[1].y);    
 //     }
 
-
-vector<Tup3> Board::check_row_vertical( int init_pos_x,int init_pos_y ,bool my_turn)
+vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my_turn )
 {
     // cerr <<"Checkin Row Vert: x= " << init_pos_x << " y: " << init_pos_y << endl;
     int x1=init_pos_x;int y1=init_pos_y;
@@ -55,7 +54,51 @@ vector<Tup3> Board::check_row_vertical( int init_pos_x,int init_pos_y ,bool my_t
     }
     return output;
 }
-vector<Tup3> Board::check_row_horizontal( int init_pos_x,int init_pos_y,bool my_turn )
+vector<Tup3> Board::check_row_vertical_opp( int init_pos_x,int init_pos_y,bool my_turn )
+{
+    // cerr <<"Checkin Row Vert: x= " << init_pos_x << " y: " << init_pos_y << endl;
+    int x1=init_pos_x;int y1=init_pos_y;
+    string marker_check;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    if(my_turn) marker_check="M";
+    else marker_check="MO";
+    vector<Tup3> output;
+    for(int i=0;i<=10;i++)
+    {
+        if(mapping[i][x1]==marker_check) 
+            {
+                v++;
+                if(v==5)
+                {
+
+                    Cart c1;c1.x=x1;c1.y=i-4;Cart c2;c2.x=x1;c2.y=i;
+                    // for (auto i = rings.begin(); i != rings.end(); ++i)
+                    for (int i=0; i<RingPosOpp.size(); i++)
+                    {
+                        
+                        Tup3 t;
+                        t.moves.push_back("RS");
+                        t.moves.push_back("RE");
+                        t.carts.push_back(c1);
+                        t.carts.push_back(c2);
+                        t.moves.push_back("X");
+                        t.carts.push_back(RingPosOpp[i]);
+                        output.push_back(t);
+                    }
+                }
+            }
+        else{v=0;}
+    }
+    return output;
+}
+
+vector<Tup3> Board::check_row_vertical( int init_pos_x,int init_pos_y ,bool my_turn)
+{
+    if (my_turn) return check_row_vertical_my(init_pos_x, init_pos_y, my_turn);
+    else return check_row_vertical_opp(init_pos_x, init_pos_y, my_turn);
+}
+
+vector<Tup3> Board::check_row_horizontal_my( int init_pos_x,int init_pos_y,bool my_turn )
 {
     int x1=init_pos_x;int y1=init_pos_y;
     int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
@@ -90,7 +133,49 @@ vector<Tup3> Board::check_row_horizontal( int init_pos_x,int init_pos_y,bool my_
     }
     return output;
 }
-vector<Tup3> Board::check_row_diagonal( int init_pos_x,int init_pos_y,bool my_turn )
+vector<Tup3> Board::check_row_horizontal_opp( int init_pos_x,int init_pos_y,bool my_turn )
+{
+    int x1=init_pos_x;int y1=init_pos_y;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    vector<Tup3> output;
+    string marker_check;
+    if(my_turn) marker_check="M";
+    else marker_check="MO";
+    for(int i=0;i<=10;i++)
+    {
+        if(mapping[y1][i]==marker_check) 
+            {
+                h++;
+                if(h==5)
+                {
+                    Cart c1;c1.x=i-4;c1.y=y1;Cart c2;c2.x=i;c2.y=y1;
+                    // for (auto i = rings.begin(); i != rings.end(); ++i)
+                    for (int i=0; i<RingPosOpp.size(); i++)
+                    {
+                        
+                        Tup3 t;
+                        t.moves.push_back("RS");
+                        t.moves.push_back("RE");
+                        t.carts.push_back(c1);
+                        t.carts.push_back(c2);
+                        t.moves.push_back("X");
+                        t.carts.push_back(RingPosOpp[i]);
+                        output.push_back(t);
+                    }
+                }
+            }
+        else{h=0;}
+    }
+    return output;
+}
+
+vector<Tup3> Board::check_row_horizontal( int init_pos_x,int init_pos_y,bool my_turn )
+{
+    if (my_turn) return  check_row_horizontal_my(init_pos_x, init_pos_y, my_turn);
+    else return check_row_horizontal_opp(init_pos_x, init_pos_y, my_turn);
+}
+
+vector<Tup3> Board::check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my_turn)
 {
     // cerr << "D " << endl;
     int x1=init_pos_x;int y1=init_pos_y;
@@ -139,6 +224,63 @@ vector<Tup3> Board::check_row_diagonal( int init_pos_x,int init_pos_y,bool my_tu
             
         }
     return output;
+}
+vector<Tup3> Board::check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool my_turn)
+{
+
+    // cerr << "D " << endl;
+    int x1=init_pos_x;int y1=init_pos_y;
+    int delta = x1-y1;
+    string marker_check;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
+    if(my_turn) marker_check="M";
+    else marker_check="MO";
+    vector<Tup3> output;
+    int x,y;
+    for(int i=std::max(0,-delta) ; i<=10; i++)
+        {
+            y = i;
+            x = i + delta; 
+            if (x >10 ||y >10 || x<0 || y<0){
+                break;
+            }
+            if(mapping[y][x]==marker_check) 
+            {
+                h++;;
+                if(h==5)
+                {
+                    // cerr << "Diag " << endl;
+                    
+                    Cart c1;
+                    c1.x = x - 4;
+                    c1.y = y - 4;
+                    Cart c2;
+                    c2.x = x;
+                    c2.y = y;
+                    // for (auto i = rings.begin(); i != rings.end(); ++i)
+                    for (int i=0; i<RingPosOpp.size(); i++)
+                    {
+                        Tup3 t;
+                        t.moves.push_back("RS");
+                        t.moves.push_back("RE");
+                        t.carts.push_back(c1);
+                        t.carts.push_back(c2);
+                        t.moves.push_back("X");
+                        t.carts.push_back(RingPosOpp[i]);
+                        output.push_back(t);
+                    }
+                }
+            }
+            else{h=0;}
+            
+        }
+    return output;
+}
+vector<Tup3> Board::check_row_diagonal( int init_pos_x,int init_pos_y,bool my_turn )
+{
+    if (my_turn) return check_row_diagonal_my(init_pos_x, init_pos_y, my_turn);
+    else return check_row_diagonal_opp(init_pos_x, init_pos_y, my_turn);
+
 }
 vector<Tup3> Board::check_row_all_points_each( int init_pos_x,int init_pos_y,int check, bool my_turn )
 {
@@ -671,25 +813,32 @@ vector<MoveVal> Board::moveRing(bool my_turn)
 
 
     vector<MoveVal> padosi;
-    for (int i=0; i < RingPos.size(); i++) 
-    {
-        for(int j=1;j<=6;j++)
+    if (my_turn){
+        for (int i=0; i < RingPos.size(); i++) 
         {
-            // cerr << "Next Dir" << i << ", " << j << endl;
-            // printConfig();
-            // cerr <<"RingPos" << RingPos[i].x << ", " << RingPos[i].y << endl;
-            if (my_turn){
+            for(int j=1;j<=6;j++)
+            {
+                // cerr << "Next Dir" << i << ", " << j << endl;
+                // printConfig();
                 vector<MoveVal> p1= find_neighbours(RingPos[i],j, my_turn);
-                padosi.insert(padosi.end(),p1.begin(),p1.end());
+                padosi.insert(padosi.end(),p1.begin(),p1.end());  
             }
-                
-            else{
+        }
+    } 
+    else{
+        for (int i=0; i < RingPosOpp.size(); i++) 
+        {
+            for(int j=1;j<=6;j++)
+            {
+                // cerr << "Next Dir" << i << ", " << j << endl;
+                // printConfig();
                 vector<MoveVal> p1= find_neighbours(RingPosOpp[i],j, my_turn);
                 padosi.insert(padosi.end(),p1.begin(),p1.end());
-            }
 
+            }
         }
-    }
+    } 
+    
     return padosi; 
 }
 

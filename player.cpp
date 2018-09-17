@@ -15,7 +15,7 @@ void Player::play(){
     		else {
     			board.my_state = 1;
     		}
-    		int ply = 4;
+    		int ply = 2;
             string a, s,r,p ; 
             getline(cin, a);
 			vector<string> results;
@@ -94,7 +94,7 @@ void Player::play(){
     			board.my_state = 1;
     		}
         	// board.printConfig();
-        	int ply = 4;
+        	int ply = 2;
             string a, s,r,p ;
             int checker = 0;
             

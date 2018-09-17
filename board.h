@@ -181,6 +181,14 @@ public:
 	int check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y, int ring_x, int ring_y, bool my_turn);
 	Tup3 CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn);
 
+	vector<Tup3> check_row_vertical_my( int init_pos_x,int init_pos_y,bool my_turn );
+	vector<Tup3> check_row_vertical_opp( int init_pos_x,int init_pos_y,bool my_turn );
+	vector<Tup3> check_row_horizontal_my( int init_pos_x,int init_pos_y,bool my_turn );
+	vector<Tup3> check_row_horizontal_opp( int init_pos_x,int init_pos_y ,bool my_turn);
+	vector<Tup3> check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my_turn);
+	vector<Tup3> check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool my_turn);
+
+
 
 	float utility_check_row_vertical(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
     float utility_check_row_horizontal(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
@@ -190,8 +198,8 @@ public:
 
 
     MoveVal DecisionMaker(int ply, int state);
-	MoveVal MaxVal(float alpha, float beta, int ply, int state, MoveVal prev_move);
-	MoveVal MinVal(float alpha, float beta, int ply, int state, MoveVal prev_move);
+	MoveVal MaxVal(float alpha, float beta, int ply);
+	MoveVal MinVal(float alpha, float beta, int ply);
 };
 
 
