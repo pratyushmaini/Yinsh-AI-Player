@@ -8,7 +8,7 @@ void Player::play(){
 	int ply = 1;
 	if(player == 2) {
     	while(true) {
-    		int setply = 1;
+    		int setply = 2;
             string a, s,r,p ; 
             getline(cin, a);
             // cerr << a << endl;
@@ -82,7 +82,7 @@ void Player::play(){
     	Tup3 prefix,t;
         Cart opp_c_in, opp_c_fin;
         while(true) {
-        	int setply = 2;
+        	int setply = 3;
             string a, s,r,p ;
             if (board.my_state == 1 && board.RingPos.size() == 5){
             	board.my_state = 2;
