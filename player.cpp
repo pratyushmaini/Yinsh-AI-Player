@@ -5,6 +5,7 @@
 
 void Player::play(){
 	// board.printConfig();
+	int setply = 1;
 	if(player == 2) {
     	while(true) {
             string a, s,r,p ; 
@@ -34,7 +35,7 @@ void Player::play(){
             int ply = 1;
             if (board.my_state == 1 && board.RingPos.size() == 5){
             	board.my_state = 2;
-            	ply = 1;
+            	ply = setply;
             }
             // if (board.opp_state == 1 && board.RingPosOpp.size() == 5){
             // 	board.opp_state = 2;
@@ -62,7 +63,7 @@ void Player::play(){
             int ply = 1;
             if (board.my_state == 1 && board.RingPos.size() == 5){
             	board.my_state = 2;
-            	ply = 1;
+            	ply = setply;
             }
             // if (board.opp_state == 1 && board.RingPosOpp.size() == 5){
             // 	board.opp_state = 2;

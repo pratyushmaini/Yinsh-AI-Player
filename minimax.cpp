@@ -41,11 +41,13 @@ MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, Move
         cerr << "My Child utility" <<my_child.utility<< " movetype: "<<my_child.movetype[0] << " Cartx: " <<my_child.cart_xy[0].x << " Carty: " << my_child.cart_xy[0].y << endl; 
         if (ptrMove->utility <= my_child.utility){
             ptrMove = &my_child;
-            cerr << "Pointer Move utility: " <<ptrMove -> utility<<" movetype: "<<ptrMove -> movetype[0] << " Cartx: " <<ptrMove -> cart_xy[0].x << " Carty: " <<ptrMove -> cart_xy[0].y << endl;        
+            cerr << "Pointer Move utility: " ;
+            cerr << ptrMove -> utility<<" movetype: "<<ptrMove -> movetype[0] << " Cartx: " <<ptrMove -> cart_xy[0].x << " Carty: " <<ptrMove -> cart_xy[0].y << endl;        
 
         }
     }
-    cerr << "Out of Loop; Pointer Move utility: " <<ptrMove -> utility<<" movetype: "<<ptrMove -> movetype[0] << " Cartx: " <<ptrMove -> cart_xy[0].x << " Carty: " <<ptrMove -> cart_xy[0].y << endl; 
+    cerr << "Out of Loop; Pointer Move utility: ";
+    cerr <<ptrMove -> utility<<" movetype: "<<ptrMove -> movetype[0] << " Cartx: " <<ptrMove -> cart_xy[0].x << " Carty: " <<ptrMove -> cart_xy[0].y << endl; 
     MoveVal retMove(ptrMove -> movetype, ptrMove -> cart_xy, ptrMove -> utility);
     cerr << "return Move utility: " <<retMove.utility<<" movetype: "<<retMove.movetype[0] << " Cartx: " <<retMove.cart_xy[0].x << " Carty: " <<retMove.cart_xy[0].y << endl;        
     return retMove;

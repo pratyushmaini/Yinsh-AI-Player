@@ -520,6 +520,11 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
     int t=0; //t=1--> a marker has been encountered
     
     Children ch;
+    if ((x<0 || y<0 || x>10 || y>10)){
+    
+        cerr << "Returning neighbours" << endl;
+        return ch.neighbours;
+    }
 
 
     //------------------------------------Checkin rows made by opponent----------------------------------------------------            
@@ -717,7 +722,8 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
 	        undo_move_sequence(ct,m, my_turn);
             break;  
         }
-        if (!(x<0 || y<0 || x>10 || y>10)){
+        cerr << x << ", " << y << endl;
+        if ((x<0 || y<0 || x>10 || y>10)){
             break;
         }
     }
@@ -734,9 +740,12 @@ vector<MoveVal> Board::moveRing(bool my_turn)
     {
         for(int j=1;j<=6;j++)
         {
+            cerr << "Next Dir" << i << ", " << j << endl;
+            printConfig();
+            cerr <<"RingPos" << RingPos[i].x << ", " << RingPos[i].y << endl;
             vector<MoveVal> p1= find_neighbours(RingPos[i],j, my_turn);
             padosi.insert(padosi.end(),p1.begin(),p1.end());
-            cerr << i << ", " << j << endl;
+
         }
     }
     return padosi; 
