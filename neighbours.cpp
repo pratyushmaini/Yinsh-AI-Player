@@ -183,8 +183,8 @@ float Board::utility_check_row( int init_pos_x,int init_pos_y,int final_pos_x, i
 
 float Board::find_utility(){
     float utils= 0;
-    utils += ringsMy*10;
-    utils -= ringsOpp*10;
+    utils += std::pow(10,ringsMy);
+    utils -= std::pow(10,ringsMy);
     utils += markersMy;
     utils -= markersOpp;
     return utils;
@@ -733,7 +733,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
                         undo_move_sequence( ct_temp_1,m_temp_1, my_turn); 
                         undo_move_sequence(ct_first,m_first, my_turn);
                         int len = m_temp_1.size();
-                        for (int d = 0 ; d<=len; d++){//<= as 1 extra for initial
+                        for (int d = 0 ; d<len + 3; d++){//<= as 1 extra for initial
                             m.pop_back();
                             ct.pop_back();
                         }
@@ -931,7 +931,7 @@ vector<MoveVal> Board::find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c
                         undo_move_sequence( ct_temp_1,m_temp_1, my_turn); 
                         undo_move_sequence(ct_first,m_first, my_turn);
                         int len = m_temp_1.size();
-                        for (int d = 0 ; d<=len; d++){//<= as 1 extra for initial
+                        for (int d = 0 ; d<len+3; d++){//<= as 1 extra for initial
                             m.pop_back();
                             ct.pop_back();
                         }
@@ -1091,7 +1091,7 @@ Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
             }                       
         }
 
-    execute_move_sequence(t.carts,t.moves,my_turn);
+    // execute_move_sequence(t.carts,t.moves,my_turn);
     return t;
 }
 

@@ -19,8 +19,8 @@ MoveVal DecisionMaker(Board board, int ply, int my_state){
 }
 
 MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, MoveVal prev_move){
-    cerr << "Ply Maxval "<< ply<< endl;
-    board.printConfig();
+    // cerr << "Ply Maxval "<< ply<< endl;
+    // board.printConfig();
     // cerr << "Enter MaxVal" <<endl;
     bool my_turn = true;
     if (ply == 0){
@@ -29,8 +29,8 @@ MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, Move
         return prev_move;
     }
     board.find_children( my_state, my_turn);
-    cerr << "After Find Children" << endl;
-    board.printConfig();
+    // cerr << "After Find Children" << endl;
+    // board.printConfig();
     // cerr << "Children Returned, Size: " <<board.children.neighbours.size()<< ", "<<endl;
     if (board.children.neighbours.size() == 0){
         prev_move.utility = board.find_utility();
@@ -73,8 +73,8 @@ MoveVal MaxVal(Board board, float alpha, float beta, int ply, int my_state, Move
 }
 
 MoveVal MinVal(Board board, float alpha, float beta, int ply, int my_state, MoveVal prev_move){
-    cerr << "Ply MinVal "<< ply<< endl;
-    board.printConfig();
+    // cerr << "Ply MinVal "<< ply<< endl;
+    // board.printConfig();
     // cerr << "Enter MinVal" <<endl;
     bool my_turn = false;
     // cerr << "In MinVal" << prev_move.movetype[0] << " " << prev_move.cart_xy[0].x <<" "<< prev_move.cart_xy[0].y <<endl;
@@ -87,8 +87,8 @@ MoveVal MinVal(Board board, float alpha, float beta, int ply, int my_state, Move
         prev_move.utility = board.find_utility();        
         return prev_move;
     }
-    cerr << "After Find Children" << endl;
-    board.printConfig();
+    // cerr << "After Find Children" << endl;
+    // board.printConfig();
     // MoveVal* ptrMove = new MoveVal(INT_MAX);
     MoveVal my_child;
     for (int i = 0; i < board.children.neighbours.size(); i++){

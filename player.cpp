@@ -54,27 +54,32 @@ void Player::play(){
 			if (found){
 			prefix = board.CheckRowsMadeByOpp(opp_c_in, opp_c_fin, true);
 			}
-
-            MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
-            
-            board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
             
             // cerr << "Checking Decision " << endl;
-            
-            for (int r = 0; r< prefix.moves.size(); r++){
+            int checker = 0;
+            for (int r = 0; r<prefix.moves.size(); r++){///**************************FORCING 3 prefix.moves.size()
+                checker ++;
+                board.execute_move_my(prefix.carts[r], prefix.moves[r]);
                 Hex my_hex = board.convertToHex(prefix.carts[r].x , prefix.carts[r].y);	  
                 cout << prefix.moves[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
+                if (checker == 3) break;
             }
+            if (board.ringsMy < 3){
+				MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
+            	board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
+            	vector<Hex> my_hex_vec;
+	            for (int r = 0; r< next_move.cart_xy.size(); r++){
+	                Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);	  
+	                my_hex_vec.push_back(my_hex);      	
+	                cout << next_move.movetype[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
+	            }
+			}
+
             
-            vector<Hex> my_hex_vec;
-            for (int r = 0; r< next_move.cart_xy.size(); r++){
-                Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);	  
-                my_hex_vec.push_back(my_hex);      	
-                cout << next_move.movetype[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
-            }
+            
             cout << endl;	
 
-            board.printConfig();
+            // board.printConfig();
   
         }
     }   
@@ -90,27 +95,33 @@ void Player::play(){
     		else {
     			board.my_state = 1;
     		}
-        	board.printConfig();
-        	int ply = 4;
+        	// board.printConfig();
+        	int ply = 2;
             string a, s,r,p ;
-
-            MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
-            board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
-            // cerr << "Checking Decision " << endl;
-
+            int checker = 0;
+            
             for (int r = 0; r< prefix.moves.size(); r++){
+                checker ++;
+                board.execute_move_my(prefix.carts[r], prefix.moves[r]);
                 Hex my_hex = board.convertToHex(prefix.carts[r].x , prefix.carts[r].y);	  
                 cout << prefix.moves[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
+                if (checker == 3) break;
             }
 
             
             prefix = t;
-            vector<Hex> my_hex_vec;
-            for (int r = 0; r< next_move.cart_xy.size(); r++){
-                Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);	  
-                my_hex_vec.push_back(my_hex);      	
-                cout << next_move.movetype[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
-            }
+
+            if (board.ringsMy <3){
+				MoveVal next_move = DecisionMaker(board, ply, board.my_state);//****************************
+            	board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
+            	vector<Hex> my_hex_vec;
+	            for (int r = 0; r< next_move.cart_xy.size(); r++){
+	                Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);	  
+	                my_hex_vec.push_back(my_hex);      	
+	                cout << next_move.movetype[r] << " " <<my_hex.ring << " " << my_hex.pos<< " ";
+	            }
+			}
+
             cout << endl;	
 
             // board.printConfig();

@@ -27,6 +27,7 @@ string Board::reverse(string s){
 	else{
 		cerr << "THROW EXCEPTION5 "<< s<< endl;
 	}
+	return s;
 }
 
 void Board::flip(Cart start, Cart end){
