@@ -48,7 +48,7 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply){
     // cerr<< "Done" << endl;
 
     // cerr << "Children Returned, Size: " <<my_children.neighbours.size()<< ", "<<endl;
-    if (my_children.neighbours.size() == 0  || ringsMy >= 3 || ringsOpp >= 3){
+    if (my_children.neighbours.size() == 0  || 5 -RingPos.size() >= 3 || 5 -RingPosOpp.size() >= 3){
         prev_move.utility = find_utility();
         return prev_move;
     }
@@ -76,7 +76,8 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply){
         }
     }
     // cerr << "My Prev utility";
-    // cerr <<prev_move.utility<< " movetype: "<<prev_move.movetype[0] << " Cartx: " <<prev_move.cart_xy[0].x << " Carty: " << prev_move.cart_xy[0].y << endl; 
+    // cerr <<prev_move.utility;
+    // cerr << " movetype: "<<prev_move.movetype[0] << " Cartx: " <<prev_move.cart_xy[0].x << " Carty: " << prev_move.cart_xy[0].y << endl; 
     return prev_move;
 }
 
@@ -89,7 +90,7 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
     //     cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
     // }
     // cerr << endl;
-    // cerr << "RINGPOSOpp : ";
+    // // cerr << "RINGPOSOpp : ";
     // for (int w=0; w< RingPosOpp.size(); w++){
     //     cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
     // }
@@ -102,7 +103,7 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
         return prev_move;
     }
     Children my_children = find_children(my_state, my_turn);
-    if (my_children.neighbours.size() == 0 || ringsMy >= 3 || ringsOpp >= 3){
+    if (my_children.neighbours.size() == 0 || 5 -RingPos.size() >= 3 || 5 -RingPosOpp.size() >= 3){
         prev_move.utility = find_utility();        
         return prev_move;
     }
@@ -117,7 +118,7 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
     // cerr << "RINGPOSOpp : ";
     // for (int w=0; w< RingPosOpp.size(); w++){
     //     cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
-    // }
+   // }
     // cerr<< "Done" << endl;
 
     MoveVal my_child;
@@ -125,6 +126,7 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
         execute_move_sequence_opp(my_children.neighbours[i].cart_xy, my_children.neighbours[i].movetype );
         my_child = MaxVal(alpha,beta, ply - 1);//How to find new state??????????????????
         beta = std::min(beta,my_child.utility);
+        // cerr << "CHI:f UTIL "<<my_child.utility << endl;
         undo_move_sequence_opp(my_children.neighbours[i].cart_xy, my_children.neighbours[i].movetype);
         if (alpha>=beta){
             prev_move.movetype = my_children.neighbours[i].movetype;
@@ -139,7 +141,8 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
         } 
     }
     // cerr << "My minval utility";
-    // cerr <<prev_move.utility<< " movetype: "<<prev_move.movetype[0] << " Cartx: " <<prev_move.cart_xy[0].x << " Carty: " << prev_move.cart_xy[0].y << endl; 
+    // cerr <<prev_move.utility ;
+    // cerr << " movetype: "<<prev_move.movetype[0] << " Cartx: " <<prev_move.cart_xy[0].x << " Carty: " << prev_move.cart_xy[0].y << endl; 
     return prev_move;
 } 
 

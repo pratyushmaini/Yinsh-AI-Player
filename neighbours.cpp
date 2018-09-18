@@ -1,11 +1,161 @@
 #include "board.h"    
 
+
+
+
+float Board::all_utlity()
+{
+    int two,three,four,two_opp,three_opp,four_opp;int h=0;int v=0;int h_opp=0;int v_opp=0;
+    two=three=four=two_opp=three_opp=four_opp=0;
+    for(int i=0;i<=10;i++)
+    {
+        for(int j=0;j<=10;j++)
+        {
+            if(mapping[j][i]=="M")
+            {
+                h++;
+            }
+            else
+            {
+                if(h==2) two++;
+                if(h==3) three++;
+                if(h==4) four++;
+                h=0;
+            }
+            if(mapping[j][i]=="MO")
+            {
+                h_opp++;
+            }
+            else
+            {
+                if(h_opp==2) two_opp++;
+                if(h_opp==3) three_opp++;
+                if(h_opp==4) four_opp++;
+                h_opp=0;
+            }
+            if(mapping[i][j]=="M")
+            {
+                v++;
+            }
+            else
+            {
+                if(v==2) two++;
+                if(v==3) three++;
+                if(v==4) four++;
+                v=0;
+            }
+            if(mapping[i][j]=="MO")
+            {
+                v_opp++;
+            }
+            else
+            {
+                if(v_opp==2) two_opp++;
+                if(v_opp==3) three_opp++;
+                if(v_opp==4) four_opp++;
+                v_opp=0;
+            }
+
+        }
+    }
+    v=0;v_opp=0;
+  for(int delta =-5;delta<=5;delta++)
+    {
+        int x,y;
+        for(int i=std::max(0,-delta) ; i<=10; i++)
+           {
+               y = i;
+               x = i + delta;
+               if (x >10 ||y >10 || x<0 || y<0){
+                   break;
+               }
+               if(mapping[y][x]=="M")
+               {
+                   v++;
+               }
+               else
+                {
+                    if(v==2) two++;
+                    if(v==3) three++;
+                    if(v==4) four++;
+                    v=0;
+                }
+                if(mapping[y][x]=="MO")
+               {
+                   v_opp++;
+               }
+               else
+                {
+                    if(v_opp==2) two_opp++;
+                    if(v_opp==3) three_opp++;
+                    if(v_opp==4) four_opp++;
+                    v_opp=0;
+                }
+           }
+      }
+      return std::pow(2,two)+std::pow(2,three)+std::pow(2,four);//-std::pow(2,two_opp)-std::pow(2,three_opp)-std::pow(2,four_opp);
+
+}
+
+float Board::edge_utility(){
+    int edge1 = 0;
+    int edge2 = 0;
+    int  edge3 = 0;
+    int  edge4 = 0;
+    int  edge5 = 0;
+    int edge6  = 0;
+    for (int i=1;i<=4;i++)
+    {
+        if(mapping[i][0]=="M" || mapping[i][0]=="R")
+        {
+            edge1++;
+        }
+        if(mapping[0][i]=="M" || mapping[0][i]=="R")
+        {
+            edge2++;
+        }
+        if(mapping[i+5][10]=="M" || mapping[i+5][10]=="R")
+        {
+            edge3++;
+        }
+        if(mapping[10][i+5]=="M" || mapping[10][i+5]=="R")
+        {
+            edge4++;
+        }
+        if(mapping[i+5][i]=="M" || mapping[i+5][i]=="R")
+        {
+            edge5++;
+        }
+        if(mapping[i][i+5]=="M" || mapping[i][i+5]=="R")
+        {
+            edge6++;
+        }
+        
+    }
+    return pow(edge1,2) + pow(edge2,2) + pow(edge3,2) + pow(edge4,2) + pow(edge5,2) + pow(edge6,2);
+
+
+}
+
 float Board::find_utility(){
-    float utils= 0;
-    utils += std::pow(10,ringsMy);
-    utils -= std::pow(10,ringsMy);
-    utils += markersMy;
+    float utils = 0;
+    if (RingPos.size() >= 2){
+       utils += std::pow(10,( 5 -RingPos.size() )*2); 
+    }
+    else{
+        cerr << "ERORORRORRROROR***************************" << endl;
+    }
+    
+    utils -= std::pow(10,( 5 -RingPosOpp.size())*3);
+
+    int delta_markers = markersMy - markersOpp;
+    int delta_rings = RingPos.size() - RingPosOpp.size();
+    utils += markersMy*(std::pow(10,delta_rings))/100;
+
+    // utils += markersMy;
     utils -= markersOpp;
+    utils+=all_utlity();
+    utils-=edge_utility()/2;
     return utils;
 
 }
@@ -564,11 +714,11 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
 
                                 if(my_turn)
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(3-ringsMy)) break;
+                                    if((m_temp_1.size()/3 + 1)>(RingPos.size()- 2)) break;
                                 }
                                 else
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(3-ringsOpp)) break;   
+                                    if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- 2)) break;   
                                 }
                                 execute_move_sequence(ct_temp_2, m_temp_2, my_turn);
                                 
@@ -763,11 +913,11 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
 
                                 if(my_turn)
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(3-ringsMy)) break;
+                                    if((m_temp_1.size()/3 + 1)>(RingPos.size()- 2)) break;
                                 }
                                 else
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(3-ringsOpp)) break;   
+                                    if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- 2)) break;   
                                 }
                                 execute_move_sequence(ct_temp_2, m_temp_2, my_turn);
                                 
@@ -847,7 +997,6 @@ vector<MoveVal> Board::placeRing(bool my_turn){
   // cerr << "Place Ring Called" <<endl;
  /**/
   vector<MoveVal> all_possible_moves;
-  // cerr << " RINGS POS SIZE **************************** " << RingPos.size() << endl;
   int rings_temp = RingPos.size();
   if(rings_temp==0)
   {
@@ -877,7 +1026,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
   else if( rings_temp==1 || rings_temp==2 || rings_temp==3)
   {
        int x= 5-RingPos.size();
-          for(int y=3;y<=8;y++)
+          for(int y=2+rings_temp;y<=8;y++)
           {
               MoveVal move;
               if(mapping[y][x]=="E")
@@ -951,7 +1100,7 @@ Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
                 t.carts.push_back(non_intersecting_rows_by_opp[j].carts[0]);
                 t.carts.push_back(non_intersecting_rows_by_opp[j].carts[1]);
                 t.carts.push_back(non_intersecting_rows_by_opp[j].carts[2]);
-                if(t.moves.size()/3 == 3-ringsMy) break;
+                if(t.moves.size()/3 == RingPos.size()- 2) break;
             }                       
         }
 

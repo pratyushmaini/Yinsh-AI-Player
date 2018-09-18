@@ -18,5 +18,6 @@ public:
 		cerr << "Board Initialised" <<endl;
 	}
 	void play();
+	void play_2(int ply, int countmv);
 
 };
