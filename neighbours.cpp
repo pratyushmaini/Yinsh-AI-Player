@@ -190,7 +190,7 @@ float Board::find_utility(){
     //    utils -= std::pow(10,( 5 -RingPosOpp.size())*3); 
     // }
     // else{
-        cerr << "ERORORRORRROROR***************************" << endl;
+     //   cerr << "ERORORRORRROROR***************************" << endl;
     //     utils -= std::pow(10,( 3)*3);
     //     utils += std::pow(10,( 3)*2);
     // }
@@ -202,8 +202,8 @@ float Board::find_utility(){
     float balance[6] = {1000,1000, 1000, 200, 50, 0};
     utils += balance[RingPos.size()];
     utils -= balance[RingPosOpp.size()];
-    // utils += markersMy;
-    // utils -= markersOpp;
+    utils += markersMy;
+    utils -= markersOpp;
     utils += (float)delta_markers;
     // utils += rings_utility();
     // utils+=all_utlity();
@@ -732,9 +732,9 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             m_temp.push_back("M");
             ct_temp.push_back(c);
             ct_temp.push_back(r);
-            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute\n";
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute\n";
             execute_move_sequence(ct,m,my_turn);
-            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below execute\n";
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below execute\n";
             // cerr << "Initial Move Executed" << endl;
             vector<Tup3> t_vec;
             if(x==c.x)
@@ -751,9 +751,9 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             }
 
             // for()
-            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check\n";
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check\n";
             vector<Tup3> non_intersecting_rows = check_row_all_points(c.x,c.y,x,y,my_turn);
-            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below check\n";
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below check\n";
 
             non_intersecting_rows.insert(non_intersecting_rows.end(),t_vec.begin(),t_vec.end());
             // cerr << "non_intersecting_rows" << endl;
@@ -782,9 +782,9 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                         ct_first.push_back(non_intersecting_rows[i].carts[0]);
                         ct_first.push_back(non_intersecting_rows[i].carts[1]);
                         ct_first.push_back(non_intersecting_rows[i].carts[2]);
-                                    cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute1\n";
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute1\n";
                         execute_move_sequence(ct_first,m_first, my_turn);
-                                    cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below execute1\n";
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below execute1\n";
 
                         for(int j=i+1;j<non_intersecting_rows.size();j++)
                         {
@@ -830,10 +830,10 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                                 {
                                     if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- 2)) break;   
                                 }
-                                            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
+                                            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
 
                                 execute_move_sequence(ct_temp_2, m_temp_2, my_turn);
-                                    cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
                                 
                             }                                                      
                         }
@@ -841,13 +841,13 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                         mvl.movetype = m;
                         mvl.cart_xy = ct;
                         ch.neighbours.push_back(mvl);
-                                    cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above undo\n";
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above undo\n";
 
                         undo_move_sequence( ct_temp_1,m_temp_1, my_turn); 
-                                    cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo\n";
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo\n";
 
                         undo_move_sequence(ct_first,m_first, my_turn);
-                                    cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo1\n";
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo1\n";
 
                         int len = m_temp_1.size();
                         for (int d = 0 ; d<len + 3; d++){//<= as 1 extra for initial
@@ -865,11 +865,11 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                     mvl.cart_xy = ct;
                     ch.neighbours.push_back(mvl);
                 }
-                            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above undo_temp\n";
+                            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above undo_temp\n";
 
                 undo_move_sequence(ct_temp,m_temp, my_turn);
 
-            cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo_temp\n";
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo_temp\n";
                 
             // cerr << "UNDOO" << endl;
             if(dir==1)

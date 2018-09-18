@@ -1,5 +1,5 @@
 import argparse
-import socket,sys,json,pdb, time
+import socket,sys,json,pdb
 
 from Communicator import Communicator
 
@@ -90,7 +90,6 @@ class Server:
                                 print 'ERROR : COULD NOT SEND DATA TO CLIENT ' + str(client_id)
                                 self.CloseClient(client_id)
                         elif((data['action'] == 'KILLPROC') or (data['action'] == 'FINISH')):
-                                time.sleep(100000)
                                 self.CloseClient(client_id)                     
                 return success_flag
 

@@ -156,6 +156,7 @@ void Board::addMarkers(Cart start, Cart end, bool self){
 	else if (delta_y == 4 && delta_x == 4){
 		for (int i = 0; i<=4; i++){
 			mapping[y2 + i][x2+i] = marker;
+			counter++;
 		}
 	}
 	else if (delta_y == -4 && delta_x == -4){

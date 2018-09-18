@@ -4,7 +4,7 @@
 void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
     while(true) {
         // board.printConfig();
-        cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
+        //cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
         if (countermv <= 5) countermv ++;
         if (countermv > 5) {
             board.my_state = 2;
@@ -43,9 +43,9 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         }
 
         board.execute_move_sequence_opp(Hexvec, strVec);
-        cerr << "After Opp move: " << endl;
+        //cerr << "After Opp move: " << endl;
         // board.printConfig();
-        cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " ending\n";
+        //cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " ending\n";
         
         // cerr << "Opp move executed" << endl;
         Tup3 prefix;
@@ -78,13 +78,14 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         }
         
         if (board.RingPos.size() > 2  || board.my_state == 1){
-            int markers_opp_saved = board.markersOpp;
+            // int markers_opp_saved = board.markersOpp;
             MoveVal next_move = board.DecisionMaker( ply, board.my_state);//****************************
-            board.markersOpp = markers_opp_saved;
-            cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " above util\n";
+            // board.markersOpp = markers_opp_saved;
+            //cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " above util\n";
 
-            cerr << "Utility " << next_move.utility <<" end\n";
+            //cerr << "Utility " << next_move.utility <<" end\n";
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
+            //board.printConfig();
             vector<Hex> my_hex_vec;
             for (int r = 0; r< next_move.cart_xy.size(); r++){
                 Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);     
@@ -94,7 +95,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         } 
         cout << endl;   
 
-        cerr << "After My move: " << endl;
+        //cerr << "After My move: " << endl;
     }
 }
 
