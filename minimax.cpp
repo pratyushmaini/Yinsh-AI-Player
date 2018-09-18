@@ -129,6 +129,7 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
         // cerr << "CHI:f UTIL "<<my_child.utility << endl;
         undo_move_sequence_opp(my_children.neighbours[i].cart_xy, my_children.neighbours[i].movetype);
         if (alpha>=beta){
+            // cerr << "PRUNEEEE " << endl;
             prev_move.movetype = my_children.neighbours[i].movetype;
             prev_move.cart_xy = my_children.neighbours[i].cart_xy;
             prev_move.utility = my_child.utility;

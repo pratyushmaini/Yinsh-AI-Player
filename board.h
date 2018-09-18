@@ -168,10 +168,11 @@ public:
 	vector<MoveVal> placeRing(bool my_turn);
 	vector<MoveVal> moveRing( bool my_turn);
 	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
-	float find_utility(vector<Cart> ct, vector<string> m, float prev_utility);
 	float find_utility();
 	float all_utlity();
 	float edge_utility();
+	float rings_utility();
+
 
 
 	vector<Tup3> check_row_vertical(int init_pos_x,int init_pos_y,bool my_turn);
