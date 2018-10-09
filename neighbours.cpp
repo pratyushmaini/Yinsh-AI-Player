@@ -129,7 +129,7 @@ float Board::edge_utility(){
         }
         
     }
-    return edge1 + edge2 + edge3 + edge4 + edge5 + edge6;
+    return pow(edge1 - 1,4) + pow(edge2 - 1,4) + pow(edge3 - 1,4) + pow(edge4-1, 4) + pow(edge5 - 1, 4) + pow(edge6 - 1, 4);
 
 
 }
@@ -198,17 +198,20 @@ float Board::find_utility(){
     int delta_markers = markersMy - markersOpp;
     // int delta_rings = RingPos.size() - RingPosOpp.size();
     // utils += markersMy * (std::pow(10,delta_rings))/100;
-    float balance[6] = {1000,1000, 1000, 200, 50, 0};
+    float balance[6] = {200,200, 200, 70, 20, 0};
+    float balance_opp[6] = {300,300, 300, 100, 50, 0};
     utils += balance[RingPos.size()];
     utils -= balance[RingPosOpp.size()];
+    // utils -= (RingPos.size() - RingPosOpp.size())*10000;
     utils += markersMy;
     utils -= markersOpp;
     // utils += (float)delta_markers;
     // utils += rings_utility();
-    utils+=all_utlity();
-    utils-=2* edge_utility();
-    // cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
-    // cerr << "UTILITY = "<< utils << endl;
+    // utils+=all_utlity();
+    // utils-=all_utlity_opp();
+    // utils-= 2* edge_utility();
+    cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
+    cerr << "UTILITY = "<< utils << endl;
     return utils;
 
 }
@@ -1099,13 +1102,13 @@ vector<MoveVal> Board::moveRing(bool my_turn)
                 // cerr << "Next Dir" << i << ", " << j << endl;
                 // printConfig();
                 vector<MoveVal> p1= find_neighbours(myCopyRing[i],j, my_turn);
-                for (int w = 0; w< p1.size(); w++){
-                    for (int i = 0; i < p1[w].movetype.size(); ++i)
-                    {
-                        // cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
-                    }
-                    // cerr << endl;                
-                }
+                // for (int w = 0; w< p1.size(); w++){
+                //     for (int i = 0; i < p1[w].movetype.size(); ++i)
+                //     {
+                //         cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
+                //     }
+                //     cerr << endl;                
+                // }
                 padosi.insert(padosi.end(),p1.begin(),p1.end());  
             }
         }
@@ -1115,9 +1118,17 @@ vector<MoveVal> Board::moveRing(bool my_turn)
         {
             for(int j=1;j<=6;j++)
             {
-                // cerr << "Next Dir" << i << ", " << j << endl;
+                // cerr << "Next Dir in Opp" << i << ", " << j << endl;
                 // printConfig();
+
                 vector<MoveVal> p1= find_neighbours(oppCopyRing[i],j, my_turn);
+                // for (int w = 0; w< p1.size(); w++){
+                //     for (int i = 0; i < p1[w].movetype.size(); ++i)
+                //     {
+                //         cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
+                //     }
+                //     cerr << endl;                
+                // }
                 padosi.insert(padosi.end(),p1.begin(),p1.end());
 
             }
