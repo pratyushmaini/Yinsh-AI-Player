@@ -4,7 +4,7 @@
 void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
     while(true) {
         // board.printConfig();
-        //cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
+        cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
         if (countermv <= 5) countermv ++;
         if (countermv > 5) {
             board.my_state = 2;
@@ -43,22 +43,22 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         }
 
         board.execute_move_sequence_opp(Hexvec, strVec);
-        //cerr << "After Opp move: " << endl;
+        cerr << "After Opp move: " << endl;
         // board.printConfig();
-        //cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " ending\n";
+        cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " ending\n";
         
-        // cerr << "Opp move executed" << endl;
+        cerr << "Opp move executed" << endl;
         Tup3 prefix;
         if (found){
             prefix = board.CheckRowsMadeByOpp(opp_c_in, opp_c_fin, true);
             // 
         }
         
-        // cerr << "Checking Decision " << endl;
+        cerr << "Checking Decision " << endl;
         int checker = 0;
         for (int r = 0; r<prefix.moves.size(); r+=3){///**************************FORCING 3 prefix.moves.size()
             checker ++;
-            // cerr << "Row made BY OPP" << endl;
+            cerr << "Row made BY OPP" << endl;
             if(board.check_if_row(prefix.carts[r].x,
                             prefix.carts[r].y,
                             prefix.carts[r+1].x,
@@ -81,11 +81,11 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
             // int markers_opp_saved = board.markersOpp;
             MoveVal next_move = board.DecisionMaker( ply, board.my_state);//****************************
             // board.markersOpp = markers_opp_saved;
-            //cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " above util\n";
+            cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " above util\n";
 
-            //cerr << "Utility " << next_move.utility <<" end\n";
+            cerr << "Utility " << next_move.utility <<" end\n";
             board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
-            //board.printConfig();
+            // board.printConfig();
             vector<Hex> my_hex_vec;
             for (int r = 0; r< next_move.cart_xy.size(); r++){
                 Hex my_hex = board.convertToHex(next_move.cart_xy[r].x , next_move.cart_xy[r].y);     
@@ -95,18 +95,18 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         } 
         cout << endl;   
 
-        //cerr << "After My move: " << endl;
+        cerr << "After My move: " << endl;
     }
 }
 
 void Player::play(){
 
 	if(player == 2) {
-        int ply = 4;
+        int ply = 2;
         play_2(ply,0);		
     }   
     else if(player == 1) {
-        int ply = 4;
+        int ply = 2;
         MoveVal next_move = board.DecisionMaker( ply, 1);
         board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
         vector<Hex> my_hex_vec;

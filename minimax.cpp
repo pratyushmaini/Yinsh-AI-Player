@@ -16,14 +16,14 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply){
     // printConfig();
     // cerr << "RINGS: "<< RingPos.size() << ", " << RingPosOpp.size() << endl;
     // cerr << "RINGPOS : ";
-    // for (int w=0; w< RingPos.size(); w++){
-    //     cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
-    // }
+    for (int w=0; w< RingPos.size(); w++){
+        // cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
+    }
     // cerr << endl;
     // cerr << "RINGPOSOpp : ";
-    // for (int w=0; w< RingPosOpp.size(); w++){
-    //     cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
-    // }
+    for (int w=0; w< RingPosOpp.size(); w++){
+        // cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
+    }
     // cerr << endl;
 
     MoveVal prev_move(INT_MIN);
@@ -33,18 +33,25 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply){
         return prev_move;
     }
     Children my_children = find_children( my_state, my_turn);
-    // cerr << "After Find Children" << endl;
+    // cerr << "After Find Children Max VAL" << endl;
+    for (int w = 0; w< my_children.neighbours.size(); w++){
+        for (int i = 0; i < my_children.neighbours[w].movetype.size(); ++i)
+        {
+            // cerr << my_children.neighbours[w].movetype[i] << " " << my_children.neighbours[w].cart_xy[i].x << " "<< my_children.neighbours[w].cart_xy[i].y ;
+        }
+        // cerr << endl;
+       
+    }
     // printConfig();
     // cerr << "RINGS: "<< RingPos.size() << ", " << RingPosOpp.size() << endl;
     // cerr << "RINGPOS : ";
-    // for (int w=0; w< RingPos.size(); w++){
-    //     cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
-    // }
-    // cerr<< "Done" << endl;
+    for (int w=0; w< RingPos.size(); w++){
+        // cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
+    }
     // cerr << "RINGPOSOpp : ";
-    // for (int w=0; w< RingPosOpp.size(); w++){
-    //     cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
-    // }
+    for (int w=0; w< RingPosOpp.size(); w++){
+        // cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
+    }
     // cerr<< "Done" << endl;
 
     // cerr << "Children Returned, Size: " <<my_children.neighbours.size()<< ", "<<endl;
@@ -86,14 +93,14 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
     // printConfig();
     // cerr << "RINGS: "<< RingPos.size() << ", " << RingPosOpp.size() << endl;
     // cerr << "RINGPOS : ";
-    // for (int w=0; w< RingPos.size(); w++){
-    //     cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
-    // }
+    for (int w=0; w< RingPos.size(); w++){
+        // cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
+    }
     // cerr << endl;
-    // // cerr << "RINGPOSOpp : ";
-    // for (int w=0; w< RingPosOpp.size(); w++){
-    //     cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
-    // }
+    // cerr << "RINGPOSOpp : ";
+    for (int w=0; w< RingPosOpp.size(); w++){
+        // cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
+    }
     // cerr<< "Done" << endl;
 
     MoveVal prev_move(INT_MAX);
@@ -111,14 +118,14 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
     // printConfig();
     // cerr << "RINGS: "<< RingPos.size() << ", " << RingPosOpp.size() << endl;
     // cerr << "RINGPOS : ";
-    // for (int w=0; w< RingPos.size(); w++){
-    //     cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
-    // }
+    for (int w=0; w< RingPos.size(); w++){
+        // cerr << RingPos[w].x << ", " << RingPos[w].y << ";    ";
+    }
     // cerr << endl;
     // cerr << "RINGPOSOpp : ";
-    // for (int w=0; w< RingPosOpp.size(); w++){
-    //     cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
-   // }
+    for (int w=0; w< RingPosOpp.size(); w++){
+        // cerr << RingPosOpp[w].x << ", " << RingPosOpp[w].y << ";    ";
+   }
     // cerr<< "Done" << endl;
 
     MoveVal my_child;
