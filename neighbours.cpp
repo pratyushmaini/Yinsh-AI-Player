@@ -91,9 +91,10 @@ float Board::all_utlity()
            }
       }
       return std::pow(2,two)+std::pow(2,three)+std::pow(2,four) -std::pow(2,two_opp)-std::pow(2,three_opp)-std::pow(2,four_opp);
+
 }
-float Board::edge_utility()
-{
+
+float Board::edge_utility(){
     int edge1 = 0;
     int edge2 = 0;
     int  edge3 = 0;
@@ -129,9 +130,10 @@ float Board::edge_utility()
         
     }
     return pow(edge1 - 1,4) + pow(edge2 - 1,4) + pow(edge3 - 1,4) + pow(edge4-1, 4) + pow(edge5 - 1, 4) + pow(edge6 - 1, 4);
+
+
 }
-float Board::rings_utility()
-{
+float Board::rings_utility(){
     int counter=0;
     for (int i=0;i<RingPos.size(); i++){
         int x1 = RingPos[i].x;
@@ -181,9 +183,17 @@ float Board::rings_utility()
     float util = (counter-counter_opp) *2;
     return util;
 }
-float Board::find_utility()
-{
+float Board::find_utility(){
     float utils = 0;
+    // if (RingPos.size() >= 2){
+    //    utils += std::pow(10,( 5 -RingPos.size() )*2);
+    //    utils -= std::pow(10,( 5 -RingPosOpp.size())*3); 
+    // }
+    // else{
+       // cerr << "ERORORRORRROROR***************************" << endl;
+    //     utils -= std::pow(10,( 3)*3);
+    //     utils += std::pow(10,( 3)*2);
+    // }
    
     int delta_markers = markersMy - markersOpp;
     // int delta_rings = RingPos.size() - RingPosOpp.size();
@@ -196,19 +206,31 @@ float Board::find_utility()
     utils += markersMy;
     utils -= markersOpp;
     // utils += (float)delta_markers;
-    // utils += rings_utility();
-    // utils+=all_utlity();
-    // utils-=all_utlity_opp();
+    utils += rings_utility();
+    utils+=all_utlity();
+    utils-=all_utlity_opp();
     // utils-= 2* edge_utility();
-
+    // cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
+    // cerr << "UTILITY = "<< utils << endl;
     return utils;
 
 }
+
+
+//     else if(m.size()>=2)
+//     {
+//         util+=utility_check_row(ct[0].x,ct[0].y,ct[1].x,ct[1].y);
+//         util+=utility_check_row_all_points(ct[0].x,ct[0].y,ct[1].x,ct[1].y);    
+//     }
+
 vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_vertical_my\n";
+
+    // cerr <<"Checkin Row Vert: x= " << init_pos_x << " y: " << init_pos_y << endl;
     int x1=init_pos_x;int y1=init_pos_y;
     string marker_check;
-    int h=0;int hip=0;int v=0;int vip=0;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
     if(my_turn) marker_check="M";
     else marker_check="MO";
     vector<Tup3> output;
@@ -219,7 +241,9 @@ vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my
                 v++;
                 if(v==5)
                 {
+
                     Cart c1;c1.x=x1;c1.y=i-4;Cart c2;c2.x=x1;c2.y=i;
+                    // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPos.size(); i++)
                     {
                         
@@ -237,11 +261,14 @@ vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my
         else{v=0;}
     }
     return output;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below check_row_vertical_my\n";
 
 }
 vector<Tup3> Board::check_row_vertical_opp( int init_pos_x,int init_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_vertical_opp\n";
 
+    // cerr <<"Checkin Row Vert: x= " << init_pos_x << " y: " << init_pos_y << endl;
     int x1=init_pos_x;int y1=init_pos_y;
     string marker_check;
     int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
@@ -275,19 +302,23 @@ vector<Tup3> Board::check_row_vertical_opp( int init_pos_x,int init_pos_y,bool m
         else{v=0;}
     }
     return output;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below check_row_vertical_opp\n";
 
 }
 
 vector<Tup3> Board::check_row_vertical( int init_pos_x,int init_pos_y ,bool my_turn)
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_vertical\n";
 
     if (my_turn) return check_row_vertical_my(init_pos_x, init_pos_y, my_turn);
     else return check_row_vertical_opp(init_pos_x, init_pos_y, my_turn);
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_vertical\n";
 
 }
 
 vector<Tup3> Board::check_row_horizontal_my( int init_pos_x,int init_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_horizontal_my\n";
 
     int x1=init_pos_x;int y1=init_pos_y;
     int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
@@ -321,10 +352,12 @@ vector<Tup3> Board::check_row_horizontal_my( int init_pos_x,int init_pos_y,bool 
         else{h=0;}
     }
     return output;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_horizontal_my\n";
 
 }
 vector<Tup3> Board::check_row_horizontal_opp( int init_pos_x,int init_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_horizontal_opp\n";
 
     int x1=init_pos_x;int y1=init_pos_y;
     int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
@@ -358,20 +391,25 @@ vector<Tup3> Board::check_row_horizontal_opp( int init_pos_x,int init_pos_y,bool
         else{h=0;}
     }
     return output;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_horizontal_opp\n";
 
 }
 
 vector<Tup3> Board::check_row_horizontal( int init_pos_x,int init_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_horizontal\n";
 
     if (my_turn) return  check_row_horizontal_my(init_pos_x, init_pos_y, my_turn);
     else return check_row_horizontal_opp(init_pos_x, init_pos_y, my_turn);
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_horizontal\n";
 
 }
 
 vector<Tup3> Board::check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my_turn)
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_diagonal_my\n";
 
+    // cerr << "D " << endl;
     int x1=init_pos_x;int y1=init_pos_y;
     int delta = x1-y1;
     string marker_check;
@@ -392,6 +430,7 @@ vector<Tup3> Board::check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my
                 h++;;
                 if(h==5)
                 {
+                    // cerr << "Diag " << endl;
                     
                     Cart c1;
                     c1.x = x - 4;
@@ -399,6 +438,7 @@ vector<Tup3> Board::check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my
                     Cart c2;
                     c2.x = x;
                     c2.y = y;
+                    // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPos.size(); i++)
                     {
                         Tup3 t;
@@ -416,16 +456,19 @@ vector<Tup3> Board::check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my
             
         }
     return output;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_diagonal_my\n";
 
 }
 vector<Tup3> Board::check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool my_turn)
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_diag_opp\n";
 
 
+    // cerr << "D " << endl;
     int x1=init_pos_x;int y1=init_pos_y;
     int delta = x1-y1;
     string marker_check;
-    int h=0;int hip=0;int v=0;int vip=0;
+    int h=0;int hip=0;int v=0;int vip=0;//h-->conseq. hor markers// hip =1--> indicates whether a row is in progress
     if(my_turn) marker_check="M";
     else marker_check="MO";
     vector<Tup3> output;
@@ -442,6 +485,7 @@ vector<Tup3> Board::check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool m
                 h++;;
                 if(h==5)
                 {
+                    // cerr << "Diag " << endl;
                     
                     Cart c1;
                     c1.x = x - 4;
@@ -449,6 +493,7 @@ vector<Tup3> Board::check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool m
                     Cart c2;
                     c2.x = x;
                     c2.y = y;
+                    // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPosOpp.size(); i++)
                     {
                         Tup3 t;
@@ -466,17 +511,21 @@ vector<Tup3> Board::check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool m
             
         }
     return output;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_diag_opp\n";
 
 }
 vector<Tup3> Board::check_row_diagonal( int init_pos_x,int init_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_diagonal\n";
 
     if (my_turn) return check_row_diagonal_my(init_pos_x, init_pos_y, my_turn);
     else return check_row_diagonal_opp(init_pos_x, init_pos_y, my_turn);
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_diagonal\n";
 
 }
 vector<Tup3> Board::check_row_all_points_each( int init_pos_x,int init_pos_y,int check, bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_all_points_each\n";
 
     int x1=init_pos_x;int y1=init_pos_y;
     vector<Tup3> non_intersecting_rows;
@@ -505,11 +554,13 @@ vector<Tup3> Board::check_row_all_points_each( int init_pos_x,int init_pos_y,int
         non_intersecting_rows.insert(non_intersecting_rows.end(),temp2.begin(),temp2.end());   
     }
     return non_intersecting_rows;    
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_row_all_points_each\n";
 
 }
 
 int Board::check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y, int ring_x, int ring_y, bool my_turn)
 {
+    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_if_row\n";
 
     int x1=init_pos_x;int y1=init_pos_y;
     int x2=final_pos_x;int y2=final_pos_y;
@@ -570,6 +621,7 @@ int Board::check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final
             }
         }
     }
+        // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " b check_if_row\n";
 
     return check;
 
@@ -577,12 +629,14 @@ int Board::check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final
 
 vector<Tup3> Board::check_row_all_points( int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y,bool my_turn )
 {
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check_row_all_points\n";
 
     int x1=init_pos_x;int y1=init_pos_y;
     int x2=final_pos_x;int y2=final_pos_y;
     vector<Tup3> non_intersecting_rows;
     if(x1==x2)
     {
+        // for(int y=y1;y<y2;y++)
         for(int y=std::min(y1,y2);y<=std::max(y1,y2);y++)
         {
             vector<Tup3> temp1=check_row_all_points_each(x1,y,0,my_turn);
@@ -606,11 +660,13 @@ vector<Tup3> Board::check_row_all_points( int init_pos_x,int init_pos_y,int fina
         }
     }
     return non_intersecting_rows;    
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below check_row_all_points\n";
 
 }
 
 vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> position of ring to be moved
  {
+  // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above find_neighbours\n";
 
     int x,y;
     if(dir==1)
@@ -649,15 +705,19 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
     Children ch;
     if ((x< 0|| y<0 || x>10 || y>10)){
     
+        // cerr << "Returning neighbours" << endl;
         return ch.neighbours;
     }
 
     MoveVal mvl;
     while(!(mapping[y][x]=="R" || mapping[y][x]=="RO" ||mapping[y][x]=="I"))
     {
+        // cerr << "NEW ";
+        // cerr << mapping[y][x] << " t " << t << endl;
          
         if(mapping[y][x]=="E" && t==0)
         {
+            // cerr << "IF" << endl;
             vector<string> m;
             vector<Cart> ct;
 
@@ -676,7 +736,10 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             m_temp.push_back("M");
             ct_temp.push_back(c);
             ct_temp.push_back(r);
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute\n";
             execute_move_sequence(ct,m,my_turn);
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below execute\n";
+            // cerr << "Initial Move Executed" << endl;
             vector<Tup3> t_vec;
             if(x==c.x)
             {
@@ -692,9 +755,12 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             }
 
             // for()
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above check\n";
             vector<Tup3> non_intersecting_rows = check_row_all_points(c.x,c.y,x,y,my_turn);
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below check\n";
 
             non_intersecting_rows.insert(non_intersecting_rows.end(),t_vec.begin(),t_vec.end());
+            // cerr << "non_intersecting_rows" << endl;
              
 
             if(non_intersecting_rows.size() > 0)
@@ -720,7 +786,9 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                         ct_first.push_back(non_intersecting_rows[i].carts[0]);
                         ct_first.push_back(non_intersecting_rows[i].carts[1]);
                         ct_first.push_back(non_intersecting_rows[i].carts[2]);
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute1\n";
                         execute_move_sequence(ct_first,m_first, my_turn);
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below execute1\n";
 
                         for(int j=i+1;j<non_intersecting_rows.size();j++)
                         {
@@ -766,8 +834,10 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                                 {
                                     if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- 2)) break;   
                                 }
+                                            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
 
                                 execute_move_sequence(ct_temp_2, m_temp_2, my_turn);
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
                                 
                             }                                                      
                         }
@@ -775,10 +845,13 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                         mvl.movetype = m;
                         mvl.cart_xy = ct;
                         ch.neighbours.push_back(mvl);
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above undo\n";
 
                         undo_move_sequence( ct_temp_1,m_temp_1, my_turn); 
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo\n";
 
                         undo_move_sequence(ct_first,m_first, my_turn);
+                                    // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo1\n";
 
                         int len = m_temp_1.size();
                         for (int d = 0 ; d<len + 3; d++){//<= as 1 extra for initial
@@ -791,14 +864,18 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
   
                 else
                 {
+                    // cerr << "size = 0" << endl;
                     mvl.movetype = m;
                     mvl.cart_xy = ct;
                     ch.neighbours.push_back(mvl);
                 }
+                            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above undo_temp\n";
 
                 undo_move_sequence(ct_temp,m_temp, my_turn);
 
+            // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below undo_temp\n";
                 
+            // cerr << "UNDOO" << endl;
             if(dir==1)
             {
                 y++;
@@ -823,10 +900,12 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             {
                 x--; y--;
             }
+            // cerr << "UNDOO" << endl;
 
         }
         else if(mapping[y][x]=="M" || mapping[y][x]=="MO")
         {
+            // cerr << "ELSE IF" << endl;
             t=1;
             if(dir==1)
             {
@@ -855,6 +934,8 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
         }
         else if(mapping[y][x]=="E" && t==1)
         {
+            // cerr << "Break wala else if" << endl;
+            // cerr << "IF" << endl;
             vector<string> m;
             vector<Cart> ct;
 
@@ -875,6 +956,7 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             ct_temp.push_back(r);
 
             execute_move_sequence(ct,m,my_turn);
+            // cerr << "Initial Move Executed" << endl;
             vector<Tup3> t_vec;
             if(x==c.x)
             {
@@ -892,6 +974,7 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
 
             vector<Tup3> non_intersecting_rows = check_row_all_points(c.x,c.y,x,y,my_turn);
             non_intersecting_rows.insert(non_intersecting_rows.end(),t_vec.begin(),t_vec.end());
+            // cerr << "non_intersecting_rows" << endl;
             if(non_intersecting_rows.size() > 0)
                 {
                     
@@ -982,6 +1065,7 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
                 
                 else
                 {
+                    // cerr << "size = 0" << endl;
                     mvl.movetype = m;
                     mvl.cart_xy = ct;
                     ch.neighbours.push_back(mvl);
@@ -990,11 +1074,14 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             undo_move_sequence(ct_temp,m_temp, my_turn);
             break;  
         }
+        // cerr << x << ", " << y << endl;
         if ((x<0 || y<0 || x>10 || y>10)){
             break;
         }
     }
+    // cerr << "Returning neighbours" << endl;
     return ch.neighbours;
+// cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " below find_neighbours\n";
 }
 
 vector<MoveVal> Board::moveRing(bool my_turn)
@@ -1012,8 +1099,16 @@ vector<MoveVal> Board::moveRing(bool my_turn)
         {
             for(int j=1;j<=6;j++)
             {
+                // cerr << "Next Dir" << i << ", " << j << endl;
                 // printConfig();
                 vector<MoveVal> p1= find_neighbours(myCopyRing[i],j, my_turn);
+                // for (int w = 0; w< p1.size(); w++){
+                //     for (int i = 0; i < p1[w].movetype.size(); ++i)
+                //     {
+                //         cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
+                //     }
+                //     cerr << endl;                
+                // }
                 padosi.insert(padosi.end(),p1.begin(),p1.end());  
             }
         }
@@ -1023,9 +1118,17 @@ vector<MoveVal> Board::moveRing(bool my_turn)
         {
             for(int j=1;j<=6;j++)
             {
+                // cerr << "Next Dir in Opp" << i << ", " << j << endl;
                 // printConfig();
 
                 vector<MoveVal> p1= find_neighbours(oppCopyRing[i],j, my_turn);
+                // for (int w = 0; w< p1.size(); w++){
+                //     for (int i = 0; i < p1[w].movetype.size(); ++i)
+                //     {
+                //         cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
+                //     }
+                //     cerr << endl;                
+                // }
                 padosi.insert(padosi.end(),p1.begin(),p1.end());
 
             }
@@ -1037,6 +1140,7 @@ vector<MoveVal> Board::moveRing(bool my_turn)
 
 
 vector<MoveVal> Board::placeRing(bool my_turn){
+  // cerr << "Place Ring Called" <<endl;
  /**/
   vector<MoveVal> all_possible_moves;
   int rings_temp = RingPos.size();
@@ -1203,10 +1307,15 @@ Children Board::find_children(int playerstate, bool my_turn)
 {
     Children my_children;
     vector<MoveVal> p = moveRing(my_turn);
+    // cerr << "Vector of Move Val Returned" << endl;
     my_children.neighbours = p;
     my_children.next_state = 2;
     return my_children;
 
+    // }
+    // if(playerstate==3)
+    // {
+    // }
 }
 
     
