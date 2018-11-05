@@ -80,33 +80,33 @@ void Board::removeMarkers(Cart start, Cart end){
 	int y2 = end.y;
 	int delta_x = (x1-x2) ;
 	int delta_y = (y1-y2) ;
-	if (delta_x == 0 && delta_y == 4){
+	if (delta_x == 0 && delta_y == (seq_length - 1)){
 		for (int i = y2; i<=y1; i++){
 			mapping[i][x1] = "E";
 		}
 	}
-	else if (delta_x == 0 && delta_y == -4){
+	else if (delta_x == 0 && delta_y == -(seq_length - 1)){
 		for (int i = y1; i<=y2; i++){
 			mapping[i][x1] = "E";
 		}
 	}
-	else if (delta_y == 0 && delta_x == 4){
+	else if (delta_y == 0 && delta_x == (seq_length - 1)){
 		for (int i = x2; i<=x1; i++){
 			mapping[y1][i] = "E";
 		}
 	}
-	else if (delta_y == 0 && delta_x == -4){
+	else if (delta_y == 0 && delta_x == -(seq_length - 1)){
 		for (int i = x1; i<=x2; i++){
 			mapping[y1][i] = "E";
 		}
 	}
-	else if (delta_y == 4 && delta_x == 4){
-		for (int i = 0; i<=4; i++){
+	else if (delta_y == (seq_length - 1) && delta_x == (seq_length - 1)){
+		for (int i = 0; i<=(seq_length - 1); i++){
 			mapping[y2 + i][x2+i] = "E";
 		}
 	}
-	else if (delta_y == -4 && delta_x == -4){
-		for (int i = 0; i<=4; i++){
+	else if (delta_y == -(seq_length - 1) && delta_x == -(seq_length - 1)){
+		for (int i = 0; i<=(seq_length - 1); i++){
 			mapping[y1 + i][x1+i] = "E";
 		}
 	}
@@ -129,38 +129,38 @@ void Board::addMarkers(Cart start, Cart end, bool self){
 	int y2 = end.y;
 	int delta_x = (x1-x2) ;
 	int delta_y = (y1-y2) ;
-	if (delta_x == 0 && delta_y == 4){
+	if (delta_x == 0 && delta_y == (seq_length - 1)){
 		for (int i = y2; i<=y1; i++){
 			mapping[i][x1] = marker;
 			counter++;
 		}
 	}
-	else if (delta_x == 0 && delta_y == -4){
+	else if (delta_x == 0 && delta_y == -(seq_length - 1)){
 		for (int i = y1; i<=y2; i++){
 			mapping[i][x1] = marker;
 			counter++;
 		}
 	}
-	else if (delta_y == 0 && delta_x == 4){
+	else if (delta_y == 0 && delta_x == (seq_length - 1)){
 		for (int i = x2; i<=x1; i++){
 			mapping[y1][i] = marker;
 			counter++;
 		}
 	}
-	else if (delta_y == 0 && delta_x == -4){
+	else if (delta_y == 0 && delta_x == -(seq_length - 1)){
 		for (int i = x1; i<=x2; i++){
 			mapping[y1][i] = marker;
 			counter++;
 		}
 	}
-	else if (delta_y == 4 && delta_x == 4){
-		for (int i = 0; i<=4; i++){
+	else if (delta_y == (seq_length - 1) && delta_x == (seq_length - 1)){
+		for (int i = 0; i<=(seq_length - 1); i++){
 			mapping[y2 + i][x2+i] = marker;
 			counter++;
 		}
 	}
-	else if (delta_y == -4 && delta_x == -4){
-		for (int i = 0; i<=4; i++){
+	else if (delta_y == -(seq_length - 1) && delta_x == -(seq_length - 1)){
+		for (int i = 0; i<=(seq_length - 1); i++){
 			mapping[y1 + i][x1+i] = marker;
 			counter++;
 		}
@@ -253,7 +253,7 @@ void Board::execute_move_opp(Cart tup, string type){
 	}
 	else if (type == "RE"){
 		removeMarkers(last_selected, tup);
-		markersOpp -= 5;
+		markersOpp -= seq_length;
 		last_selected = t;
 		// last_selected = temp(); 
 	}
@@ -432,8 +432,9 @@ Hex solve_sec(int x, int y){
 }
 
 Hex Board::convertToHex(int x, int y){
-	x = x-5;
-	y = y-5;
+	x = x- board_size ;
+	y = y- board_size ;
+	cerr << "board_size= " << board_size << endl;
 	int p = 0;
 	if (x>=0){
 		Hex output = solve_sec(x,y);
@@ -478,7 +479,7 @@ Cart Board::convertToCart(int r, int p){
 		y = temp.y;
 	}
 
-	x+=5; y+=5;
+	x+=board_size; y+=board_size;
 	//Write Code here to convert
 	Cart output(x,y);
 	return output;
@@ -486,6 +487,8 @@ Cart Board::convertToCart(int r, int p){
 }
 
 void Board::printConfig(){
+	cerr << "HEY I WAS CALLED" << endl;
+	cerr << mapping.size() << "MAPPING SIZE" << endl;
 	for (int i = mapping.size() - 1; i >=0; i--){
 		for (int j = 0; j < mapping[i].size() ; j++){
 			cerr << mapping[i][j]<<", ";

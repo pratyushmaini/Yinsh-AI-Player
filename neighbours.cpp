@@ -4,9 +4,9 @@ float Board::all_utlity()
 {
     int two,three,four,two_opp,three_opp,four_opp;int h=0;int v=0;int h_opp=0;int v_opp=0;
     two=three=four=two_opp=three_opp=four_opp=0;
-    for(int i=0;i<=10;i++)
+    for(int i=0;i<=2*board_size;i++)
     {
-        for(int j=0;j<=10;j++)
+        for(int j=0;j<=2*board_size;j++)
         {
             if(mapping[j][i]=="M")
             {
@@ -17,6 +17,7 @@ float Board::all_utlity()
                 if(h==2) two++;
                 if(h==3) three++;
                 if(h==4) four++;
+                // if(seq_length == 6 && h==5) five++;
                 h=0;
             }
             if(mapping[j][i]=="MO")
@@ -198,17 +199,31 @@ float Board::find_utility(){
     int delta_markers = markersMy - markersOpp;
     // int delta_rings = RingPos.size() - RingPosOpp.size();
     // utils += markersMy * (std::pow(10,delta_rings))/100;
-    float balance[6] = {200,200, 200, 70, 20, 0};
-    float balance_opp[6] = {300,300, 300, 100, 50, 0};
+    vector<float> balance; 
+    vector<float> balance_opp; 
+    if(seq_length == 5)
+    {
+        balance= {200,200, 200, 70, 20, 0};
+        balance_opp = {300,300, 300, 100, 50, 0};
+    }
+    else if(seq_length == 6)
+    {
+        balance = {200, 200, 200, 200, 70, 20, 0};
+        balance_opp = {300, 300, 300, 300, 100, 50, 0};
+    }
+    else
+    {
+        cerr << "Wrong seq_length"<<endl;
+    }
     utils += balance[RingPos.size()];
     utils -= balance[RingPosOpp.size()];
     // utils -= (RingPos.size() - RingPosOpp.size())*10000;
     utils += markersMy;
     utils -= markersOpp;
     // utils += (float)delta_markers;
-    utils += rings_utility();
-    utils+=all_utlity();
-    utils-=all_utlity_opp();
+    // utils += rings_utility();
+    // utils+=all_utlity();
+    // utils-=all_utlity_opp();
     // utils-= 2* edge_utility();
     // cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
     // cerr << "UTILITY = "<< utils << endl;
@@ -216,12 +231,6 @@ float Board::find_utility(){
 
 }
 
-
-//     else if(m.size()>=2)
-//     {
-//         util+=utility_check_row(ct[0].x,ct[0].y,ct[1].x,ct[1].y);
-//         util+=utility_check_row_all_points(ct[0].x,ct[0].y,ct[1].x,ct[1].y);    
-//     }
 
 vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my_turn )
 {
@@ -234,15 +243,15 @@ vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my
     if(my_turn) marker_check="M";
     else marker_check="MO";
     vector<Tup3> output;
-    for(int i=0;i<=10;i++)
+    for(int i=0;i<=2*board_size;i++)
     {
         if(mapping[i][x1]==marker_check) 
             {
                 v++;
-                if(v==5)
+                if(v==seq_length)
                 {
 
-                    Cart c1;c1.x=x1;c1.y=i-4;Cart c2;c2.x=x1;c2.y=i;
+                    Cart c1;c1.x=x1;c1.y=i-(seq_length-1);Cart c2;c2.x=x1;c2.y=i;
                     // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPos.size(); i++)
                     {
@@ -275,15 +284,15 @@ vector<Tup3> Board::check_row_vertical_opp( int init_pos_x,int init_pos_y,bool m
     if(my_turn) marker_check="M";
     else marker_check="MO";
     vector<Tup3> output;
-    for(int i=0;i<=10;i++)
+    for(int i=0;i<=2*board_size;i++)
     {
         if(mapping[i][x1]==marker_check) 
             {
                 v++;
-                if(v==5)
+                if(v==(seq_length))
                 {
 
-                    Cart c1;c1.x=x1;c1.y=i-4;Cart c2;c2.x=x1;c2.y=i;
+                    Cart c1;c1.x=x1;c1.y=i-(seq_length-1);Cart c2;c2.x=x1;c2.y=i;
                     // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPosOpp.size(); i++)
                     {
@@ -326,14 +335,14 @@ vector<Tup3> Board::check_row_horizontal_my( int init_pos_x,int init_pos_y,bool 
     string marker_check;
     if(my_turn) marker_check="M";
     else marker_check="MO";
-    for(int i=0;i<=10;i++)
+    for(int i=0;i<=2*board_size;i++)
     {
         if(mapping[y1][i]==marker_check) 
             {
                 h++;
-                if(h==5)
+                if(h==seq_length)
                 {
-                    Cart c1;c1.x=i-4;c1.y=y1;Cart c2;c2.x=i;c2.y=y1;
+                    Cart c1;c1.x=i-(seq_length-1);c1.y=y1;Cart c2;c2.x=i;c2.y=y1;
                     // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPos.size(); i++)
                     {
@@ -365,14 +374,14 @@ vector<Tup3> Board::check_row_horizontal_opp( int init_pos_x,int init_pos_y,bool
     string marker_check;
     if(my_turn) marker_check="M";
     else marker_check="MO";
-    for(int i=0;i<=10;i++)
+    for(int i=0;i<=2*board_size;i++)
     {
         if(mapping[y1][i]==marker_check) 
             {
                 h++;
-                if(h==5)
+                if(h==seq_length)
                 {
-                    Cart c1;c1.x=i-4;c1.y=y1;Cart c2;c2.x=i;c2.y=y1;
+                    Cart c1;c1.x=i-(seq_length-1);c1.y=y1;Cart c2;c2.x=i;c2.y=y1;
                     // for (auto i = rings.begin(); i != rings.end(); ++i)
                     for (int i=0; i<RingPosOpp.size(); i++)
                     {
@@ -418,23 +427,23 @@ vector<Tup3> Board::check_row_diagonal_my( int init_pos_x,int init_pos_y,bool my
     else marker_check="MO";
     vector<Tup3> output;
     int x,y;
-    for(int i=std::max(0,-delta) ; i<=10; i++)
+    for(int i=std::max(0,-delta) ; i<=2*board_size; i++)
         {
             y = i;
             x = i + delta; 
-            if (x >10 ||y >10 || x<0 || y<0){
+            if (x >2*board_size ||y >2*board_size || x<0 || y<0){
                 break;
             }
             if(mapping[y][x]==marker_check) 
             {
                 h++;;
-                if(h==5)
+                if(h==seq_length)
                 {
                     // cerr << "Diag " << endl;
                     
                     Cart c1;
-                    c1.x = x - 4;
-                    c1.y = y - 4;
+                    c1.x = x - (seq_length-1);
+                    c1.y = y - (seq_length-1);
                     Cart c2;
                     c2.x = x;
                     c2.y = y;
@@ -473,23 +482,23 @@ vector<Tup3> Board::check_row_diagonal_opp( int init_pos_x,int init_pos_y,bool m
     else marker_check="MO";
     vector<Tup3> output;
     int x,y;
-    for(int i=std::max(0,-delta) ; i<=10; i++)
+    for(int i=std::max(0,-delta) ; i<=2*board_size; i++)
         {
             y = i;
             x = i + delta; 
-            if (x >10 ||y >10 || x<0 || y<0){
+            if (x >2*board_size ||y >2*board_size || x<0 || y<0){
                 break;
             }
             if(mapping[y][x]==marker_check) 
             {
                 h++;;
-                if(h==5)
+                if(h==seq_length)
                 {
                     // cerr << "Diag " << endl;
                     
                     Cart c1;
-                    c1.x = x - 4;
-                    c1.y = y - 4;
+                    c1.x = x - (seq_length-1);
+                    c1.y = y - (seq_length-1);
                     Cart c2;
                     c2.x = x;
                     c2.y = y;
@@ -703,7 +712,7 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
     int t=0; //t=1--> a marker has been encountered
     
     Children ch;
-    if ((x< 0|| y<0 || x>10 || y>10)){
+    if ((x< 0|| y<0 || x>2*board_size || y>2*board_size)){
     
         // cerr << "Returning neighbours" << endl;
         return ch.neighbours;
@@ -828,11 +837,11 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
 
                                 if(my_turn)
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(RingPos.size()- 2)) break;
+                                    if((m_temp_1.size()/3 + 1)>(RingPos.size()- (rings_max-3))) break;
                                 }
                                 else
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- 2)) break;   
+                                    if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- (rings_max-3))) break;   
                                 }
                                             // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above execute2\n";
 
@@ -1038,11 +1047,11 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
 
                                 if(my_turn)
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(RingPos.size()- 2)) break;
+                                    if((m_temp_1.size()/3 + 1)>(RingPos.size()- (rings_max-3))) break;
                                 }
                                 else
                                 {
-                                    if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- 2)) break;   
+                                    if((m_temp_1.size()/3 + 1)>(RingPosOpp.size()- (rings_max-3))) break;   
                                 }
                                 execute_move_sequence(ct_temp_2, m_temp_2, my_turn);
                                 
@@ -1075,7 +1084,7 @@ vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> pos
             break;  
         }
         // cerr << x << ", " << y << endl;
-        if ((x<0 || y<0 || x>10 || y>10)){
+        if ((x<0 || y<0 || x>(2*board_size) || y>(2*board_size))){
             break;
         }
     }
@@ -1144,92 +1153,127 @@ vector<MoveVal> Board::placeRing(bool my_turn){
  /**/
   vector<MoveVal> all_possible_moves;
   int rings_temp = RingPos.size();
+  cerr << rings_temp << " = No. of Rings Placed" << endl;
+  cerr << "board_size = " << board_size << " rings_max = " << rings_max << " seq_length = " << seq_length << endl;
   
-  if( rings_temp==0 || rings_temp==1 || rings_temp==2 || rings_temp==3)
+  if( rings_temp<rings_max-1)
   {
+       
        MoveVal move;
-       if(mapping[5][5]=="E")
+       if(mapping[board_size][board_size]=="E")
        {
            Cart c;
-           c.x=5;
-           c.y=5;
+           cerr << "Case 1: " << endl;
+           c.x=board_size;
+           c.y=board_size;
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[6][5] == "E")
+       else if (mapping[ (board_size + 1)][board_size] == "E")
        {
            Cart c;
-           c.x=5;
-           c.y=6;
+           cerr << "Case 2: " << endl;
+           c.x=board_size;
+           c.y= (board_size + 1);
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[6][6] == "E")
+       else if (mapping[ (board_size + 1)][(board_size + 1)] == "E")
        {
            Cart c;
-           c.x=6;
-           c.y=6;
+           cerr << "Case 3: " << endl;
+           c.x= (board_size + 1);
+           c.y= (board_size + 1);
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[5][6] == "E")
+       else if (mapping[board_size][ (board_size + 1)] == "E")
        {
            Cart c;
-           c.x=6;
-           c.y=5;
+           c.x= (board_size + 1);
+           cerr << "Case 4: " << endl;
+           c.y=board_size;
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[4][5] == "E")
+       else if (mapping[(board_size - 1)][board_size] == "E")
        {
+           cerr << "Case 5: " << endl;
            Cart c;
-           c.x=5;
-           c.y=4;
+           c.x=board_size;
+           c.y=(board_size - 1);
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[4][4] == "E")
+       else if (mapping[(board_size - 1)][(board_size - 1)] == "E")
        {
+           cerr << "Case 6: " << endl;
            Cart c;
-           c.x=4;
-           c.y=4;
+           c.x=(board_size - 1);
+           c.y=(board_size - 1);
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[5][4] == "E")
+       else if (mapping[board_size][(board_size - 1)] == "E")
        {
+           cerr << "Case 7: " << endl;
            Cart c;
-           c.x=4;
-           c.y=5;
+           c.x=(board_size - 1);
+           c.y=board_size;
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
            all_possible_moves.push_back(move);
            return all_possible_moves;
        }
-       else if (mapping[7][5] == "E")
+       else if (mapping[board_size + 2][board_size] == "E")
        {
+           cerr << "Case 8: " << endl;
            Cart c;
-           c.x=5;
-           c.y=7;
+           c.x=board_size;
+           c.y=board_size + 2;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size + 1][board_size - 1] == "E")
+       {
+           cerr << "Case 9: " << endl;
+           Cart c;
+           c.x=board_size - 1;
+           c.y=board_size + 1;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size - 1][board_size + 1] == "E")
+       {
+           cerr << "Case 10: " << endl;
+           Cart c;
+           c.x=board_size + 1;
+           c.y=board_size - 1;
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
            // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
@@ -1243,12 +1287,12 @@ vector<MoveVal> Board::placeRing(bool my_turn){
       for(int y=0;y<=3;y++)
       {
 
-          if(mapping[y+6][10]=="E")
+          if(mapping[y+ (board_size + 1)][2*board_size]=="E")
           {
               MoveVal move;
               Cart c;
-              c.x=10;
-              c.y=y+6;
+              c.x=2*board_size;
+              c.y=y+ (board_size + 1);
               move.movetype.push_back("P");
               move.cart_xy.push_back(c);
               // execute_move_sequence(move.cart_xy, move.movetype, my_turn);

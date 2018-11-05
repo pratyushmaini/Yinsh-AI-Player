@@ -3,10 +3,10 @@
  
 void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
     while(true) {
-        // board.printConfig();
+        board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
-        if (countermv <= 5) countermv ++;
-        if (countermv > 5) {
+        if (countermv <= rings_max) countermv ++;
+        if (countermv > rings_max) {
             board.my_state = 2;
         }
         else {
@@ -44,7 +44,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
 
         board.execute_move_sequence_opp(Hexvec, strVec);
         // cerr << "After Opp move: " << endl;
-        // board.printConfig();
+        board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " ending\n";
         
         // cerr << "Opp move executed" << endl;
@@ -77,7 +77,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
             // if (checker == 3) break;
         }
         
-        if (board.RingPos.size() > 2  || board.my_state == 1){
+        if (board.RingPos.size() > (rings_max - 3)  || board.my_state == 1){
             // int markers_opp_saved = board.markersOpp;
             MoveVal next_move = board.DecisionMaker( ply, board.my_state);//****************************
             // board.markersOpp = markers_opp_saved;
@@ -102,7 +102,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
 void Player::play(){
 
 	if(player == 2) {
-        int ply = 1;
+        int ply = 4;
         play_2(ply,0);		
     }   
     else if(player == 1) {

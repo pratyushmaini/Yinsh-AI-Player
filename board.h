@@ -107,14 +107,21 @@ public:
 	int my_state ;
 	int opp_state = 1;
 	Tup3 prev_Opp_move;
-
+	int seq_length;
+	int rings_max;
+	int board_size;
 	
-	Board(){
-		for (int i=0; i< 11; i++){
+	Board(int board_size_in, int rings_max_in, int seq_length_in){
+		cerr << board_size_in << " " << rings_max_in << " "<< seq_length_in << " Params" << endl;
+		board_size = board_size_in;
+		rings_max = rings_max_in;
+		seq_length = seq_length_in;
+
+		for (int i=0; i< board_size*2 + 1 ; i++){
 			vector<string> v;
 			// int max_rows_i = max_rows[i];
 			// int min_rows_i = min_rows[i];
-			for (int j=0; j<11; j++){
+			for (int j=0; j<board_size*2 + 1; j++){
 				if (i<= max_rows[j] && i>= min_rows[j]){
 					v.push_back("E");
 				}
@@ -129,6 +136,9 @@ public:
 		markersMy = 0;
 		markersOpp = 0;	
 		my_state = 1;	
+	}
+	Board(){
+
 	}
 	string reverse(string s);
 	void flip(Cart start, Cart end);
@@ -170,6 +180,7 @@ public:
 	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
 	float find_utility();
 	float all_utlity();
+	float all_utlity_opp();
 	float edge_utility();
 	float rings_utility();
 

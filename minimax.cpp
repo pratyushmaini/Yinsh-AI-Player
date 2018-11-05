@@ -28,7 +28,7 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply){
 
     MoveVal prev_move(INT_MIN);
     bool my_turn = true;
-    if (ply == 0 || RingPos.size() <= 2 || RingPosOpp.size() <= 2){
+    if (ply == 0 || RingPos.size() <= (rings_max - 3) || RingPosOpp.size() <= (rings_max - 3)){
         prev_move.utility = find_utility();
         return prev_move;
     }
@@ -55,7 +55,7 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply){
     // cerr<< "Done" << endl;
 
     // cerr << "Children Returned, Size: " <<my_children.neighbours.size()<< ", "<<endl;
-    if (my_children.neighbours.size() == 0  || 5 -RingPos.size() >= 3 || 5 -RingPosOpp.size() >= 3){
+    if (my_children.neighbours.size() == 0  || rings_max-RingPos.size() >= 3 || rings_max-RingPosOpp.size() >= 3){
         prev_move.utility = find_utility();
         return prev_move;
     }
@@ -105,12 +105,12 @@ MoveVal Board::MinVal(float alpha, float beta, int ply){
 
     MoveVal prev_move(INT_MAX);
     bool my_turn = false;
-    if (ply ==0 || RingPos.size()<=2 || RingPosOpp.size() <= 2){
+    if (ply ==0 || RingPos.size()<= rings_max - 3 || RingPosOpp.size() <= rings_max - 3){
         prev_move.utility = find_utility();
         return prev_move;
     }
     Children my_children = find_children(my_state, my_turn);
-    if (my_children.neighbours.size() == 0 || 5 -RingPos.size() >= 3 || 5 -RingPosOpp.size() >= 3){
+    if (my_children.neighbours.size() == 0 || rings_max-RingPos.size() >= 3 || rings_max-RingPosOpp.size() >= 3){
         prev_move.utility = find_utility();        
         return prev_move;
     }
