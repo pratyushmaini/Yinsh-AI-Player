@@ -1,5 +1,7 @@
 #include "board.h"
 
+
+
 //position to what is contained in it -- pos = tuple of x, y where min y starts at bottom most node
 //"E" / "R"/ "RO" /"M"/"MO"/"I
 
