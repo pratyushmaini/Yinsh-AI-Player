@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ./compile.sh
+./compile.sh
 
 echo Compilation Successful !!
 

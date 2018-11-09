@@ -5,3 +5,7 @@
 {"action": "FINISH", "meta": "Player 1 SCORE : 10.009 : Player 2 SCORE : 0.013", "data": "S 4 13 M 2 7 RS 5 17 RE 3 7 X 2 6"}Received from client 0
 5,5 Player 2, Opp = Bots/aggressive.py
 {"action": "FINISH", "meta": "Player 2 SCORE : 10.005 : Player 1 SCORE : 0.012", "data": "S 5 14 M 4 12 RS 5 14 RE 1 2 X 5 13"}Received from client 1
+5,5 Player 1, Opp = Bots/defensive.py
+{"action": "FINISH", "meta": "Player 1 SCORE : 10.007 : Player 2 SCORE : 0.023", "data": "S 3 8 M 3 13 RS 2 8 RE 4 10 X 4 4"}Received from client 0
+5,5 Player 2, Opp = Bots/defensive.py
+{"action": "FINISH", "meta": "Player 2 SCORE : 10.013 : Player 1 SCORE : 0.016", "data": "S 3 7 M 3 14 RS 3 13 RE 2 1 X 3 12"}Received from client 1

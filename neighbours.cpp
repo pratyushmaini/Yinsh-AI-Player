@@ -2,8 +2,10 @@
 
 float Board::all_utlity()
 {
-    int two,three,four,two_opp,three_opp,four_opp;int h=0;int v=0;int h_opp=0;int v_opp=0;
-    two=three=four=two_opp=three_opp=four_opp=0;
+    //int two,three,four,five, two_opp,three_opp,four_opp, five_opp;
+    int h=0;int v=0;int h_opp=0;int v_opp=0;
+    float score=0;
+    //two=three=four=five=two_opp=three_opp=four_opp=five_opp=0;
     for(int i=0;i<=2*board_size;i++)
     {
         for(int j=0;j<=2*board_size;j++)
@@ -11,46 +13,79 @@ float Board::all_utlity()
             if(mapping[j][i]=="M")
             {
                 h++;
+                if(h==2) score=score+3;
+                if(h==3) score=score+9;
+                if(h==4) score=score+27;
+                if(h==5) score=score+81;
+            }
+            else if(mapping[j][i]=="R")
+            {
+                if(h==2) score=score+1.5;
+                if(h==3) score=score+4.5;
+                if(h==4) score=score+13.5;
+                if(h==5) score=score+40.5;
             }
             else
             {
-                if(h==2) two++;
-                if(h==3) three++;
-                if(h==4) four++;
-                // if(seq_length == 6 && h==5) five++;
                 h=0;
             }
             if(mapping[j][i]=="MO")
             {
                 h_opp++;
+                if(h_opp==2) score=score-3;
+                if(h_opp==3) score=score-9;
+                if(h_opp==4) score=score-27;
+                if(h_opp==5) score=score-81;
+            }
+            else if(mapping[j][i]=="RO")
+            {
+                if(h_opp==2) score=score-1.5;
+                if(h_opp==3) score=score-4.5;
+                if(h_opp==4) score=score-13.5;
+                if(h_opp==5) score=score-40.5;
             }
             else
             {
-                if(h_opp==2) two_opp++;
-                if(h_opp==3) three_opp++;
-                if(h_opp==4) four_opp++;
                 h_opp=0;
             }
             if(mapping[i][j]=="M")
             {
                 v++;
+                if(v==2) score=score+3;
+                if(v==3) score=score+9;
+                if(v==4) score=score+27;
+                if(v==5) score=score+81;
+                
+            }
+            else if(mapping[i][j]=="R")
+            {
+                if(v==2) score=score+1.5;
+                if(v==3) score=score+4.5;
+                if(v==4) score=score+13.5;
+                if(v==5) score=score+40.5;
             }
             else
             {
-                if(v==2) two++;
-                if(v==3) three++;
-                if(v==4) four++;
                 v=0;
             }
             if(mapping[i][j]=="MO")
             {
                 v_opp++;
+                if(v_opp==2) score=score-3;
+                if(v_opp==3) score=score-9;
+                if(v_opp==4) score=score-27;
+                if(v_opp==5) score=score-81;
+                
+            }
+            else if(mapping[i][j]=="RO")
+            {
+                if(v_opp==2) score=score-1.5;
+                if(v_opp==3) score=score-4.5;
+                if(v_opp==4) score=score-13.5;
+                if(v_opp==5) score=score-40.5;
             }
             else
             {
-                if(v_opp==2) two_opp++;
-                if(v_opp==3) three_opp++;
-                if(v_opp==4) four_opp++;
                 v_opp=0;
             }
 
@@ -70,28 +105,45 @@ float Board::all_utlity()
                if(mapping[y][x]=="M")
                {
                    v++;
+                   if(v==2) score=score+3;
+                   if(v==3) score=score+9;
+                   if(v==4) score=score+27;
+                   if(v==5) score=score+81;
                }
-               else
-                {
-                    if(v==2) two++;
-                    if(v==3) three++;
-                    if(v==4) four++;
-                    v=0;
-                }
-                if(mapping[y][x]=="MO")
+               else if(mapping[y][x]=="R")
                {
-                   v_opp++;
+                    if(v==2) score=score+1.5;
+                    if(v==3) score=score+4.5;
+                    if(v==4) score=score+13.5;
+                    if(v==5) score=score+40.5;
                }
                else
+               {
+                    v=0;
+               }
+               if(mapping[y][x]=="MO")
                 {
-                    if(v_opp==2) two_opp++;
-                    if(v_opp==3) three_opp++;
-                    if(v_opp==4) four_opp++;
+                    v_opp++;
+                    if(v_opp==2) score=score-3;
+                    if(v_opp==3) score=score-9;
+                    if(v_opp==4) score=score-27;
+                    if(v_opp==5) score=score-81;
+                    
+                }
+                else if(mapping[y][x]=="RO")
+                {
+                    if(v_opp==2) score=score-1.5;
+                    if(v_opp==3) score=score-4.5;
+                    if(v_opp==4) score=score-13.5;
+                    if(v_opp==5) score=score-40.5;
+                }
+                else
+                {
                     v_opp=0;
                 }
            }
       }
-      return std::pow(2,two)+std::pow(2,three)+std::pow(2,four) -std::pow(2,two_opp)-std::pow(2,three_opp)-std::pow(2,four_opp);
+      return score;//3*two+9*three+27*four+81*five-(3*two_opp+9*three_opp+27*four_opp+81*five_opp);
 
 }
 
