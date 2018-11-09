@@ -96,8 +96,10 @@ public:
 	vector <vector <string> > mapping;
 	vector<Cart> RingPos ;
 	vector<Cart> RingPosOpp ;
-	int min_rows[11]={1,0,0,0,0,1,1,2,3,4,6};
-	int max_rows[11]={4,6,7,8,9,9,10,10,10,10,9};
+	vector<int> min_rows_5{1,0,0,0,0,  1,1,2,3,4,6};
+	vector<int> min_rows_6{1,0,0,0,0,0,1,1,2,3,4,5,7};
+	vector<int> max_rows_5{4,6,7,8,    9,9, 10,10,10,10,  9};
+	vector<int> max_rows_6{5,7,8,9,10,11,11,12,12,12,12,12,11};
 	Cart last_selected;
 	int ringsMy; //Number of rings on the side
 	int ringsOpp;
@@ -110,12 +112,23 @@ public:
 	int seq_length;
 	int rings_max;
 	int board_size;
+
 	
 	Board(int board_size_in, int rings_max_in, int seq_length_in){
 		cerr << board_size_in << " " << rings_max_in << " "<< seq_length_in << " Params" << endl;
 		board_size = board_size_in;
 		rings_max = rings_max_in;
 		seq_length = seq_length_in;
+		vector<int> min_rows;
+		vector<int>max_rows;
+		if (board_size == 5){
+			min_rows = min_rows_5;
+			max_rows = max_rows_5;
+		}
+		else{
+			min_rows = min_rows_6;
+			max_rows = max_rows_6;
+		}
 
 		for (int i=0; i< board_size*2 + 1 ; i++){
 			vector<string> v;

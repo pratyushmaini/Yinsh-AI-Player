@@ -186,30 +186,21 @@ float Board::rings_utility(){
 }
 float Board::find_utility(){
     float utils = 0;
-    // if (RingPos.size() >= 2){
-    //    utils += std::pow(10,( 5 -RingPos.size() )*2);
-    //    utils -= std::pow(10,( 5 -RingPosOpp.size())*3); 
-    // }
-    // else{
-       // cerr << "ERORORRORRROROR***************************" << endl;
-    //     utils -= std::pow(10,( 3)*3);
-    //     utils += std::pow(10,( 3)*2);
-    // }
    
     int delta_markers = markersMy - markersOpp;
     // int delta_rings = RingPos.size() - RingPosOpp.size();
     // utils += markersMy * (std::pow(10,delta_rings))/100;
     vector<float> balance; 
     vector<float> balance_opp; 
-    if(seq_length == 5)
+    if(rings_max == 5)
     {
         balance= {200,200, 200, 70, 20, 0};
-        balance_opp = {300,300, 300, 100, 50, 0};
+        balance_opp = {3000,3000, 3000, 100, 50, 0};
     }
-    else if(seq_length == 6)
+    else if(rings_max == 6)
     {
         balance = {200, 200, 200, 200, 70, 20, 0};
-        balance_opp = {300, 300, 300, 300, 100, 50, 0};
+        balance_opp = {3000, 3000, 3000, 3000, 100, 50, 0};
     }
     else
     {
@@ -222,7 +213,8 @@ float Board::find_utility(){
     utils -= markersOpp;
     // utils += (float)delta_markers;
     // utils += rings_utility();
-    // utils+=all_utlity();
+    // cerr << rings_utility()/utils << endl;
+    // utils+= all_utlity();
     // utils-=all_utlity_opp();
     // utils-= 2* edge_utility();
     // cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
