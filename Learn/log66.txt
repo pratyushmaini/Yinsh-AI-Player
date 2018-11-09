@@ -1,0 +1,9 @@
+6,6 Player 1, Opp = Bots/RandomPlayer.py
+6,6 Player 2, Opp = Bots/RandomPlayer.py
+6,6 Player 1, Opp = Bots/RandomPlayer.py
+6,6 Player 2, Opp = Bots/RandomPlayer.py
+6,6 Player 1, Opp = Bots/RandomPlayer.py
+6,6 Player 1, Opp = Bots/RandomPlayer.py
+{"action": "FINISH", "meta": "Player 1 SCORE : 10.026 : Player 2 SCORE : 0.023", "data": "S 5 21 M 6 25 RS 5 21 RE 1 0 X 6 25"}Received from client 0
+6,6 Player 2, Opp = Bots/RandomPlayer.py
+Start

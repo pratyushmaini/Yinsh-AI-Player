@@ -1,16 +1,119 @@
 #!/bin/bash
-echo 5,5 AGAINST  >> log.txt
-python server.py 10000 -n 5 -s 5 -NC 2 -TL 120 -LOG server.log &
-python client.py 0.0.0.0 10000 ./run.sh &
-python client.py 0.0.0.0 10000 aggressive.py -mode GUI 
-pkill -9 python
 
-python server.py 10000 -n 6 -s 5 -NC 2 -TL 150 -LOG server.log &
-python client.py 0.0.0.0 10000 ./run.sh &
-python client.py 0.0.0.0 10000 aggressive.py -mode GUI 
-pkill -9 python
+# ./compile.sh
 
-python server.py 10000 -n 6 -s 6 -NC 2 -TL 180 -LOG server.log &
-python client.py 0.0.0.0 10000 ./run.sh &
-python client.py 0.0.0.0 10000 aggressive.py -mode GUI 
-pkill -9 python
+echo Compilation Successful !!
+
+var=10000
+
+for i in Bots/RandomPlayer.py Bots/aggressive.py Bots/defensive.py Bots/third.py Bots/run.sh 
+do
+    echo 5,5 Player 1, Opp = $i >> Learn/log55.txt
+    python server.py $var -n 5 -s 5 -NC 2 -TL 120 -LOG server.log > Learn/log11.txt&
+    sleep 0.1s
+    python client.py 0.0.0.0 $var ./run.sh &
+    sleep 0.1s
+    python client.py 0.0.0.0 $var $i -mode GUI 
+    
+    pkill -9 python
+    # source kill_python.sh
+    sleep 1s
+    let "var++"
+    echo $var
+    echo Awake
+    # pkill -9 python
+    tail -1 Learn/log11.txt | head -1 >> Learn/log55.txt
+
+    echo Next
+
+    echo 5,5 Player 2, Opp = $i >> Learn/log55.txt
+    python server.py $var -n 5 -s 5 -NC 2 -TL 120 -LOG server.log > Learn/log12.txt&
+    sleep 0.1s
+    python client.py 0.0.0.0 $var $i -mode GUI 
+    sleep 0.1s
+    python client.py 0.0.0.0 $var ./run.sh &
+    
+    pkill -9 python
+    # source kill_python.sh
+    sleep 1s
+    let "var++"
+    echo $var
+    echo Awake
+
+    tail -1 Learn/log12.txt | head -1 >> Learn/log55.txt
+
+    echo Next
+
+    echo 6,5 Player 1, Opp = $i >> Learn/log65.txt
+    python server.py $var -n 6 -s 5 -NC 2 -TL 150 -LOG server.log > Learn/log21.txt&
+    sleep 0.1s
+    python client.py 0.0.0.0 $var ./run.sh &
+    sleep 0.1s
+    python client.py 0.0.0.0 $var $i -mode GUI 
+    
+    pkill -9 python
+    # source kill_python.sh
+    sleep 1s
+    let "var++"
+    echo $var
+    echo Awake
+
+    tail -1 Learn/log21.txt | head -1 >> Learn/log65.txt
+
+    echo Next
+
+    echo 6,5 Player 2, Opp = $i >> Learn/log65.txt
+    python server.py $var -n 6 -s 5 -NC 2 -TL 150 -LOG server.log > Learn/log22.txt&
+    sleep 0.1s
+    python client.py 0.0.0.0 $var $i -mode GUI
+    sleep 0.1s
+    python client.py 0.0.0.0 $var ./run.sh &
+    
+    pkill -9 python
+    # source kill_python.sh
+    sleep 1s
+    let "var++"
+    echo $var
+    echo Awake
+
+    tail -1 Learn/log22.txt | head -1 >> Learn/log65.txt
+
+    echo Next
+
+    echo 6,6 Player 1, Opp = $i >> Learn/log66.txt
+    python server.py $var -n 6 -s 6 -NC 2 -TL 180 -LOG server.log > Learn/log31.txt&
+    sleep 0.1s
+    python client.py 0.0.0.0 $var ./run.sh &
+    sleep 0.1s
+    python client.py 0.0.0.0 $var $i -mode GUI 
+    
+    pkill -9 python
+    # source kill_python.sh
+    sleep 1s
+    let "var++"
+    echo $var
+    echo Awake
+
+    tail -1 Learn/log31.txt | head -1 >> Learn/log66.txt
+
+    echo Next
+
+    echo 6,6 Player 2, Opp = $i >> Learn/log66.txt
+    python server.py $var -n 6 -s 6 -NC 2 -TL 180 -LOG server.log > Learn/log32.txt&
+    sleep 0.1s
+    python client.py 0.0.0.0 $var $i -mode GUI 
+    sleep 0.1s
+    python client.py 0.0.0.0 $var ./run.sh &
+    
+    pkill -9 python
+    # source kill_python.sh
+    sleep 1s
+    let "var++"
+    echo $var
+    echo Awake
+
+    tail -1 Learn/log32.txt | head -1 >> Learn/log66.txt
+
+    echo Next
+
+done
