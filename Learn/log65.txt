@@ -8,3 +8,11 @@
 {"action": "FINISH", "meta": "TIMEOUT BY PLAYER 2 : Player 2 SCORE : 0.018 : Player 1 SCORE : 10.008", "data": ""}Received from client 1
 6,5 Player 1, Opp = Bots/defensive.py
 6,5 Player 2, Opp = Bots/defensive.py
+6,5 Player 1, Opp = Bots/third.py
+{"action": "FINISH", "meta": "Player 1 SCORE : 9.007 : Player 2 SCORE : 1.006", "data": "S 4 13 M 6 16 RS 6 19 RE 5 12 X 6 16"}Received from client 0
+6,5 Player 2, Opp = Bots/third.py
+{"action": "FINISH", "meta": "Player 2 SCORE : 9.014 : Player 1 SCORE : 1.012", "data": "S 3 4 M 3 11 RS 2 7 RE 3 17 X 3 11"}Received from client 1
+6,5 Player 1, Opp = Bots/RandomPlayer.py
+{"action": "FINISH", "meta": "Player 1 SCORE : 10.011 : Player 2 SCORE : 0.011", "data": "S 2 7 M 4 15 RS 4 13 RE 1 5 X 3 17"}Received from client 0
+6,5 Player 2, Opp = Bots/RandomPlayer.py
+{"action": "FINISH", "meta": "Player 2 SCORE : 10.008 : Player 1 SCORE : 0.009", "data": "S 4 10 M 4 12 RS 4 11 RE 5 9 X 4 12"}Received from client 1

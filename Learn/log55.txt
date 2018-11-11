@@ -10,3 +10,11 @@
 {"action": "FINISH", "meta": "Player 1 SCORE : 9.011 : Player 2 SCORE : 1.028", "data": "S 5 7 M 5 6 RS 2 5 RE 5 7 X 5 6"}Received from client 0
 5,5 Player 2, Opp = Bots/defensive.py
 {"action": "FINISH", "meta": "Player 2 SCORE : 10.007 : Player 1 SCORE : 0.016", "data": "S 3 1 M 1 1 RS 3 14 RE 3 1 X 3 12"}Received from client 1
+5,5 Player 1, Opp = Bots/third.py
+{"action": "FINISH", "meta": "Player 1 SCORE : 9.001 : Player 2 SCORE : 1.006", "data": "S 2 4 M 3 2 RS 2 5 RE 5 7 X 3 2"}Received from client 0
+5,5 Player 2, Opp = Bots/third.py
+{"action": "FINISH", "meta": "Player 2 SCORE : 10.01 : Player 1 SCORE : 0.011", "data": "S 3 10 M 2 11 RS 1 4 RE 4 9 X 4 5"}Received from client 1
+5,5 Player 1, Opp = Bots/RandomPlayer.py
+{"action": "FINISH", "meta": "Player 1 SCORE : 10.007 : Player 2 SCORE : 0.011", "data": "S 1 0 M 5 26 RS 2 9 RE 3 2 X 5 26"}Received from client 0
+5,5 Player 2, Opp = Bots/RandomPlayer.py
+{"action": "FINISH", "meta": "Player 2 SCORE : 10.01 : Player 1 SCORE : 0.005", "data": "S 2 10 M 3 6 RS 3 15 RE 1 2 X 3 6"}Received from client 1

@@ -453,6 +453,6 @@ class Game:
 				exec("self.execute_move(\"" + out['data'] + "\")")
 
 if __name__ == "__main__":
-	game = Game(5,5, 'GUI')
+	game = Game(6,6, 'GUI')
 	game.simulate(sys.argv[1])
 

@@ -6,7 +6,7 @@ echo Compilation Successful !!
 
 var=10000
 
-for i in Bots/RandomPlayer.py Bots/aggressive.py Bots/defensive.py Bots/third.py Bots/run.sh 
+for i in Bots/third.py Bots/RandomPlayer.py Bots/aggressive.py Bots/defensive.py Bots/run.sh 
 do
     echo 5,5 Player 1, Opp = $i >> Learn/log55.txt
     python server.py $var -n 5 -s 5 -NC 2 -TL 120 -LOG server.log > Learn/log11.txt&

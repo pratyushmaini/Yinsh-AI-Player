@@ -2,6 +2,9 @@
 
 float Board::all_utility()
 {
+    std::vector<int> scoring_matrix = {0,1,3,9,27,81};
+
+
     //int two,three,four,five, two_opp,three_opp,four_opp, five_opp;
     int h=0;int v=0;int h_opp=0;int v_opp=0;
     float score=0;
@@ -13,17 +16,12 @@ float Board::all_utility()
             if(mapping[j][i]=="M")
             {
                 h++;
-                if(h==2) score=score+3;
-                if(h==3) score=score+9;
-                if(h==4) score=score+27;
-                if(h==5) score=score+81;
+                score += scoring_matrix[max(h,5)];
             }
             else if(mapping[j][i]=="R")
             {
-                if(h==2) score=score+1.5;
-                if(h==3) score=score+4.5;
-                if(h==4) score=score+13.5;
-                if(h==5) score=score+40.5;
+                h++;
+                score += scoring_matrix[max(h,5)]/2.0;
             }
             else
             {
@@ -32,17 +30,12 @@ float Board::all_utility()
             if(mapping[j][i]=="MO")
             {
                 h_opp++;
-                if(h_opp==2) score=score-3;
-                if(h_opp==3) score=score-9;
-                if(h_opp==4) score=score-27;
-                if(h_opp==5) score=score-81;
+                score -= scoring_matrix[max(h_opp,5)];
             }
             else if(mapping[j][i]=="RO")
             {
-                if(h_opp==2) score=score-1.5;
-                if(h_opp==3) score=score-4.5;
-                if(h_opp==4) score=score-13.5;
-                if(h_opp==5) score=score-40.5;
+                h_opp++;
+                score -= scoring_matrix[max(h_opp,5)]/2.0;
             }
             else
             {
@@ -51,18 +44,13 @@ float Board::all_utility()
             if(mapping[i][j]=="M")
             {
                 v++;
-                if(v==2) score=score+3;
-                if(v==3) score=score+9;
-                if(v==4) score=score+27;
-                if(v==5) score=score+81;
+                score += scoring_matrix[max(v,5)];
                 
             }
             else if(mapping[i][j]=="R")
             {
-                if(v==2) score=score+1.5;
-                if(v==3) score=score+4.5;
-                if(v==4) score=score+13.5;
-                if(v==5) score=score+40.5;
+                v++;
+                score += scoring_matrix[max(v,5)]/2.0;
             }
             else
             {
@@ -71,19 +59,14 @@ float Board::all_utility()
             if(mapping[i][j]=="MO")
             {
                 v_opp++;
-                if(v_opp==2) score=score-3;
-                if(v_opp==3) score=score-9;
-                if(v_opp==4) score=score-27;
-                if(v_opp==5) score=score-81;
+                score -= scoring_matrix[max(v_opp,5)];
                 
             }
             else if(mapping[i][j]=="RO")
             {
-                if(v_opp==2) score=score-1.5;
-                if(v_opp==3) score=score-4.5;
-                if(v_opp==4) score=score-13.5;
-                if(v_opp==5) score=score-40.5;
-            }
+                v_opp++;
+                score -= scoring_matrix[max(v_opp,5)]/2.0;
+            } 
             else
             {
                 v_opp=0;
@@ -104,18 +87,13 @@ float Board::all_utility()
                }
                if(mapping[y][x]=="M")
                {
-                   v++;
-                   if(v==2) score=score+3;
-                   if(v==3) score=score+9;
-                   if(v==4) score=score+27;
-                   if(v==5) score=score+81;
+                    v++;
+                    score += scoring_matrix[max(v,5)];
                }
                else if(mapping[y][x]=="R")
                {
-                    if(v==2) score=score+1.5;
-                    if(v==3) score=score+4.5;
-                    if(v==4) score=score+13.5;
-                    if(v==5) score=score+40.5;
+                    v++;
+                    score += scoring_matrix[max(v,5)]/2.0;
                }
                else
                {
@@ -124,18 +102,13 @@ float Board::all_utility()
                if(mapping[y][x]=="MO")
                 {
                     v_opp++;
-                    if(v_opp==2) score=score-3;
-                    if(v_opp==3) score=score-9;
-                    if(v_opp==4) score=score-27;
-                    if(v_opp==5) score=score-81;
+                    score -= scoring_matrix[max(v_opp,5)];
                     
                 }
                 else if(mapping[y][x]=="RO")
                 {
-                    if(v_opp==2) score=score-1.5;
-                    if(v_opp==3) score=score-4.5;
-                    if(v_opp==4) score=score-13.5;
-                    if(v_opp==5) score=score-40.5;
+                    v_opp++;
+                    score -= scoring_matrix[max(v_opp,5)]/2.0;
                 }
                 else
                 {
@@ -244,13 +217,13 @@ float Board::find_utility(){
     vector<float> balance_opp; 
     if(rings_max == 5)
     {
-        balance= {1000,1000, 1000, 300, 100, 0};
-        balance_opp = {900,900, 900, 200, 80, 0};
+        balance= {10000,10000, 10000, 500, 300, 0};
+        balance_opp = {10000,10000, 10000, 400, 200, 0};
     }
     else if(rings_max == 6)
     {
-        balance = {1000,1000,1000, 1000, 300, 100, 0};
-        balance_opp = {900,900,900, 900, 200, 80, 0};
+        balance= {10000, 10000,10000, 10000, 1500, 500, 0};
+        balance_opp = {10000, 10000,10000, 10000, 1200, 400, 0};
     }
     else
     {
@@ -259,8 +232,8 @@ float Board::find_utility(){
     utils += balance[RingPos.size()];
     utils -= balance[RingPosOpp.size()];
     // utils -= (RingPos.size() - RingPosOpp.size())*10000;
-    utils += markersMy;
-    utils -= markersOpp;
+    // utils += markersMy;
+    // utils -= markersOpp;
     // utils += (float)delta_markers;
     // utils += rings_utility();
     float all = all_utility();

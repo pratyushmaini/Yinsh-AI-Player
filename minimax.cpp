@@ -26,7 +26,7 @@ MoveVal Board::MaxVal(float alpha, float beta, int ply, bool util_type){// int n
     Children my_children = find_children( my_state, my_turn);
     // cerr << "After Find Children Max VAL" << endl;
 
-    if (my_children.neighbours.size() == 0  || rings_max-RingPos.size() >= 3 || rings_max-RingPosOpp.size() >= 3){
+    if (my_children.neighbours.size() == 0 ){// || rings_max-RingPos.size() >= 3 || rings_max-RingPosOpp.size() >= 3){
         prev_move.utility = find_utility_master(util_type);
         return prev_move;
     }
