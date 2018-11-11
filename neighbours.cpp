@@ -244,13 +244,13 @@ float Board::find_utility(){
     vector<float> balance_opp; 
     if(rings_max == 5)
     {
-        balance= {200,200, 200, 70, 20, 0};
-        balance_opp = {3000,3000, 3000, 100, 50, 0};
+        balance= {1000,1000, 1000, 300, 100, 0};
+        balance_opp = {900,900, 900, 200, 80, 0};
     }
     else if(rings_max == 6)
     {
-        balance = {200, 200, 200, 200, 70, 20, 0};
-        balance_opp = {3000, 3000, 3000, 3000, 100, 50, 0};
+        balance = {1000,1000,1000, 1000, 300, 100, 0};
+        balance_opp = {900,900,900, 900, 200, 80, 0};
     }
     else
     {

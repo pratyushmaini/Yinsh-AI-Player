@@ -3,7 +3,22 @@
  
 void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
     while(true) {
-        cerr << "TIME LEFT = " << time_max - (time(NULL) - start_time)<< "Total Time = " <<time_max << endl;
+
+        double elapsed = ( std::clock() - start_time ) / (double) CLOCKS_PER_SEC;
+        double remaining = time_max - elapsed;
+        cerr << "TIME LEFT = " << elapsed<< "Total Time = " <<time_max << endl;
+        if (remaining >= 40){
+            ply = 4;
+        }
+        else if (remaining < 10){
+            ply = 1;
+        }
+        else if (remaining < 20){
+            ply = 2;
+        }
+        else if (remaining < 40){
+            ply = 3;
+        }
 
         board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
@@ -110,7 +125,7 @@ void Player::play(){
     }   
     else if(player == 1) {
         int ply = 4;
-        bool util_type = true; //True means that all() will be used
+        bool util_type = false; //True means that all() will be used
         MoveVal next_move = board.DecisionMaker( ply, 1, util_type);
         board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
         vector<Hex> my_hex_vec;

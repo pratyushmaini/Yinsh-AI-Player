@@ -6,6 +6,8 @@ using namespace std;
 #include <bits/stdc++.h> 
 #include <boost/algorithm/string.hpp>
 #include <time.h>
+#include <cstdio>
+#include <ctime>
 
 
 class Hex{

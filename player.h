@@ -9,7 +9,7 @@ public:
 	Board board;
 	int seq_length;
 	int rings_max;
-	time_t start_time;
+	clock_t start_time;
 	
 
 	Player(int player_id, int board_size, float time_limit, int seq_length){
@@ -18,7 +18,8 @@ public:
 		seq_length = seq_length;
 		player 	= player_id;
 		time_max 	= time_limit;
-		start_time = time (NULL);
+		start_time = clock();
+		// float millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
 		cerr << "Beginning Board initiation" <<endl;
 		Board board_temp(board_size, rings_max, seq_length);
 		board = board_temp;
