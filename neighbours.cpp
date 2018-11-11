@@ -1,6 +1,6 @@
 #include "board.h"    
 
-float Board::all_utlity()
+float Board::all_utility()
 {
     //int two,three,four,five, two_opp,three_opp,four_opp, five_opp;
     int h=0;int v=0;int h_opp=0;int v_opp=0;
@@ -92,14 +92,14 @@ float Board::all_utlity()
         }
     }
     v=0;v_opp=0;
-  for(int delta =-5;delta<=5;delta++)
+  for(int delta =-board_size;delta<=board_size;delta++)
     {
         int x,y;
-        for(int i=std::max(0,-delta) ; i<=10; i++)
+        for(int i=std::max(0,-delta) ; i<=2*board_size; i++)
            {
                y = i;
                x = i + delta;
-               if (x >10 ||y >10 || x<0 || y<0){
+               if (x >2*board_size ||y >2*board_size || x<0 || y<0){
                    break;
                }
                if(mapping[y][x]=="M")
@@ -183,8 +183,6 @@ float Board::edge_utility(){
         
     }
     return pow(edge1 - 1,4) + pow(edge2 - 1,4) + pow(edge3 - 1,4) + pow(edge4-1, 4) + pow(edge5 - 1, 4) + pow(edge6 - 1, 4);
-
-
 }
 float Board::rings_utility(){
     int counter=0;
@@ -265,8 +263,11 @@ float Board::find_utility(){
     utils -= markersOpp;
     // utils += (float)delta_markers;
     // utils += rings_utility();
-    // cerr << rings_utility()/utils << endl;
-    // utils+= all_utlity();
+    float all = all_utility();
+    utils+= all;
+    // if (utils!=0)
+    //     cerr << all/utils << endl;
+    
     // utils-=all_utlity_opp();
     // utils-= 2* edge_utility();
     // cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
@@ -275,6 +276,38 @@ float Board::find_utility(){
 
 }
 
+float Board::find_utility_mini(){
+    float utils = 0;
+    int delta_markers = markersMy - markersOpp;
+    vector<float> balance; 
+    vector<float> balance_opp; 
+    if(rings_max == 5)
+    {
+        balance= {200,200, 200, 70, 20, 0};
+        balance_opp = {3000,3000, 3000, 100, 50, 0};
+    }
+    else if(rings_max == 6)
+    {
+        balance = {200, 200, 200, 200, 70, 20, 0};
+        balance_opp = {3000, 3000, 3000, 3000, 100, 50, 0};
+    }
+    else
+    {
+        cerr << "Wrong seq_length"<<endl;
+    }
+    utils += balance[RingPos.size()];
+    utils -= balance[RingPosOpp.size()];
+    utils += markersMy;
+    utils -= markersOpp;
+    return utils;
+
+}
+float Board::find_utility_master(bool type){
+    if (type){
+        return find_utility();
+    }
+    return find_utility_mini();
+}
 
 vector<Tup3> Board::check_row_vertical_my( int init_pos_x,int init_pos_y,bool my_turn )
 {
@@ -720,7 +753,6 @@ vector<Tup3> Board::check_row_all_points( int init_pos_x,int init_pos_y,int fina
 vector<MoveVal> Board::find_neighbours( Cart c, int dir, bool my_turn)//c--> position of ring to be moved
  {
   // cerr << "MarkersMy: " << markersMy << "MarkersOpp: " << markersOpp << " above find_neighbours\n";
-
     int x,y;
     if(dir==1)
     {
@@ -1152,16 +1184,7 @@ vector<MoveVal> Board::moveRing(bool my_turn)
         {
             for(int j=1;j<=6;j++)
             {
-                // cerr << "Next Dir" << i << ", " << j << endl;
-                // printConfig();
                 vector<MoveVal> p1= find_neighbours(myCopyRing[i],j, my_turn);
-                // for (int w = 0; w< p1.size(); w++){
-                //     for (int i = 0; i < p1[w].movetype.size(); ++i)
-                //     {
-                //         cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
-                //     }
-                //     cerr << endl;                
-                // }
                 padosi.insert(padosi.end(),p1.begin(),p1.end());  
             }
         }
@@ -1171,17 +1194,7 @@ vector<MoveVal> Board::moveRing(bool my_turn)
         {
             for(int j=1;j<=6;j++)
             {
-                // cerr << "Next Dir in Opp" << i << ", " << j << endl;
-                // printConfig();
-
                 vector<MoveVal> p1= find_neighbours(oppCopyRing[i],j, my_turn);
-                // for (int w = 0; w< p1.size(); w++){
-                //     for (int i = 0; i < p1[w].movetype.size(); ++i)
-                //     {
-                //         cerr << p1[w].movetype[i] << " " << p1[w].cart_xy[i].x << " "<< p1[w].cart_xy[i].y ;
-                //     }
-                //     cerr << endl;                
-                // }
                 padosi.insert(padosi.end(),p1.begin(),p1.end());
 
             }

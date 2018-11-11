@@ -3,6 +3,8 @@
  
 void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
     while(true) {
+        cerr << "TIME LEFT = " << time_max - (time(NULL) - start_time)<< "Total Time = " <<time_max << endl;
+
         board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
         if (countermv <= rings_max) countermv ++;
@@ -79,7 +81,8 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         
         if (board.RingPos.size() > (rings_max - 3)  || board.my_state == 1){
             // int markers_opp_saved = board.markersOpp;
-            MoveVal next_move = board.DecisionMaker( ply, board.my_state);//****************************
+            bool util_type = true;
+            MoveVal next_move = board.DecisionMaker( ply, board.my_state, util_type);//****************************
             // board.markersOpp = markers_opp_saved;
             // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " above util\n";
 
@@ -107,7 +110,8 @@ void Player::play(){
     }   
     else if(player == 1) {
         int ply = 4;
-        MoveVal next_move = board.DecisionMaker( ply, 1);
+        bool util_type = true; //True means that all() will be used
+        MoveVal next_move = board.DecisionMaker( ply, 1, util_type);
         board.execute_move_sequence_my(next_move.cart_xy, next_move.movetype);
         vector<Hex> my_hex_vec;
         for (int r = 0; r< next_move.cart_xy.size(); r++){

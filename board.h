@@ -5,7 +5,7 @@
 using namespace std;
 #include <bits/stdc++.h> 
 #include <boost/algorithm/string.hpp>
-
+#include <time.h>
 
 
 class Hex{
@@ -55,6 +55,10 @@ public:
   MoveVal(float u){
       utility = u;
   }
+
+  bool operator< (const MoveVal &other) const {
+        return utility < other.utility;
+    }
 };
 
 class Children{
@@ -192,8 +196,10 @@ public:
 	vector<MoveVal> moveRing( bool my_turn);
 	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
 	float find_utility();
-	float all_utlity();
-	float all_utlity_opp();
+	float find_utility_mini();
+	float find_utility_master(bool type);
+	float all_utility();
+	float all_utility_opp();
 	float edge_utility();
 	float rings_utility();
 
@@ -224,9 +230,9 @@ public:
     float utility_check_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
 
 
-    MoveVal DecisionMaker(int ply, int state);
-	MoveVal MaxVal(float alpha, float beta, int ply);
-	MoveVal MinVal(float alpha, float beta, int ply);
+    MoveVal DecisionMaker(int ply, int state, bool util_type);
+	MoveVal MaxVal(float alpha, float beta, int ply, bool util_type);//, int nodes);
+	MoveVal MinVal(float alpha, float beta, int ply, bool util_type);//, int nodes);
 };
 
 

@@ -1,11 +1,10 @@
 6,5 Player 1, Opp = Bots/RandomPlayer.py
-{"action": "FINISH", "meta": "Player 1 SCORE : 10.013 : Player 2 SCORE : 0.017", "data": "S 5 22 M 2 11 RS 5 25 RE 1 5 X 4 1"}Received from client 0
+{"action": "FINISH", "meta": "TIMEOUT BY PLAYER 1 : Player 1 SCORE : 0.011 : Player 2 SCORE : 10.007", "data": ""}Received from client 0
 6,5 Player 2, Opp = Bots/RandomPlayer.py
-{"action": "FINISH", "meta": "Player 2 SCORE : 10.02 : Player 1 SCORE : 0.013", "data": "S 5 7 M 5 5 RS 5 10 RE 5 6 X 6 4"}Received from client 1
+{"action": "FINISH", "meta": "TIMEOUT BY PLAYER 2 : Player 2 SCORE : 0.025 : Player 1 SCORE : 10.014", "data": ""}Received from client 1
 6,5 Player 1, Opp = Bots/aggressive.py
-{"action": "FINISH", "meta": "TIMEOUT BY PLAYER 1 : Player 1 SCORE : 2.007 : Player 2 SCORE : 8.007", "data": ""}Received from client 0
+{"action": "FINISH", "meta": "TIMEOUT BY PLAYER 1 : Player 1 SCORE : 0.016 : Player 2 SCORE : 10.005", "data": ""}Received from client 0
 6,5 Player 2, Opp = Bots/aggressive.py
-{"action": "FINISH", "meta": "TIMEOUT BY PLAYER 2 : Player 2 SCORE : 0.011 : Player 1 SCORE : 10.01", "data": ""}Received from client 1
+{"action": "FINISH", "meta": "TIMEOUT BY PLAYER 2 : Player 2 SCORE : 0.018 : Player 1 SCORE : 10.008", "data": ""}Received from client 1
 6,5 Player 1, Opp = Bots/defensive.py
-{"action": "FINISH", "meta": "Player 1 SCORE : 10.008 : Player 2 SCORE : 0.026", "data": "S 3 4 M 5 6 RS 3 2 RE 6 9 X 0 0"}Received from client 0
 6,5 Player 2, Opp = Bots/defensive.py

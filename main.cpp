@@ -1,7 +1,6 @@
 #include "player.h"
 
 
-unsigned int microseconds = 2000;
 
 
 using namespace std;
