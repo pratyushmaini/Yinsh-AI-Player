@@ -214,7 +214,7 @@ void Board::execute_move_my(Cart tup, string type){
 	}
 	else if (type == "RE"){
 		removeMarkers(last_selected, tup);
-		markersMy -= 5;
+		markersMy -= seq_length;
 		last_selected = t;
 		// last_selected = temp();
 	}

@@ -24,7 +24,7 @@ float Board::all_utility()
                 score += scoring_matrix[min(h,5)]/2.0;
             }
             else if (mapping[j][i]=="RO" && h==rh_gap){
-                score -= (pow(3,max(rh_gap-1,5)) - 1)/2;
+                // score -= (pow(3,max(rh_gap-1,5)) - 1)/2;
                 h = 0;
                 rh_gap = 0;
             }
@@ -46,7 +46,7 @@ float Board::all_utility()
                 score -= scoring_matrix[min(h_opp,5)]/2.0;
             }
             else if (mapping[j][i]=="R" && h_opp==rh_gap_opp){
-                score += (pow(3,min(rh_gap_opp-1,5)) - 1)/2;
+                // score += (pow(3,min(rh_gap_opp-1,5)) - 1)/2;
                 h_opp = 0;
                 rh_gap_opp = 0;
             }
@@ -70,7 +70,7 @@ float Board::all_utility()
             }
             else if (mapping[i][j] == "RO" && v==rv_gap)
             {
-                score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
+                // score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
                 v = 0;
                 rv_gap = 0;
             }
@@ -93,7 +93,7 @@ float Board::all_utility()
             } 
             else if (mapping[i][j]=="R" && v_opp==rv_gap_opp)
             {
-                score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
+                // score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
                 v_opp=0;
                 rv_gap_opp = 0;
             }
@@ -130,7 +130,7 @@ float Board::all_utility()
                }
                else if(mapping[y][x]=="RO" && v==rv_gap)
                 {
-                    score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
+                    // score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
                     v = 0;
                     rv_gap = 0;
                     
@@ -155,7 +155,7 @@ float Board::all_utility()
                 }
                 else if(mapping[y][x]=="R" && v_opp==rv_gap_opp)
                 {
-                    score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
+                    // score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
                     v_opp = 0;
                     rv_gap_opp = 0;
                     
@@ -268,8 +268,8 @@ float Board::find_utility(){
     {
         // balance= {10000,10000, 10000, 5000, 2500, 0};
         // balance_opp = {10000,10000, 10000, 4000, 2000, 0};
-        balance= {30000,20000, 100000, 2000, 1000, 0};
-        balance_opp = {400000,300000, 200000, 2000, 1000, 0};
+        balance= {10000,10000, 100000, 2000, 1000, 0};
+        balance_opp = {10000,10000, 100000, 2000, 1000, 0};
     }
     else if (rings_max == 6 && seq_length == 5){
         balance= {400000,300000,200000, 100000, 5000, 2500, 0};
