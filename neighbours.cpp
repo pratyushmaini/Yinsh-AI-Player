@@ -12,12 +12,12 @@ float Board::all_utility()
             if(mapping[j][i]=="M")
             {
                 h++;
-                score += scoring_matrix[max(h,5)];
+                score += scoring_matrix[min(h,5)];
             }
             else if(mapping[j][i]=="R")
             {
                 h++;
-                score += scoring_matrix[max(h,5)]/2.0;
+                score += scoring_matrix[min(h,5)]/2.0;
             }
             else
             {
@@ -26,12 +26,12 @@ float Board::all_utility()
             if(mapping[j][i]=="MO")
             {
                 h_opp++;
-                score -= scoring_matrix[max(h_opp,5)];
+                score -= scoring_matrix[min(h_opp,5)];
             }
             else if(mapping[j][i]=="RO")
             {
                 h_opp++;
-                score -= scoring_matrix[max(h_opp,5)]/2.0;
+                score -= scoring_matrix[min(h_opp,5)]/2.0;
             }
             else
             {
@@ -40,28 +40,29 @@ float Board::all_utility()
             if(mapping[i][j]=="M")
             {
                 v++;
-                score += scoring_matrix[max(v,5)];
+                score += scoring_matrix[min(v,5)];
                 
             }
             else if(mapping[i][j]=="R")
             {
                 v++;
-                score += scoring_matrix[max(v,5)]/2.0;
+                score += scoring_matrix[min(v,5)]/2.0;
             }
-            else
+            else if (mapping[i][j] == "RO")
             {
-                v=0;
+                // score -= (pow(3,min(v,5)) - 1)/2;
+                v = 0;
             }
             if(mapping[i][j]=="MO")
             {
                 v_opp++;
-                score -= scoring_matrix[max(v_opp,5)];
+                score -= scoring_matrix[min(v_opp,5)];
                 
             }
             else if(mapping[i][j]=="RO")
             {
                 v_opp++;
-                score -= scoring_matrix[max(v_opp,5)]/2.0;
+                score -= scoring_matrix[min(v_opp,5)]/2.0;
             } 
             else
             {
@@ -84,12 +85,12 @@ float Board::all_utility()
                if(mapping[y][x]=="M")
                {
                     v++;
-                    score += scoring_matrix[max(v,5)];
+                    score += scoring_matrix[min(v,5)];
                }
                else if(mapping[y][x]=="R")
                {
                     v++;
-                    score += scoring_matrix[max(v,5)]/2.0;
+                    score += scoring_matrix[min(v,5)]/2.0;
                }
                else
                {
@@ -98,13 +99,13 @@ float Board::all_utility()
                if(mapping[y][x]=="MO")
                 {
                     v_opp++;
-                    score -= scoring_matrix[max(v_opp,5)];
+                    score -= scoring_matrix[min(v_opp,5)];
                     
                 }
                 else if(mapping[y][x]=="RO")
                 {
                     v_opp++;
-                    score -= scoring_matrix[max(v_opp,5)]/2.0;
+                    score -= scoring_matrix[min(v_opp,5)]/2.0;
                 }
                 else
                 {
@@ -114,7 +115,6 @@ float Board::all_utility()
       }
       return score;//3*two+9*three+27*four+81*five-(3*two_opp+9*three_opp+27*four_opp+81*five_opp);
 }
-
 float Board::edge_utility(){
     int edge1 = 0;
     int edge2 = 0;
@@ -218,13 +218,13 @@ float Board::find_utility(){
         balance_opp = {10000,10000, 10000, 2600, 1300, 0};
     }
     else if (rings_max == 6 && seq_length == 5){
-        balance= {10000,10000, 10000, 5000, 2500, 0};
-        balance_opp = {10000,10000, 10000, 4000, 2000, 0};
+        balance= {10000,10000, 10000, 4000, 2000, 0};
+        balance_opp = {10000,10000, 10000, 3600, 1800, 0};
     }
     else if(rings_max == 6 && seq_length == 6)
     {
         balance= {10000, 10000,10000, 10000, 5000, 2500, 0};
-        balance_opp = {10000, 10000,10000, 10000, 4000, 2000, 0};
+        balance_opp = {10000, 10000,10000, 10000, 5000, 2500, 0};
     }
     else
     {
@@ -240,7 +240,6 @@ float Board::find_utility(){
 
 float Board::find_utility_mini(){
     float utils = 0;
-    int delta_markers = markersMy - markersOpp;
     vector<float> balance; 
     vector<float> balance_opp; 
     if(rings_max == 5)

@@ -12,7 +12,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         //     ply = 6;
         // }
         if (remaining >= 80 && elapsed > 2){
-            ply = 5;
+            ply = 4;
         }
         else if (remaining >= 40){
             ply = 4;
