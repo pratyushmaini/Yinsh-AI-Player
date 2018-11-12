@@ -1,5 +1,4 @@
 #!/bin/bash
 
 ## This is to run the first program main.cpp
-
-Bots/bench $1
+Bots/code_my2 $1
