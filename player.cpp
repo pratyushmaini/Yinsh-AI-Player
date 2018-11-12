@@ -75,6 +75,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         Tup3 prefix;
         if (found){
             prefix = board.CheckRowsMadeByOpp(opp_c_in, opp_c_fin, true);
+            
             // 
         }
         

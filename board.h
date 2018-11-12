@@ -214,6 +214,7 @@ public:
 	vector<Tup3> check_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y );
 	vector<Tup3> check_row_all_points_each( int init_pos_x,int init_pos_y,int check,bool my_turn );
 	int check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y, int ring_x, int ring_y, bool my_turn);
+	int check_if_row_starting(int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y, int ring_x, int ring_y, bool my_turn);
 	Tup3 CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn);
 
 	vector<Tup3> check_row_vertical_my( int init_pos_x,int init_pos_y,bool my_turn );

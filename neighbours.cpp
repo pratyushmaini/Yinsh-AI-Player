@@ -705,12 +705,13 @@ int Board::check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final
             {
                 if(mapping[y1][x1]!=marker_check)
                 {
+                    // cerr << "x = " << x1 << " y = " << y1 << endl;
                     check=1;break;
                 }
                 x1++;y1++;        
             }
         }
-        if(x1>x2)
+        else if(x1>x2)
         {
             while(x1>=x2 && y1>=y2)
             {
@@ -727,6 +728,7 @@ int Board::check_if_row(int init_pos_x,int init_pos_y,int final_pos_x, int final
     return check;
 
 }
+
 
 vector<Tup3> Board::check_row_all_points( int init_pos_x,int init_pos_y,int final_pos_x, int final_pos_y,bool my_turn )
 {
@@ -1403,9 +1405,10 @@ Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
 
 
     vector<Tup3> non_intersecting_rows_by_opp = check_row_all_points(opp_c_in.x,opp_c_in.y,opp_c_fin.x,opp_c_fin.y,my_turn);
-     Tup3 t;
+    Tup3 t;
     for(int j=0;j<non_intersecting_rows_by_opp.size();j++)
         {
+
             if(check_if_row(non_intersecting_rows_by_opp[j].carts[0].x,
                             non_intersecting_rows_by_opp[j].carts[0].y,
                             non_intersecting_rows_by_opp[j].carts[1].x,
@@ -1415,6 +1418,7 @@ Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
                             my_turn) == 0)
 
             {
+
                 t.moves.push_back("RS");
                 t.moves.push_back("RE");
                 t.moves.push_back("X");

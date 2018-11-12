@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./compile.sh
+# ./compile.sh
 
 echo Compilation Successful !!
 
@@ -8,7 +8,7 @@ chmod +x *
 
 var=10000
 
-for i in Bots/shashank.py Bots/jetha.py Bots/rajas.py
+for i in Bots/shashank.sh Bots/jetha.sh Bots/rajas.sh
 do
     echo 5,5 Player 1, Opp = $i >> Learn/log55.txt
     python server.py $var -n 5 -s 5 -NC 2 -TL 120 -LOG server.log > Learn/log11.txt&
