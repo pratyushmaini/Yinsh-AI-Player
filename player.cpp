@@ -6,7 +6,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
 
         double elapsed = ( std::clock() - start_time ) / (double) CLOCKS_PER_SEC;
         double remaining = time_max - elapsed;
-        cerr << "TIME LEFT = " << elapsed<< "Total Time = " <<time_max << endl;
+        // cerr << "TIME LEFT = " << elapsed<< "Total Time = " <<time_max << endl;
         ply = 4;
         // if (remaining >= 100){
         //     ply = 6;
@@ -17,17 +17,17 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         else if (remaining >= 40){
             ply = 4;
         }
-        else if (remaining < 10){
-            ply = 1;
-        }
-        else if (remaining < 20){
-            ply = 2;
-        }
+        // else if (remaining < 10){
+        //     ply = 1;
+        // }
+        // else if (remaining < 20){
+        //     ply = 2;
+        // }
         else if (remaining < 40){
             ply = 3;
         }
-        cerr << ply << "PLY" << endl;
-        board.printConfig();
+        // cerr << ply << "PLY" << endl;
+        // board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
         if (countermv <= rings_max) countermv ++;
         if (countermv > rings_max) {
@@ -68,7 +68,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
 
         board.execute_move_sequence_opp(Hexvec, strVec);
         // cerr << "After Opp move: " << endl;
-        board.printConfig();
+        // board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << " ending\n";
         
         // cerr << "Opp move executed" << endl;

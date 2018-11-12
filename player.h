@@ -20,11 +20,11 @@ public:
 		time_max 	= time_limit;
 		start_time = clock();
 		// float millis = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
-		cerr << "Beginning Board initiation" <<endl;
+		// cerr << "Beginning Board initiation" <<endl;
 		Board board_temp(board_size, rings_max, seq_length);
 		board = board_temp;
 		// board = &board1;
-		cerr << "Board Initialised" <<endl;
+		// cerr << "Board Initialised" <<endl;
 	}
 	void play();
 	void play_2(int ply, int countmv);

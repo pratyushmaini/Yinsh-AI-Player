@@ -121,7 +121,7 @@ public:
 
 	
 	Board(int board_size_in, int rings_max_in, int seq_length_in){
-		cerr << board_size_in << " " << rings_max_in << " "<< seq_length_in << " Params" << endl;
+		// cerr << board_size_in << " " << rings_max_in << " "<< seq_length_in << " Params" << endl;
 		board_size = board_size_in;
 		rings_max = rings_max_in;
 		seq_length = seq_length_in;
@@ -195,6 +195,7 @@ public:
 
 	Children find_children(int playerstate, bool my_turn);
 	vector<MoveVal> placeRing(bool my_turn);
+	vector<MoveVal> placeRing65(bool my_turn);
 	vector<MoveVal> moveRing( bool my_turn);
 	vector<MoveVal> find_neighbours(/*Cart opp_c_in, Cart opp_c_fin,*/ Cart c, int dir, bool my_turn);
 	float find_utility();

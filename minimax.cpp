@@ -12,7 +12,7 @@ MoveVal Board::DecisionMaker(int ply, int my_state, bool util_type){
     else {
         mv = placeRing(true)[0];
     }
-    cerr << nodes_explored << " = nodes_explored" << endl;
+    // cerr << nodes_explored << " = nodes_explored" << endl;
     // cerr << "RingPosOpp Size"
 
     return mv;

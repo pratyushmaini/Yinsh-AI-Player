@@ -436,7 +436,7 @@ Hex solve_sec(int x, int y){
 Hex Board::convertToHex(int x, int y){
 	x = x- board_size ;
 	y = y- board_size ;
-	cerr << "board_size= " << board_size << endl;
+	// cerr << "board_size= " << board_size << endl;
 	int p = 0;
 	if (x>=0){
 		Hex output = solve_sec(x,y);

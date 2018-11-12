@@ -24,7 +24,7 @@ float Board::all_utility()
                 score += scoring_matrix[min(h,5)]/2.0;
             }
             else if (mapping[j][i]=="RO" && h==rh_gap){
-                score -= (pow(3,max(rh_gap-1,5)) - 1)/2;
+                // score -= (pow(3,max(rh_gap-1,5)) - 1)/2;
                 h = 0;
                 rh_gap = 0;
             }
@@ -46,7 +46,7 @@ float Board::all_utility()
                 score -= scoring_matrix[min(h_opp,5)]/2.0;
             }
             else if (mapping[j][i]=="R" && h_opp==rh_gap_opp){
-                score += (pow(3,min(rh_gap_opp-1,5)) - 1)/2;
+                // score += (pow(3,min(rh_gap_opp-1,5)) - 1)/2;
                 h_opp = 0;
                 rh_gap_opp = 0;
             }
@@ -70,7 +70,7 @@ float Board::all_utility()
             }
             else if (mapping[i][j] == "RO" && v==rv_gap)
             {
-                score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
+                // score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
                 v = 0;
                 rv_gap = 0;
             }
@@ -93,7 +93,7 @@ float Board::all_utility()
             } 
             else if (mapping[i][j]=="R" && v_opp==rv_gap_opp)
             {
-                score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
+                // score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
                 v_opp=0;
                 rv_gap_opp = 0;
             }
@@ -130,7 +130,7 @@ float Board::all_utility()
                }
                else if(mapping[y][x]=="RO" && v==rv_gap)
                 {
-                    score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
+                    // score -= (pow(3,min(rv_gap-1,5)) - 1)/2;
                     v = 0;
                     rv_gap = 0;
                     
@@ -155,7 +155,7 @@ float Board::all_utility()
                 }
                 else if(mapping[y][x]=="R" && v_opp==rv_gap_opp)
                 {
-                    score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
+                    // score += (pow(3,min(rv_gap_opp-1,5)) - 1)/2;
                     v_opp = 0;
                     rv_gap_opp = 0;
                     
@@ -176,7 +176,7 @@ float Board::edge_utility(){
     int  edge4 = 0;
     int  edge5 = 0;
     int edge6  = 0;
-    for (int i=1;i<=4;i++)
+    for (int i=1;i<=board_size - 1;i++)
     {
         if(mapping[i][0]=="M" || mapping[i][0]=="R")
         {
@@ -186,25 +186,25 @@ float Board::edge_utility(){
         {
             edge2++;
         }
-        if(mapping[i+5][10]=="M" || mapping[i+5][10]=="R")
+        if(mapping[i+board_size][2*board_size]=="M" || mapping[i+board_size][2*board_size]=="R")
         {
             edge3++;
         }
-        if(mapping[10][i+5]=="M" || mapping[10][i+5]=="R")
+        if(mapping[2*board_size][i+board_size]=="M" || mapping[2*board_size][i+board_size]=="R")
         {
             edge4++;
         }
-        if(mapping[i+5][i]=="M" || mapping[i+5][i]=="R")
+        if(mapping[i+board_size][i]=="M" || mapping[i+board_size][i]=="R")
         {
             edge5++;
         }
-        if(mapping[i][i+5]=="M" || mapping[i][i+5]=="R")
+        if(mapping[i][i+board_size]=="M" || mapping[i][i+board_size]=="R")
         {
             edge6++;
         }
         
     }
-    return pow(edge1 - 1,4) + pow(edge2 - 1,4) + pow(edge3 - 1,4) + pow(edge4-1, 4) + pow(edge5 - 1, 4) + pow(edge6 - 1, 4);
+    return pow(edge1,3) + pow(edge2,3) + pow(edge3,3) + pow(edge4, 3) + pow(edge5, 3) + pow(edge6, 3);
 }
 float Board::rings_utility(){
     int counter=0;
@@ -270,10 +270,12 @@ float Board::find_utility(){
         // balance_opp = {10000,10000, 10000, 4000, 2000, 0};
         balance= {30000,20000, 100000, 2000, 1000, 0};
         balance_opp = {400000,300000, 200000, 2000, 1000, 0};
+        utils += edge_utility()/2;
     }
     else if (rings_max == 6 && seq_length == 5){
         balance= {400000,300000,200000, 100000, 5000, 2500, 0};
         balance_opp = {400000,300000,200000, 100000, 5000, 2500, 0};
+        // utils += edge_utility();
     }
     else if(rings_max == 6 && seq_length == 6)
     {
@@ -301,7 +303,13 @@ float Board::find_utility_mini(){
         balance= {3000,3000, 3000, 100, 50, 0};
         balance_opp = {3000,3000, 3000, 100, 50, 0};
     }
-    else if(rings_max == 6)
+    else if(rings_max == 6 && seq_length == 5)
+    {
+        balance = {3000, 3000, 3000, 3000, 100, 50, 0};
+        balance_opp = {3000, 3000, 3000, 3000, 100, 50, 0};
+        // utils += edge_utility()/2.0;
+    }
+    else if(rings_max == 6 && seq_length == 6)
     {
         balance = {3000, 3000, 3000, 3000, 100, 50, 0};
         balance_opp = {3000, 3000, 3000, 3000, 100, 50, 0};
@@ -1233,12 +1241,16 @@ vector<MoveVal> Board::moveRing(bool my_turn)
 
 
 vector<MoveVal> Board::placeRing(bool my_turn){
+
   // cerr << "Place Ring Called" <<endl;
  /**/
+    if (board_size == 6 && seq_length == 5){
+        return placeRing65(my_turn);
+    }
   vector<MoveVal> all_possible_moves;
   int rings_temp = RingPos.size();
-  cerr << rings_temp << " = No. of Rings Placed" << endl;
-  cerr << "board_size = " << board_size << " rings_max = " << rings_max << " seq_length = " << seq_length << endl;
+  // cerr << rings_temp << " = No. of Rings Placed" << endl;
+  // cerr << "board_size = " << board_size << " rings_max = " << rings_max << " seq_length = " << seq_length << endl;
   
   if( rings_temp<rings_max-1)
   {
@@ -1247,7 +1259,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        if(mapping[board_size][board_size]=="E")
        {
            Cart c;
-           cerr << "Case 1: " << endl;
+           // cerr << "Case 1: " << endl;
            c.x=board_size;
            c.y=board_size;
            move.movetype.push_back("P");
@@ -1259,7 +1271,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        else if (mapping[ (board_size + 1)][board_size] == "E")
        {
            Cart c;
-           cerr << "Case 2: " << endl;
+           // cerr << "Case 2: " << endl;
            c.x=board_size;
            c.y= (board_size + 1);
            move.movetype.push_back("P");
@@ -1271,7 +1283,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        else if (mapping[ (board_size + 1)][(board_size + 1)] == "E")
        {
            Cart c;
-           cerr << "Case 3: " << endl;
+           // cerr << "Case 3: " << endl;
            c.x= (board_size + 1);
            c.y= (board_size + 1);
            move.movetype.push_back("P");
@@ -1284,7 +1296,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        {
            Cart c;
            c.x= (board_size + 1);
-           cerr << "Case 4: " << endl;
+           // cerr << "Case 4: " << endl;
            c.y=board_size;
            move.movetype.push_back("P");
            move.cart_xy.push_back(c);
@@ -1294,7 +1306,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        }
        else if (mapping[(board_size - 1)][board_size] == "E")
        {
-           cerr << "Case 5: " << endl;
+           // cerr << "Case 5: " << endl;
            Cart c;
            c.x=board_size;
            c.y=(board_size - 1);
@@ -1306,7 +1318,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        }
        else if (mapping[(board_size - 1)][(board_size - 1)] == "E")
        {
-           cerr << "Case 6: " << endl;
+           // cerr << "Case 6: " << endl;
            Cart c;
            c.x=(board_size - 1);
            c.y=(board_size - 1);
@@ -1318,7 +1330,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        }
        else if (mapping[board_size][(board_size - 1)] == "E")
        {
-           cerr << "Case 7: " << endl;
+           // cerr << "Case 7: " << endl;
            Cart c;
            c.x=(board_size - 1);
            c.y=board_size;
@@ -1330,7 +1342,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        }
        else if (mapping[board_size + 2][board_size] == "E")
        {
-           cerr << "Case 8: " << endl;
+           // cerr << "Case 8: " << endl;
            Cart c;
            c.x=board_size;
            c.y=board_size + 2;
@@ -1342,7 +1354,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        }
        else if (mapping[board_size + 1][board_size - 1] == "E")
        {
-           cerr << "Case 9: " << endl;
+           // cerr << "Case 9: " << endl;
            Cart c;
            c.x=board_size - 1;
            c.y=board_size + 1;
@@ -1354,7 +1366,7 @@ vector<MoveVal> Board::placeRing(bool my_turn){
        }
        else if (mapping[board_size - 1][board_size + 1] == "E")
        {
-           cerr << "Case 10: " << endl;
+           // cerr << "Case 10: " << endl;
            Cart c;
            c.x=board_size + 1;
            c.y=board_size - 1;
@@ -1400,6 +1412,292 @@ vector<MoveVal> Board::placeRing(bool my_turn){
   
 }
 
+vector<MoveVal> Board::placeRing65(bool my_turn){
+
+  vector<MoveVal> all_possible_moves;
+  int rings_temp = RingPos.size();
+  // cerr << rings_temp << " = No. of Rings Placed" << endl;
+  // cerr << "board_size = " << board_size << " rings_max = " << rings_max << " seq_length = " << seq_length << endl;
+  
+  if( rings_temp<rings_max-2)
+  {
+       
+       MoveVal move;
+       if(mapping[board_size][board_size]=="E")
+       {
+           Cart c;
+           // cerr << "Case 1: " << endl;
+           c.x=board_size;
+           c.y=board_size;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[ (board_size + 1)][board_size] == "E")
+       {
+           Cart c;
+           // cerr << "Case 2: " << endl;
+           c.x=board_size;
+           c.y= (board_size + 1);
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[ (board_size + 1)][(board_size + 1)] == "E")
+       {
+           Cart c;
+           // cerr << "Case 3: " << endl;
+           c.x= (board_size + 1);
+           c.y= (board_size + 1);
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size][ (board_size + 1)] == "E")
+       {
+           Cart c;
+           c.x= (board_size + 1);
+           // cerr << "Case 4: " << endl;
+           c.y=board_size;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[(board_size - 1)][board_size] == "E")
+       {
+           // cerr << "Case 5: " << endl;
+           Cart c;
+           c.x=board_size;
+           c.y=(board_size - 1);
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[(board_size - 1)][(board_size - 1)] == "E")
+       {
+           // cerr << "Case 6: " << endl;
+           Cart c;
+           c.x=(board_size - 1);
+           c.y=(board_size - 1);
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size][(board_size - 1)] == "E")
+       {
+           // cerr << "Case 7: " << endl;
+           Cart c;
+           c.x=(board_size - 1);
+           c.y=board_size;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size + 2][board_size] == "E")
+       {
+           // cerr << "Case 8: " << endl;
+           Cart c;
+           c.x=board_size;
+           c.y=board_size + 2;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size + 1][board_size - 1] == "E")
+       {
+           // cerr << "Case 9: " << endl;
+           Cart c;
+           c.x=board_size - 1;
+           c.y=board_size + 1;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+       else if (mapping[board_size - 1][board_size + 1] == "E")
+       {
+           // cerr << "Case 10: " << endl;
+           Cart c;
+           c.x=board_size + 1;
+           c.y=board_size - 1;
+           move.movetype.push_back("P");
+           move.cart_xy.push_back(c);
+           // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+           all_possible_moves.push_back(move);
+           return all_possible_moves;
+       }
+    }
+
+  
+  else if (rings_temp<rings_max-1)
+  {
+    vector<int> edge = {0,0,0,0,0,0};
+    for (int i=1;i<=board_size - 1;i++)
+    {
+        if(mapping[i][0]=="RO")
+        {
+            edge[0] = edge[0]+1;
+        }
+        if(mapping[0][i]=="RO")
+        {
+            edge[1] = edge[1]+1;
+        }
+        if( mapping[i+board_size][2*board_size]=="RO")
+        {
+            edge[2] = edge[2]+1;
+        }
+        if(mapping[2*board_size][i+board_size]=="RO")
+        {
+            edge[3] = edge[3]+1;
+        }
+        if( mapping[i+board_size][i]=="RO")
+        {
+            edge[4] = edge[4]+1;
+        }
+        if( mapping[i][i+board_size]=="RO")
+        {
+            edge[5] = edge[5]+1;
+        }
+        
+    }
+    int edge_max = 0;
+    int arg_max = 0;
+    for (int r = 0; r < 6 ; r++){
+        if (edge[r]>edge_max){
+            arg_max = r;
+            edge_max = edge[r];
+        }
+    }
+
+    for (int i=1;i<=board_size - 1;i++)
+    {
+        if(mapping[i][0]=="E" && arg_max == 0)
+        {
+            MoveVal move;
+              Cart c;
+              c.x=0;
+              c.y=i;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+        }
+        if(mapping[0][i]=="E" && arg_max == 1)
+        {
+            MoveVal move;
+              Cart c;
+              c.x=i;
+              c.y=0;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+        }
+        if( mapping[i+board_size][2*board_size]=="E" && arg_max == 2)
+        {
+            MoveVal move;
+              Cart c;
+              c.x=2*board_size;
+              c.y=i+board_size;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+        }
+        if(mapping[2*board_size][i+board_size]=="E" && arg_max == 3)
+        {
+            MoveVal move;
+              Cart c;
+              c.x=i+board_size;
+              c.y=2*board_size;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+        }
+        if( mapping[i+board_size][i]=="E" && arg_max == 4)
+        {
+            MoveVal move;
+              Cart c;
+              c.x=i;
+              c.y=i+board_size;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+        }
+        if( mapping[i][i+board_size]=="E" && arg_max == 5)
+        {
+            MoveVal move;
+              Cart c;
+              c.x=i+board_size;
+              c.y=i;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+        }
+        
+    }
+
+
+  }
+  else
+  {
+      for(int y=0;y<=4;y++)
+      {
+
+          if(mapping[y+ (board_size + 1)][2*board_size]=="E")
+          {
+              MoveVal move;
+              Cart c;
+              c.x=2*board_size;
+              c.y=y+ (board_size + 1);
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+          }
+          if(mapping[y+1][0]=="E")
+          {
+              MoveVal move;
+              Cart c;
+              c.x=0;
+              c.y=y+1;
+              move.movetype.push_back("P");
+              move.cart_xy.push_back(c);
+              // execute_move_sequence(move.cart_xy, move.movetype, my_turn);
+              all_possible_moves.push_back(move);
+              return all_possible_moves;
+          }
+      }
+  }
+  
+}
      //------------------------------------Checkin rows made by opponent----------------------------------------------------            
 Tup3 Board::CheckRowsMadeByOpp(Cart opp_c_in, Cart opp_c_fin, bool my_turn){
 
