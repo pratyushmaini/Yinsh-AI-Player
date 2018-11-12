@@ -4,6 +4,8 @@
 
 echo Compilation Successful !!
 
+chmod +x *
+
 var=10000
 
 for i in Bots/third.py Bots/RandomPlayer.py Bots/aggressive.py Bots/defensive.py Bots/run.sh 

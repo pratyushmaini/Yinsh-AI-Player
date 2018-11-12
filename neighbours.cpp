@@ -3,12 +3,8 @@
 float Board::all_utility()
 {
     std::vector<int> scoring_matrix = {0,1,3,9,27,81};
-
-
-    //int two,three,four,five, two_opp,three_opp,four_opp, five_opp;
     int h=0;int v=0;int h_opp=0;int v_opp=0;
     float score=0;
-    //two=three=four=five=two_opp=three_opp=four_opp=five_opp=0;
     for(int i=0;i<=2*board_size;i++)
     {
         for(int j=0;j<=2*board_size;j++)
@@ -117,7 +113,6 @@ float Board::all_utility()
            }
       }
       return score;//3*two+9*three+27*four+81*five-(3*two_opp+9*three_opp+27*four_opp+81*five_opp);
-
 }
 
 float Board::edge_utility(){
@@ -210,20 +205,26 @@ float Board::rings_utility(){
 float Board::find_utility(){
     float utils = 0;
    
-    int delta_markers = markersMy - markersOpp;
+    // int delta_markers = markersMy - markersOpp;
     // int delta_rings = RingPos.size() - RingPosOpp.size();
     // utils += markersMy * (std::pow(10,delta_rings))/100;
     vector<float> balance; 
     vector<float> balance_opp; 
     if(rings_max == 5)
     {
-        balance= {10000,10000, 10000, 500, 300, 0};
-        balance_opp = {10000,10000, 10000, 400, 200, 0};
+        // balance= {10000,10000, 10000, 5000, 2500, 0};
+        // balance_opp = {10000,10000, 10000, 4000, 2000, 0};
+        balance= {10000,10000, 10000, 3000, 1500, 0};
+        balance_opp = {10000,10000, 10000, 2600, 1300, 0};
     }
-    else if(rings_max == 6)
+    else if (rings_max == 6 && seq_length == 5){
+        balance= {10000,10000, 10000, 5000, 2500, 0};
+        balance_opp = {10000,10000, 10000, 4000, 2000, 0};
+    }
+    else if(rings_max == 6 && seq_length == 6)
     {
-        balance= {10000, 10000,10000, 10000, 1500, 500, 0};
-        balance_opp = {10000, 10000,10000, 10000, 1200, 400, 0};
+        balance= {10000, 10000,10000, 10000, 5000, 2500, 0};
+        balance_opp = {10000, 10000,10000, 10000, 4000, 2000, 0};
     }
     else
     {
@@ -231,20 +232,8 @@ float Board::find_utility(){
     }
     utils += balance[RingPos.size()];
     utils -= balance[RingPosOpp.size()];
-    // utils -= (RingPos.size() - RingPosOpp.size())*10000;
-    // utils += markersMy;
-    // utils -= markersOpp;
-    // utils += (float)delta_markers;
-    // utils += rings_utility();
     float all = all_utility();
     utils+= all;
-    // if (utils!=0)
-    //     cerr << all/utils << endl;
-    
-    // utils-=all_utlity_opp();
-    // utils-= 2* edge_utility();
-    // cerr << "CALCULATING UTILITY: markersMy = " << markersMy <<", MarkersOpp = " <<markersOpp << ", RingsMyScore = " <<  balance[RingPos.size()] << ", RingsOppScore = "<< balance[RingPosOpp.size()] << endl;
-    // cerr << "UTILITY = "<< utils << endl;
     return utils;
 
 }
@@ -256,12 +245,12 @@ float Board::find_utility_mini(){
     vector<float> balance_opp; 
     if(rings_max == 5)
     {
-        balance= {200,200, 200, 70, 20, 0};
+        balance= {3000,3000, 3000, 100, 50, 0};
         balance_opp = {3000,3000, 3000, 100, 50, 0};
     }
     else if(rings_max == 6)
     {
-        balance = {200, 200, 200, 200, 70, 20, 0};
+        balance = {3000, 3000, 3000, 3000, 100, 50, 0};
         balance_opp = {3000, 3000, 3000, 3000, 100, 50, 0};
     }
     else

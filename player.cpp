@@ -7,7 +7,14 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         double elapsed = ( std::clock() - start_time ) / (double) CLOCKS_PER_SEC;
         double remaining = time_max - elapsed;
         cerr << "TIME LEFT = " << elapsed<< "Total Time = " <<time_max << endl;
-        if (remaining >= 40){
+        ply = 4;
+        // if (remaining >= 100){
+        //     ply = 6;
+        // }
+        if (remaining >= 80 && elapsed > 2){
+            ply = 5;
+        }
+        else if (remaining >= 40){
             ply = 4;
         }
         else if (remaining < 10){
@@ -19,7 +26,7 @@ void Player::play_2( int ply, int countermv){ //Counts if 5 moves done?
         else if (remaining < 40){
             ply = 3;
         }
-
+        cerr << ply << "PLY" << endl;
         board.printConfig();
         // cerr << "MarkersMy: " << board.markersMy << "MarkersOpp: " << board.markersOpp << endl;
         if (countermv <= rings_max) countermv ++;
